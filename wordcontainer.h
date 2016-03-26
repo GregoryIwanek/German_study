@@ -14,8 +14,9 @@ class WordContainer:public QObject, public QGraphicsRectItem {
 public:
     WordContainer();
 
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
+    void setMyFlags();
     void setSize(int width, int height);
     void setColor(QBrush brush);
     void setText();
@@ -23,12 +24,12 @@ public:
     void setSizeOfRect();
     void setStartPosition(QPointF point);
     void setIsMoved(bool isChecked);
+    void setPos(const QPointF & pos);
 
-    double getWidthOfRect();
-    double getHeightOfRect();
+    int getWidthOfRect();
+    int getHeightOfRect();
     QPointF getStartPosition();
     bool getIsMoved();
-
 public slots:
     void sendToSentenceArea(QPointF point);
     void sendToStartArea(QPointF point);
@@ -37,12 +38,13 @@ signals:
     void clicked(WordContainer *wordContainer);
 private:
     Word text;
-    //QGraphicsTextItem *text;
-    double widthOfRect;
-    double heightOfRect;
+    int widthOfRect;
+    int heightOfRect;
+    int widthOfText, heightOfText;
     QPointF startPosition;
     bool isMoved = false;
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };
 
 #endif // WORDCONTAINER
-

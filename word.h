@@ -2,6 +2,9 @@
 #define WORD
 #include <QString>
 #include <QGraphicsTextItem>
+#include <QtSql/QSql>
+#include <QDebug>
+#include <QFileInfo>
 
 class Word:public QGraphicsTextItem{
     Q_OBJECT
@@ -14,10 +17,14 @@ public:
     void setVariables();
     void setWidthOfText();
     void setHeightOfText();
+    void pickWordFromSQL();
+    void saveWordToSQL();
     double getWidthOfText();
     double getHeightOfText();
 
 private:
+    QString word;
+    QString roleInSentence;
     double widthOfText;
     double heightOfText;
 };

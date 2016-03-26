@@ -9,9 +9,12 @@ class SentenceScheme {
 public:
     SentenceScheme();
 
+    void setTypeOfSentence();
+    void setHowManySubsentenceses();
+
 private:
-
-
+    int numberOfSubsentenceses;
+    QString typeOfSentence;
     QString complexSentence;
     QString negativeSentence;
     QString declarativeSentence;

@@ -12,7 +12,7 @@ SentenceArea::SentenceArea(){
 }
 
 void SentenceArea::setSizeOfArea(){
-    setRect(0,0,1100,50);
+    setRect(0,0,1080,80);
 }
 
 void SentenceArea::setSizeOfLines(){
@@ -38,7 +38,8 @@ void SentenceArea::setSpaceLeft(){
 }
 
 void SentenceArea::setWordContainerStartPosition(QPointF position){
-    wordContainerStartPosition = position;
+    wordContainerStartPosition.setY(position.y()+20);
+    wordContainerStartPosition.setX(position.x());
 }
 
 int SentenceArea::getSpaceLeft(){

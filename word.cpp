@@ -4,7 +4,10 @@
 
 extern Apperiance *apperiance;
 
-Word::Word(QGraphicsItem *parent): QGraphicsTextItem(parent){}
+Word::Word(QGraphicsItem *parent): QGraphicsTextItem(parent)
+{
+
+}
 
 void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font){
     setParentItem(parent);
@@ -14,6 +17,8 @@ void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font){
 }
 
 void Word::setText(QString text){
+    roleInSentence = NULL;
+    word = text;
     setPlainText(text);
 }
 
@@ -32,6 +37,16 @@ void Word::setWidthOfText(){
 
 void Word::setHeightOfText(){
     heightOfText = this->boundingRect().height();
+}
+
+void Word::pickWordFromSQL()
+{
+
+}
+
+void Word::saveWordToSQL()
+{
+
 }
 
 double Word::getWidthOfText(){

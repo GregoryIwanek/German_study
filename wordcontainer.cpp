@@ -1,61 +1,79 @@
 #include "wordcontainer.h"
 #include "apperiance.h"
+#include "customscene.h"
 #include <QDebug>
 #include <QBrush>
+#include <QApplication>
 
 extern Apperiance *apperiance;
 
-WordContainer::WordContainer(){
+WordContainer::WordContainer()
+{
+    setMyFlags();
     setText();
     setSizeOfRect();
-    setSize(getWidthOfRect()*1.1, 45);
     setColor(apperiance->brushGreen);
     setTextPosition();
     //setStartPosition(point); called from mainWindow.cpp
-    //setFlag(QGraphicsItem::ItemIsMovable);
 }
 
-void WordContainer::mousePressEvent(QGraphicsSceneMouseEvent *event){
+void WordContainer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
     emit clicked(this);
 }
 
-void WordContainer::setSize(int width, int height){
-    setRect(0,0,width,height);
+void WordContainer::setMyFlags()
+{
+    setFlags(QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemIsMovable |
+             QGraphicsItem::ItemSendsGeometryChanges);
 }
 
-void WordContainer::setColor(QBrush brush){
+void WordContainer::setColor(QBrush brush)
+{
     setBrush(brush);
     setOpacity(0.85);
 }
 
-void WordContainer::setText(){
-    text.defineInstance(this, QString("OOOOO"), apperiance->fontComicSans);
+void WordContainer::setText()
+{
+    text.defineInstance(this, QString("ofiwjqiodqwj"), apperiance->fontComicSans);
 }
 
-void WordContainer::setTextPosition(){
-    int x = this->boundingRect().width()/2 - widthOfRect/2;
-    int y = this->boundingRect().height()/2 - heightOfRect/2;
+void WordContainer::setTextPosition()
+{
+    int x = this->boundingRect().width()/2 - widthOfText/2;
+    int y = this->boundingRect().height()/2 - heightOfText/2;
     text.setPos(x,y);
 }
 
-void WordContainer::setSizeOfRect(){
-    widthOfRect = text.getWidthOfText();
-    heightOfRect = text.getHeightOfText();
+void WordContainer::setSizeOfRect()
+{
+    int gridSize = 20;
+    widthOfText = text.getWidthOfText();
+    heightOfText = text.getHeightOfText();
+    widthOfRect = round(widthOfText/gridSize)*gridSize;
+    heightOfRect = round(heightOfText/gridSize)*gridSize;
+    setRect(0,0,widthOfRect,40);
 }
 
-void WordContainer::setStartPosition(QPointF point){
+void WordContainer::setStartPosition(QPointF point)
+{
     startPosition = point;
 }
 
-void WordContainer::setIsMoved(bool isChecked){
+void WordContainer::setIsMoved(bool isChecked)
+{
     isMoved = isChecked;
 }
 
-double WordContainer::getHeightOfRect(){
+int WordContainer::getHeightOfRect()
+{
     return heightOfRect;
 }
 
-QPointF WordContainer::getStartPosition(){
+QPointF WordContainer::getStartPosition()
+{
     return startPosition;
 }
 
@@ -63,16 +81,48 @@ bool WordContainer::getIsMoved(){
     return isMoved;
 }
 
-void WordContainer::sendToStartArea(QPointF point){
+void WordContainer::sendToStartArea(QPointF point)
+{
     setPos(startPosition);
     setIsMoved(false);
 }
 
-void WordContainer::sendToSentenceArea(QPointF point){
+QVariant WordContainer::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemPositionChange && scene()) {
+        QPointF newPos = value.toPointF();
+        if(QApplication::mouseButtons() == Qt::LeftButton &&
+                qobject_cast<CustomScene*> (scene())){
+            CustomScene* customScene = qobject_cast<CustomScene*> (scene());
+            int gridSize = customScene->getGridSize();
+            qreal xV = round(newPos.x()/gridSize)*gridSize;
+            qreal yV = round(newPos.y()/gridSize)*gridSize;
+            return QPointF(xV, yV);
+        }
+        else
+            return newPos;
+    }
+    else
+        return QGraphicsItem::itemChange(change, value);
+}
+
+void WordContainer::setPos(const QPointF &pos)
+{
+    //override default setPos function to move by only on grid nodes
+    int gridSize = 20;
+    qreal xV = round(pos.x()/gridSize)*gridSize;
+    qreal yV = round(pos.y()/gridSize)*gridSize;
+
+    QGraphicsItem::setPos(xV,yV);
+}
+
+void WordContainer::sendToSentenceArea(QPointF point)
+{
     setPos(point);
     setIsMoved(true);
 }
 
-double WordContainer::getWidthOfRect(){
+int WordContainer::getWidthOfRect()
+{
     return widthOfRect;
 }
