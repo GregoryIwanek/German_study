@@ -17,7 +17,7 @@ public:
     void setBorderRect();
     void setWordContainers();
     void setColumn();
-    void setRow(int y);
+    void setRow(int y, Word *myWord);
     void setSentenceAreas();
     void setInputComponents();
     void setNextWordContainerPosition(WordContainer *wordContainer, bool isWordContainerMoved);

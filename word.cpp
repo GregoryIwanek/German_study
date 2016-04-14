@@ -1,23 +1,39 @@
 #include "word.h"
 #include "apperiance.h"
+#include <QSqlQuery>
 #include <QDebug>
 
 extern Apperiance *apperiance;
 
-Word::Word(QGraphicsItem *parent): QGraphicsTextItem(parent)
+Word::Word()
 {
 
 }
 
-void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font){
+Word::Word(const Word &word)
+{
+
+}
+
+void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, int wordIndex)
+{
     setParentItem(parent);
-    setText(text);
+    setRoleInSentence(myQuery);
+    pickWordFromSQL(myQuery, wordIndex);
+    setWordFont(font);
+    setVariables();
+}
+
+void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, QString subject)
+{
+    setParentItem(parent);
+    setRoleInSentence(myQuery);
+    pickWordFromSQL(myQuery);
     setWordFont(font);
     setVariables();
 }
 
 void Word::setText(QString text){
-    roleInSentence = NULL;
     word = text;
     setPlainText(text);
 }
@@ -31,30 +47,53 @@ void Word::setVariables(){
     setHeightOfText();
 }
 
-void Word::setWidthOfText(){
-    widthOfText = this->boundingRect().width();
+void Word::setWidthOfText()
+{
+    if (this->boundingRect().width()){
+        widthOfText = this->boundingRect().width();
+    }
+    else widthOfText = 100;
 }
 
-void Word::setHeightOfText(){
-    heightOfText = this->boundingRect().height();
+void Word::setHeightOfText()
+{
+    if (this->boundingRect().height()){
+        heightOfText = this->boundingRect().height();
+    }
+    else heightOfText = 40;
 }
 
-void Word::pickWordFromSQL()
+void Word::setRoleInSentence(QString role)
+{
+    roleInSentence = role;
+}
+
+void Word::pickWordFromSQL(QString myQuery, int index)
+{
+    query.exec(myQuery);
+    while (query.seek(index)) {
+        setText(query.value(0).toString());
+        qDebug()<<query.value(0).toString();
+        break;
+    }
+}
+
+void Word::saveWordToSQL(QString role)
 {
 
 }
 
-void Word::saveWordToSQL()
+int Word::getWidthOfText()
 {
-
-}
-
-double Word::getWidthOfText(){
     return widthOfText;
 }
 
-double Word::getHeightOfText(){
+int Word::getHeightOfText()
+{
     return heightOfText;
 }
 
-
+QString Word::getText()
+{
+    return word;
+}

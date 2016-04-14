@@ -7,15 +7,25 @@
 
 extern Apperiance *apperiance;
 
-WordContainer::WordContainer()
+WordContainer::WordContainer(Word *myWord)
 {
     setMyFlags();
-    setText();
+    setText(myWord);
     setSizeOfRect();
     setColor(apperiance->brushGreen);
     setTextPosition();
     //setStartPosition(point); called from mainWindow.cpp
 }
+
+//WordContainer::WordContainer(Word &word)
+//{
+//    setWord(word);
+//    setMyFlags();
+//    setText();
+//    setSizeOfRect();
+//    setColor(apperiance->brushGreen);
+//    setTextPosition();
+//}
 
 void WordContainer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -35,24 +45,25 @@ void WordContainer::setColor(QBrush brush)
     setOpacity(0.85);
 }
 
-void WordContainer::setText()
+void WordContainer::setText(Word *myWord)
 {
-    text.defineInstance(this, QString("ofiwjqiodqwj"), apperiance->fontComicSans);
+    text = myWord;
+    //word = *myWord;
 }
 
 void WordContainer::setTextPosition()
 {
     int x = this->boundingRect().width()/2 - widthOfText/2;
     int y = this->boundingRect().height()/2 - heightOfText/2;
-    text.setPos(x,y);
+    text->setParentItem(this);
 }
 
 void WordContainer::setSizeOfRect()
 {
     int gridSize = 20;
-    widthOfText = text.getWidthOfText();
-    heightOfText = text.getHeightOfText();
-    widthOfRect = round(widthOfText/gridSize)*gridSize;
+    widthOfText = text->getWidthOfText();
+    heightOfText = text->getHeightOfText();
+    widthOfRect = round(((widthOfText/gridSize)+1))*gridSize;
     heightOfRect = round(heightOfText/gridSize)*gridSize;
     setRect(0,0,widthOfRect,40);
 }

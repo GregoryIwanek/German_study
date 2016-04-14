@@ -12,14 +12,14 @@ extern Apperiance *apperiance;
 class WordContainer:public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
-    WordContainer();
+    WordContainer(Word *myWord);
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
     void setMyFlags();
     void setSize(int width, int height);
     void setColor(QBrush brush);
-    void setText();
+    void setText(Word *myWord);
     void setTextPosition();
     void setSizeOfRect();
     void setStartPosition(QPointF point);
@@ -37,7 +37,7 @@ public slots:
 signals:
     void clicked(WordContainer *wordContainer);
 private:
-    Word text;
+    Word *text,word;
     int widthOfRect;
     int heightOfRect;
     int widthOfText, heightOfText;

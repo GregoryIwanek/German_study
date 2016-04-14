@@ -12,7 +12,8 @@
 #include "customscene.h"
 #include "QTime"
 #include <stdlib.h>
-extern Apperiance *aperiance;
+#include "sentence.h"
+extern Apperiance *apperiance;
 
 MainWindow::MainWindow(){
     setMainWindow();
@@ -67,14 +68,15 @@ void MainWindow::setInputComponents(){
 }
 
 void MainWindow::setColumn(){
-    for (int y=0, n=3; y<n; ++y){
-        setRow(y);
+    Sentence *sentence = new Sentence();
+    for (int y=0, n=sentence->sentenceData.getListOfWords().size(); y<n; ++y){
+        setRow(y, sentence->sentenceData.getListOfWords()[y]);
     }
 }
 
-void MainWindow::setRow(int y){
+void MainWindow::setRow(int y, Word *myWord){
     for (int x=0, n=5; x<n; ++x){
-        WordContainer *wordContainer = new WordContainer();
+        WordContainer *wordContainer = new WordContainer(myWord);
         wordContainer->setPos(QPointF(60+x*(wordContainer->boundingRect().width()+20), 240 + y*(wordContainer->boundingRect().height()+20)));
         wordContainer->setStartPosition(wordContainer->pos());
         //checkWordContainerCollision(wordContainer->getStartPosition());
