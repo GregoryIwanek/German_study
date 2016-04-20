@@ -13,7 +13,7 @@ public:
 private:
     int gridSize;
 protected:
-    void drawBackground(QPainter *painter, const QRectF &rect);
+    void drawBackgroundGrid(QPainter *painter, const QRectF &rect);
 };
 
 #endif // CUSTOMSCENE

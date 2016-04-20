@@ -17,7 +17,7 @@ QPointF CustomScene::getGridPoint(QPointF point)
     return QPointF(xV,yV);
 }
 
-void CustomScene::drawBackground(QPainter *painter, const QRectF &rect)
+void CustomScene::drawBackgroundGrid(QPainter *painter, const QRectF &rect)
 {
     QPen pen;
     pen.setWidth(2);

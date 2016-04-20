@@ -9,17 +9,65 @@ Apperiance::Apperiance(){
 }
 
 void Apperiance::defineBrush(){
-    brushWhite.setColor(Qt::white);
     brushWhite.setStyle(Qt::SolidPattern);
+    brushWhite.setColor(Qt::white);
 
-    brushRed.setColor(Qt::red);
-    brushRed.setStyle(Qt::SolidPattern);
-
-    brushGreen.setColor(Qt::green);
-    brushGreen.setStyle(Qt::SolidPattern);
-
-    brushBlack.setColor(Qt::black);
     brushBlack.setStyle(Qt::SolidPattern);
+    brushBlack.setColor(Qt::black);
+
+    brushRed.setStyle(Qt::SolidPattern);
+    brushRed.setColor(Qt::red);
+
+    brushDarkRed.setStyle(Qt::SolidPattern);
+    brushDarkRed.setColor(Qt::darkRed);
+
+    brushGreen.setStyle(Qt::SolidPattern);
+    brushGreen.setColor(Qt::green);
+
+    brushDarkGreen.setStyle(Qt::SolidPattern);
+    brushDarkGreen.setColor(Qt::darkGreen);
+
+    brushBlue.setStyle(Qt::SolidPattern);
+    brushBlue.setColor(Qt::blue);
+
+    brushDarkBlue.setStyle(Qt::SolidPattern);
+    brushDarkBlue.setColor(Qt::darkBlue);
+
+    brushCyan.setStyle(Qt::SolidPattern);
+    brushCyan.setColor(Qt::cyan);
+
+    brushDarkCyan.setStyle(Qt::SolidPattern);
+    brushDarkCyan.setColor(Qt::darkCyan);
+
+    brushMagnete.setStyle(Qt::SolidPattern);
+    brushMagnete.setColor(Qt::magenta);
+
+    brushDarkMagneta.setStyle(Qt::SolidPattern);
+    brushDarkMagneta.setColor(Qt::darkMagenta);
+
+    brushYellow.setStyle(Qt::SolidPattern);
+    brushYellow.setColor(Qt::yellow);
+
+    brushDarkYellow.setStyle(Qt::SolidPattern);
+    brushDarkYellow.setColor(Qt::darkYellow);
+
+    brushGray.setStyle(Qt::SolidPattern);
+    brushGray.setColor(Qt::gray);
+
+    brushDarkGray.setStyle(Qt::SolidPattern);
+    brushDarkGray.setColor(Qt::darkGray);
+
+    brushLightGray.setStyle(Qt::SolidPattern);
+    brushLightGray.setColor(Qt::lightGray);
+
+    brushTransparent.setStyle(Qt::SolidPattern);
+    brushTransparent.setColor(Qt::transparent);
+
+    brushNULL.setColor(Qt::transparent);
+    brushNULL.setStyle(Qt::SolidPattern);
+
+    brushMainMenuTexture.setTexture(QPixmap(":/graphics/graphics/mainMenu.jpg"));
+    brushMainMenuTexture.texture().scaled(QSize(1200,600),Qt::IgnoreAspectRatio);
 }
 
 void Apperiance::definePen(){

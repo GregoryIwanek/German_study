@@ -18,7 +18,26 @@ public:
     QBrush brushWhite;
     QBrush brushBlack;
     QBrush brushRed;
+    QBrush brushDarkRed;
     QBrush brushGreen;
+    QBrush brushDarkGreen;
+    QBrush brushBlue;
+    QBrush brushDarkBlue;
+    QBrush brushCyan;
+    QBrush brushDarkCyan;
+    QBrush brushMagnete;
+    QBrush brushDarkMagneta;
+    QBrush brushYellow;
+    QBrush brushDarkYellow;
+    QBrush brushGray;
+    QBrush brushDarkGray;
+    QBrush brushLightGray;
+    QBrush brushTransparent;
+
+    QBrush brushNULL;
+
+    //textures
+    QBrush brushMainMenuTexture;
 
     QPen blackPen;
 

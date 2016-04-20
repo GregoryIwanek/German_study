@@ -14,6 +14,8 @@ public:
     MainWindow();
 
     void setMainWindow();
+    void setMainMenu();
+    void setGuessSentenceSectionMenu();
     void setBorderRect();
     void setWordContainers();
     void setColumn();
@@ -28,8 +30,10 @@ public:
 
 public slots:
     void sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer);
+    void setSession();
+    void setGuessSentenceSection();
 signals:
-
+    void startButtonClicked();
 private:
     bool isWordContainerMoved = false;
     QGraphicsView *view;

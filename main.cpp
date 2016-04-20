@@ -13,7 +13,5 @@ int main(int argc, char *argv[]){
     myDB.open();
     apperiance = new Apperiance();
     MyApplication myApplication;
-//    MainWindow mainWindow;
-//    mainWindow.show();
     return a.exec();
 }
