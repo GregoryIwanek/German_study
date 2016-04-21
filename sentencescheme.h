@@ -9,6 +9,7 @@ public:
     SentenceScheme();
     //void setHowManySubsentenceses();
     void updateScheme(QString update);
+    void setExtraWords();
 
     //types of sentences
     void setTypeOfSentence();
@@ -73,7 +74,6 @@ private:
 
     QString querySQL;
 };
-
 
 #endif // SENTENCESCHEME
 

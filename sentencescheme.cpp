@@ -12,6 +12,26 @@ void SentenceScheme::updateScheme(QString update)
     rolesOfWordsInSentence.append(update);
 }
 
+void SentenceScheme::setExtraWords()
+{
+    int numberOfExtraWords = rand()%5;
+
+    for (size_t i=0, n=numberOfExtraWords; i<n; ++i){
+        int pickWord = rand()%3;
+        switch (pickWord){
+        case 0:
+            setSubjectData();
+            break;
+        case 1:
+            setVerbData();
+            break;
+        case 2:
+            setNounData();
+            break;
+        }
+    }
+}
+
 void SentenceScheme::setIndex(int max)
 {
     indexList.append(rand()%max);
@@ -54,6 +74,7 @@ void SentenceScheme::setDeclarativeSentence()
     setSubjectData();
     setVerbData();
     setNounData();
+    setExtraWords();
 }
 
 void SentenceScheme::setNegativeSentence()

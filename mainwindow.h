@@ -8,6 +8,7 @@
 #include "wordcontainer.h"
 #include "sentencearea.h"
 #include "customscene.h"
+#include "guesssentencesection.h"
 class MainWindow: public QMainWindow {
     Q_OBJECT
 public:
@@ -31,7 +32,7 @@ public:
 public slots:
     void sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer);
     void setSession();
-    void setGuessSentenceSection();
+    void setGuessSentenceSectionVisible();
 signals:
     void startButtonClicked();
 private:
@@ -44,6 +45,7 @@ private:
     QPointF nextWordContainerPosition;
     QString correctSequenceOfWords;
     QTime *systemTime;
+    GuessSentenceSection *guessSentenceSection;
 };
 
 #endif // MAINWINDOW

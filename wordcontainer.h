@@ -6,6 +6,7 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QObject>
+#include <QTimer>
 
 extern Apperiance *apperiance;
 
@@ -15,6 +16,7 @@ public:
     WordContainer(Word *myWord);
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    void setTimersAndConnections();
 
     void setMyFlags();
     void setSize(int width, int height);
@@ -25,6 +27,7 @@ public:
     void setStartPosition(QPointF point);
     void setIsMoved(bool isChecked);
     void setPos(const QPointF & pos);
+    void setNextContainerPositionInSentenceArea(QPointF *point);
 
     int getWidthOfRect();
     int getHeightOfRect();
@@ -32,16 +35,22 @@ public:
     bool getIsMoved();
 public slots:
     void sendToSentenceArea(QPointF point);
+    void move();
+    void checkIfStopMovement();
+    void setDistanceAndDirectionToMoveToArea();
+    void setDistanceAndDirectionToMoveFromArea();
     void sendToStartArea(QPointF point);
-
 signals:
     void clicked(WordContainer *wordContainer);
+    void stopped(WordContainer *wordContainer, bool isWordContainerMoved);
 private:
     Word *text,word;
+    QTimer *timer;
     int widthOfRect;
     int heightOfRect;
     int widthOfText, heightOfText;
-    QPointF startPosition;
+    int angleToMove;
+    QPointF startPosition, *nextContainerPositionInSentenceArea;
     bool isMoved = false;
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);

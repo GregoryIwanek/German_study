@@ -4,32 +4,43 @@
 #include <QDebug>
 #include <QBrush>
 #include <QApplication>
-
+#include <qmath.h>
 extern Apperiance *apperiance;
 
 WordContainer::WordContainer(Word *myWord)
 {
-    setMyFlags();
+    //setMyFlags();
     setText(myWord);
     setSizeOfRect();
-    setColor(apperiance->brushGreen);
+    setColor(apperiance->brushDarkGray);
     setTextPosition();
+
+    setTimersAndConnections();
+
     //setStartPosition(point); called from mainWindow.cpp
 }
 
-//WordContainer::WordContainer(Word &word)
-//{
-//    setWord(word);
-//    setMyFlags();
-//    setText();
-//    setSizeOfRect();
-//    setColor(apperiance->brushGreen);
-//    setTextPosition();
-//}
-
 void WordContainer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (isMoved == false){
+         setDistanceAndDirectionToMoveToArea();
+    }
+    else setDistanceAndDirectionToMoveFromArea();
+
     emit clicked(this);
+
+    if (timer->isActive() == false){
+        timer->start(10);
+    }
+    else {
+        timer->stop();
+    }
+}
+
+void WordContainer::setTimersAndConnections()
+{
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 }
 
 void WordContainer::setMyFlags()
@@ -48,7 +59,6 @@ void WordContainer::setColor(QBrush brush)
 void WordContainer::setText(Word *myWord)
 {
     text = myWord;
-    //word = *myWord;
 }
 
 void WordContainer::setTextPosition()
@@ -127,10 +137,63 @@ void WordContainer::setPos(const QPointF &pos)
     QGraphicsItem::setPos(xV,yV);
 }
 
+void WordContainer::setNextContainerPositionInSentenceArea(QPointF *point)
+{
+    nextContainerPositionInSentenceArea = point;
+}
+
 void WordContainer::sendToSentenceArea(QPointF point)
 {
-    setPos(point);
+    int stepSize = 10;
+    double alpha = rotation(); //converting to degrees, angle has to be a double
+    double dy = stepSize * qSin(qDegreesToRadians(alpha));
+    double dx = stepSize * qCos(qDegreesToRadians(alpha));
+    setPos(QPointF(this->x()+dx,this->y()+dy));
     setIsMoved(true);
+}
+
+void WordContainer::move()
+{
+    int stepSize = 10;
+    double alpha = angleToMove;//rotation(); //converting to degrees, angle has to be a double
+    double dy = stepSize * qSin(qDegreesToRadians(alpha));
+    double dx = stepSize * qCos(qDegreesToRadians(alpha));
+    QGraphicsItem::setPos(this->x()+dx,this->y()+dy);
+//    setIsMoved(true);
+    checkIfStopMovement();
+}
+
+void WordContainer::checkIfStopMovement()
+{
+    if (this->isMoved == true && this->y() <= nextContainerPositionInSentenceArea->y()){
+        timer->stop();
+        qDebug()<<isMoved;
+        this->setPos(QPointF(nextContainerPositionInSentenceArea->x(), nextContainerPositionInSentenceArea->y()));
+        emit stopped(this,true);
+    }
+    else if (this->isMoved == false && this->y() >= startPosition.y()){
+        timer->stop();
+        qDebug()<<isMoved;
+        qDebug()<<2;
+        this->setPos(QPointF(startPosition.x(), startPosition.y()));
+        emit stopped(this,false);
+    }
+}
+
+void WordContainer::setDistanceAndDirectionToMoveToArea()
+{
+    QLineF line;
+    line.setLine(this->x(),this->y(),nextContainerPositionInSentenceArea->x(), nextContainerPositionInSentenceArea->y());
+    angleToMove = -1* line.angle();
+    qDebug()<<line;
+}
+
+void WordContainer::setDistanceAndDirectionToMoveFromArea()
+{
+    QLineF line;
+    line.setLine(this->x(),this->y(),startPosition.x(), startPosition.y());
+    angleToMove = -1* line.angle();
+    qDebug()<<line;
 }
 
 int WordContainer::getWidthOfRect()

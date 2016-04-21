@@ -35,7 +35,7 @@ void MainWindow::setMainMenu()
     MyButton *buttonStart = new MyButton();
     buttonStart->setGeometryOfButton(100,75,200,100);
     buttonStart->defineTextOfButton(QString("START"), apperiance->brushDarkGray, apperiance->fontComicSans);
-    connect(buttonStart,SIGNAL(clicked()),this,SLOT(setGuessSentenceSection()));
+    connect(buttonStart,SIGNAL(clicked()),this,SLOT(setGuessSentenceSectionVisible()));
     scene->addItem(buttonStart);
 
     MyButton *buttonOptions = new MyButton();
@@ -55,15 +55,19 @@ void MainWindow::setGuessSentenceSectionMenu()
 
 }
 
-void MainWindow::setGuessSentenceSection()
+void MainWindow::setGuessSentenceSectionVisible()
 {
     scene->clear();
-    setBorderRect();
+    guessSentenceSection = new GuessSentenceSection();
+    guessSentenceSection->setSceneFromMainWindow(scene);
+    guessSentenceSection->setGuessSentenceSectionVisible();
+    //scene->addItem(guessSentenceSection);
+    ////setBorderRect();
     //setWordContainers();
-    setSentenceAreas();
-    setInputComponents();
+    ////setSentenceAreas();
+    ////setInputComponents();
     //setVariables();
-    setSession();
+    ////setSession();
 }
 
 void MainWindow::setSession()
@@ -159,7 +163,7 @@ void MainWindow::checkWordContainerCollision(QPointF startPointOfChecked)
 
 QPointF MainWindow::getClosestGridPoint(QPointF point)
 {
-    return scene->getGridPoint(point);
+    return this->scene->getGridPoint(point);
 }
 
 void MainWindow::sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer){
