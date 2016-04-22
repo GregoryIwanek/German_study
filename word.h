@@ -25,12 +25,15 @@ public:
     void saveWordToSQL(QString role);
     int getWidthOfText();
     int getHeightOfText();
+    void setIfPickedToRandomListOfWords(bool isPicked);
+    bool getIfPickedToRandomListOfWords();
     QString getText();
 
 private:
     QString word;
     QString roleInSentence;
     QSqlQuery query;
+    bool pickedToRandomListOfWords = false;
     int widthOfText = 100;
     int heightOfText = 40;
 };

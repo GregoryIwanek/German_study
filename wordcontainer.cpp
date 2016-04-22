@@ -154,7 +154,7 @@ void WordContainer::sendToSentenceArea(QPointF point)
 
 void WordContainer::move()
 {
-    int stepSize = 10;
+    int stepSize = 15;
     double alpha = angleToMove;//rotation(); //converting to degrees, angle has to be a double
     double dy = stepSize * qSin(qDegreesToRadians(alpha));
     double dx = stepSize * qCos(qDegreesToRadians(alpha));

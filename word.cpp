@@ -93,6 +93,16 @@ int Word::getHeightOfText()
     return heightOfText;
 }
 
+void Word::setIfPickedToRandomListOfWords(bool isPicked)
+{
+    pickedToRandomListOfWords = isPicked;
+}
+
+bool Word::getIfPickedToRandomListOfWords()
+{
+    return pickedToRandomListOfWords;
+}
+
 QString Word::getText()
 {
     return word;

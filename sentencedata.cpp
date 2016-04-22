@@ -9,6 +9,7 @@ extern Apperiance *apperiance;
 SentenceData::SentenceData()
 {
     setSchemeToWords();
+    setRandomOrderList();
 }
 
 void SentenceData::setSentenceScheme()
@@ -27,7 +28,24 @@ void SentenceData::setSchemeToWords()
     }
 }
 
+void SentenceData::setRandomOrderList()
+{
+    do{
+        indexToPick = rand()%listOfWords.size();
+        if(listOfWords[indexToPick]->getIfPickedToRandomListOfWords() == false ){
+            listOfWordsRandomOrder.append(listOfWords[indexToPick]);
+            numberOfPickedWordsToRandomList++;
+            listOfWords[indexToPick]->setIfPickedToRandomListOfWords(true);
+        }
+    }while(numberOfPickedWordsToRandomList != listOfWords.size());
+}
+
 QList<Word*> SentenceData::getListOfWords()
 {
     return listOfWords;
+}
+
+QList<Word *> SentenceData::getListOfWordsInRandomOrder()
+{
+    return listOfWordsRandomOrder;
 }

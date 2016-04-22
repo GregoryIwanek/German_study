@@ -84,18 +84,16 @@ void GuessSentenceSection::setWordContainers()
 
 void GuessSentenceSection::setColumn()
 {
-    //Sentence *sentence = new Sentence();
     for (int y=0, n=3; y<n; ++y){
         setRow(y);
-        //setRow(y, sentence->sentenceData.getListOfWords()[y]);
     }
 }
 
 void GuessSentenceSection::setRow(int y)
 {
     Sentence *sentence = new Sentence();
-    for (int x=0, n=sentence->sentenceData.getListOfWords().size(); x<n; ++x){
-        WordContainer *wordContainer = new WordContainer(sentence->sentenceData.getListOfWords()[x]);
+    for (int x=0, n=sentence->sentenceData.getListOfWordsInRandomOrder().size(); x<n; ++x){
+        WordContainer *wordContainer = new WordContainer(sentence->sentenceData.getListOfWordsInRandomOrder()[x]);
         wordContainer->setPos(QPointF(60+endOfWordContainer, 240 + y*(wordContainer->boundingRect().height()+20)));
         endOfWordContainer += wordContainer->boundingRect().width() +20;
         wordContainer->setStartPosition(wordContainer->pos());

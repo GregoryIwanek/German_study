@@ -11,11 +11,15 @@ public:
 
     void setSentenceScheme();
     void setSchemeToWords();
+    void setRandomOrderList();
     QList<Word *> getListOfWords();
+    QList<Word *> getListOfWordsInRandomOrder();
 
 private:
     QList<Word*> listOfWords;
+    QList<Word*> listOfWordsRandomOrder;
     SentenceScheme sentenceScheme;
+    int indexToPick, numberOfPickedWordsToRandomList=0;
 
     QString subject;//ich, du, er, sie, es, wir, ihr, Sie/sie //subject isn't always printed!
     QString verb;//correct ending depending on subject
