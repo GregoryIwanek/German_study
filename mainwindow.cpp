@@ -167,16 +167,16 @@ QPointF MainWindow::getClosestGridPoint(QPointF point)
 }
 
 void MainWindow::sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer){
-    if (wordContainer->getIsMoved()==false) {
+    if (wordContainer->getIsOnSentenceArea()==false) {
         //send to sentenceArea
         wordContainer->setPos(nextWordContainerPosition);
-        wordContainer->setIsMoved(true);
+        wordContainer->setIsOnSentenceArea(true);
         setNextWordContainerPosition(wordContainer,true);
     }
     else {
         //send back
         wordContainer->setPos(wordContainer->getStartPosition());
-        wordContainer->setIsMoved(false);
+        wordContainer->setIsOnSentenceArea(false);
         setNextWordContainerPosition(wordContainer,false);
     }
 }

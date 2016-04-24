@@ -14,9 +14,7 @@ QPointF CustomScene::getGridPoint(QPointF point)
 {
     qreal xV = round(point.x()/gridSize)*gridSize;
     qreal yV = round(point.y()/gridSize)*gridSize;
-    qDebug()<<3;
     return QPointF(xV,yV);
-    qDebug()<<4;
 }
 
 void CustomScene::drawBackgroundGrid(QPainter *painter, const QRectF &rect)

@@ -14,7 +14,7 @@ void SentenceScheme::updateScheme(QString update)
 
 void SentenceScheme::setExtraWords()
 {
-    int numberOfExtraWords = rand()%5;
+    numberOfExtraWords = rand()%5;
 
     for (size_t i=0, n=numberOfExtraWords; i<n; ++i){
         int pickWord = rand()%3;
@@ -32,10 +32,14 @@ void SentenceScheme::setExtraWords()
     }
 }
 
+int SentenceScheme::getNumberOfExtraWords()
+{
+    return numberOfExtraWords;
+}
+
 void SentenceScheme::setIndex(int max)
 {
     indexList.append(rand()%max);
-    qDebug()<<rand()%max;
 }
 
 QList<int> SentenceScheme::getIndexList()
@@ -254,7 +258,6 @@ void SentenceScheme::setQuerySQL(QString column)
     querySQL = QString("SELECT") + " " + column + " FROM " +rolesOfWordsInSentence[count];
     querySQLList.append(querySQL);
     ++count;
-    qDebug()<<querySQLList[count-1];
 }
 
 QString SentenceScheme::getQuerySQL()

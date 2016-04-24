@@ -12,12 +12,15 @@ public:
     void setSentenceScheme();
     void setSchemeToWords();
     void setRandomOrderList();
+    void setSentence();
     QList<Word *> getListOfWords();
     QList<Word *> getListOfWordsInRandomOrder();
+    QList<QString> getCorrectSentence();
 
 private:
     QList<Word*> listOfWords;
     QList<Word*> listOfWordsRandomOrder;
+    QList<QString> listCorrectSentence;
     SentenceScheme sentenceScheme;
     int indexToPick, numberOfPickedWordsToRandomList=0;
 

@@ -10,6 +10,7 @@ public:
     //void setHowManySubsentenceses();
     void updateScheme(QString update);
     void setExtraWords();
+    int getNumberOfExtraWords();
 
     //types of sentences
     void setTypeOfSentence();
@@ -53,6 +54,7 @@ private:
     QList<QString> querySQLList;
     QList<int> indexList;
     int numberOfSubsentenceses;
+    int numberOfExtraWords;
     int count=0;
     QString typeOfSentence;
 

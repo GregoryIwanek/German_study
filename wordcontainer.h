@@ -25,14 +25,17 @@ public:
     void setTextPosition();
     void setSizeOfRect();
     void setStartPosition(QPointF point);
-    void setIsMoved(bool isChecked);
+    void setIsOnSentenceArea(bool isChecked);
     void setPos(const QPointF & pos);
     void setNextContainerPositionInSentenceArea(QPointF *point);
+    void setIndexOnSentenceArea(int index);
 
     int getWidthOfRect();
     int getHeightOfRect();
     QPointF getStartPosition();
-    bool getIsMoved();
+    QString getTextFromWord();
+    bool getIsOnSentenceArea();
+    int getIndexOnSentenceArea();
 public slots:
     void sendToSentenceArea(QPointF point);
     void move();
@@ -50,8 +53,9 @@ private:
     int heightOfRect;
     int widthOfText, heightOfText;
     int angleToMove;
+    int indexOnSentenceArea = NULL;
     QPointF startPosition, *nextContainerPositionInSentenceArea;
-    bool isMoved = false;
+    bool isOnSentenceArea = false;
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };

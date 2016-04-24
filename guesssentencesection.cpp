@@ -33,6 +33,7 @@ void GuessSentenceSection::setMenu()
     setSentenceAreas();
     setInputComponents();
     setButtons();
+    setPoints();
 }
 
 void GuessSentenceSection::setButtons()
@@ -52,7 +53,7 @@ void GuessSentenceSection::setButtons()
     MyButton *buttonCheck = new MyButton();
     buttonCheck->setGeometryOfButton(425,475,150,75);
     buttonCheck->defineTextOfButton(QString("CHECK"), apperiance->brushYellow, apperiance->fontComicSans);
-    connect(buttonCheck,SIGNAL(clicked()),this,SLOT(back()));
+    connect(buttonCheck,SIGNAL(clicked()),this,SLOT(checkSentence()));
     scene->addItem(buttonCheck);
 
     MyButton *buttonStart = new MyButton();
@@ -60,6 +61,11 @@ void GuessSentenceSection::setButtons()
     buttonStart->defineTextOfButton(QString("START"), apperiance->brushYellow, apperiance->fontComicSans);
     connect(buttonStart,SIGNAL(clicked()),this,SLOT(setSession()));
     scene->addItem(buttonStart);
+}
+
+void GuessSentenceSection::setPoints()
+{
+
 }
 
 void GuessSentenceSection::setBorderRect()
@@ -84,7 +90,7 @@ void GuessSentenceSection::setWordContainers()
 
 void GuessSentenceSection::setColumn()
 {
-    for (int y=0, n=3; y<n; ++y){
+    for (int y=0, n=1; y<n; ++y){
         setRow(y);
     }
 }
@@ -92,6 +98,7 @@ void GuessSentenceSection::setColumn()
 void GuessSentenceSection::setRow(int y)
 {
     Sentence *sentence = new Sentence();
+    sentenceList.append(sentence);
     for (int x=0, n=sentence->sentenceData.getListOfWordsInRandomOrder().size(); x<n; ++x){
         WordContainer *wordContainer = new WordContainer(sentence->sentenceData.getListOfWordsInRandomOrder()[x]);
         wordContainer->setPos(QPointF(60+endOfWordContainer, 240 + y*(wordContainer->boundingRect().height()+20)));
@@ -102,6 +109,7 @@ void GuessSentenceSection::setRow(int y)
         wordContainerList.append(wordContainer);
         connect(wordContainer,SIGNAL(stopped(WordContainer*,bool)),this,SLOT(setNextWordContainerPosition(WordContainer*,bool)));
         connect(wordContainer,SIGNAL(clicked(WordContainer*)),this,SLOT(sendWordContainerToSentenceAreaAndBack(WordContainer*)));
+        //connect(wordContainer,SIGNAL(clicked(WordContainer*)),this,SLOT(updateSentence(WordContainer*)));
     }
     endOfWordContainer = 0;
 }
@@ -120,7 +128,6 @@ void GuessSentenceSection::setSentenceAreas(){
 void GuessSentenceSection::setInputComponents(){
     lineEdit = new QLineEdit();
     lineEdit->setFixedSize(800,50);
-    //scene->addWidget(lineEdit);
 }
 
 void GuessSentenceSection::setNextWordContainerPosition(WordContainer *wordContainer, bool isWordContainerMoved)
@@ -134,6 +141,18 @@ void GuessSentenceSection::setNextWordContainerPosition(WordContainer *wordConta
         nextWordContainerPosition.setX(nextWordContainerPosition.x() - wordContainer->getWidthOfRect()-19);
         nextWordContainerPosition.setY(sentenceAreaList.first()->getWordContainerStartPosition().y());
         nextWordContainerPositionPointer = &nextWordContainerPosition;
+    }
+}
+
+void GuessSentenceSection::updateSentence(WordContainer *wordContainer)
+{
+    if (wordContainer->getIsOnSentenceArea() == true){
+        sentenceInputByUserList.append(wordContainer->getTextFromWord());
+    }
+    else {
+        sentenceInputByUserList.removeAt(wordContainer->getIndexOnSentenceArea());
+        //updateIndexOfSentenceInputByUserList(wordContainer);
+        wordContainer->setIndexOnSentenceArea(NULL);
     }
 }
 
@@ -164,23 +183,54 @@ void GuessSentenceSection::checkWordContainerCollision(QPointF startPointOfCheck
     }
 }
 
+void GuessSentenceSection::setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer)
+{
+    if (wordContainer->getIsOnSentenceArea() == true){
+        --indexOfWordContainerOnSentenceArea;//9
+        updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());//6
+    }
+    else {
+        wordContainer->setIndexOnSentenceArea(indexOfWordContainerOnSentenceArea);
+        ++indexOfWordContainerOnSentenceArea;
+    }
+}
+
+void GuessSentenceSection::updateIndexOfWordContainersOnSentenceArea(int index)
+{
+    for (size_t i=0, n=wordContainerList.size(); i<n; ++i){
+        if (wordContainerList[i]->getIsOnSentenceArea() == true && wordContainerList[i]->getIndexOnSentenceArea() > index){
+            wordContainerList[i]->setIndexOnSentenceArea(wordContainerList[i]->getIndexOnSentenceArea()-1);
+        }
+    }
+}
+
+void GuessSentenceSection::updateIndexOfSentenceInputByUserList(WordContainer *wordContainer)
+{
+    for (size_t i=wordContainer->getIndexOnSentenceArea(), n=sentenceInputByUserList.size(); i<n; i++){
+        if (i<n-1){
+            sentenceInputByUserList[i] = sentenceInputByUserList[i+1];
+        }
+        else sentenceInputByUserList.removeLast();
+    }
+}
+
+
 QPointF GuessSentenceSection::getClosestGridPoint(QPointF point)
 {
     return scene->getGridPoint(point);
 }
 
-void GuessSentenceSection::sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer){
-    if (wordContainer->getIsMoved()==false) {
-        //send to sentenceArea
-        //wordContainer->setPos(nextWordContainerPosition);
-        wordContainer->setIsMoved(true);
-        //setNextWordContainerPosition(wordContainer,true);
+void GuessSentenceSection::sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer)
+{
+    if (wordContainer->getIsOnSentenceArea()==false) {
+        setIndexOfWordContainerOnSentenceArea(wordContainer);
+        wordContainer->setIsOnSentenceArea(true);
+        updateSentence(wordContainer);
     }
     else {
-        //send back
-        //wordContainer->setPos(wordContainer->getStartPosition());
-        wordContainer->setIsMoved(false);
-        //setNextWordContainerPosition(wordContainer,false);
+        setIndexOfWordContainerOnSentenceArea(wordContainer);
+        wordContainer->setIsOnSentenceArea(false);
+        updateSentence(wordContainer);
     }
 }
 
@@ -199,6 +249,18 @@ void GuessSentenceSection::setSession()
     setSignNextWordContainerPositionToContainers();
 }
 
+void GuessSentenceSection::checkSentence()
+{
+    qDebug()<<"sprawdzamy";
+    for (int i=0, n=sentenceInputByUserList.size(); i<n; ++i){
+        qDebug()<<sentenceInputByUserList[i]<<" indeks "<<indexOfWordContainerOnSentenceArea;
+    }
+    if(sentenceList.last()->sentenceData.getCorrectSentence() == sentenceInputByUserList){
+        qDebug()<<"zdanie jest poprawne!";
+    }
+    else qDebug()<<"zdanie nie jest poprawne!";
+}
+
 void GuessSentenceSection::back()
 {
     scene->clear();
@@ -212,10 +274,10 @@ void GuessSentenceSection::clearSentence()
         wordContainerList[i]->disconnect(wordContainerList[i],SIGNAL(clicked(WordContainer*)),
                                          this,SLOT(sendWordContainerToSentenceAreaAndBack(WordContainer*)));
         delete wordContainerList[i];
-        //qDebug()<<wordContainerList.indexOf(wordContainerList.last());
     }
     wordContainerList.clear();
-    //qDebug()<<wordContainerList.size();
+    sentenceInputByUserList.clear();
+    indexOfWordContainerOnSentenceArea = 0;
 }
 
 

@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QLineEdit>
 #include "wordcontainer.h"
+#include "sentence.h"
 #include "sentencearea.h"
 #include "customscene.h"
 class GuessSentenceSection:public QObject, public QGraphicsRectItem{
@@ -18,8 +19,9 @@ public:
 
     void setMenu();
     void setButtons();
-
+    void setPoints();
     void setBorderRect();
+
     void setWordContainers();
     void setColumn();
     void setRow(int y);
@@ -28,28 +30,34 @@ public:
     void setSignNextWordContainerPositionToContainers();
     void setVariables();
     void checkWordContainerCollision(QPointF startPointOfChecked);
+    void setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer);
+    void updateIndexOfWordContainersOnSentenceArea(int index);
+    void updateIndexOfSentenceInputByUserList(WordContainer *wordContainer);
 
     QPointF getClosestGridPoint(QPointF point);
 
 public slots:
     void sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer);
     void setNextWordContainerPosition(WordContainer *wordContainer, bool isWordContainerMoved);
+    void updateSentence(WordContainer *wordContainer);
     void setSession();
+    void checkSentence();
     void back();
     void clearSentence();
     void setGuessSentenceSectionVisible();
 signals:
-    void startButtonClicked();
-    void backButtonClicked();
 private:
     bool isWordContainerMoved = false;
     int endOfWordContainer = 0;
+    int indexOfWordContainerOnSentenceArea = 0;
     CustomScene *scene;
     QList<SentenceArea*> sentenceAreaList;
     QList<WordContainer*> wordContainerList;
+    QList<Sentence*> sentenceList;
+    QList<QString> sentenceInputByUserList;
+    QGraphicsTextItem *sentence;
     QLineEdit *lineEdit;
     QPointF nextWordContainerPosition,*nextWordContainerPositionPointer;
-    QString correctSequenceOfWords;
     QTime *systemTime;
 };
 
