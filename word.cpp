@@ -15,11 +15,13 @@ Word::Word(const Word &word)
 
 }
 
-void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, int wordIndex)
+void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, int wordIndex,
+                          QString translationQuery, int translationIndex)
 {
     setParentItem(parent);
     setRoleInSentence(myQuery);
-    pickWordFromSQL(myQuery, wordIndex);
+    pickWordFromSQL(myQuery, wordIndex, false);
+    pickWordFromSQL(translationQuery, translationIndex, true);
     setWordFont(font);
     setVariables();
 }
@@ -33,9 +35,13 @@ void Word::defineInstance(QGraphicsItem *parent, QString text, QFont font, QStri
     setVariables();
 }
 
-void Word::setText(QString text){
-    word = text;
-    setPlainText(text);
+void Word::setText(QString text, bool isItTranslation){
+
+    if (isItTranslation == false){
+        word = text;
+        setPlainText(text);
+    }
+    else translation = text;
 }
 
 void Word::setWordFont(QFont font){
@@ -68,13 +74,23 @@ void Word::setRoleInSentence(QString role)
     roleInSentence = role;
 }
 
-void Word::pickWordFromSQL(QString myQuery, int index)
+void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)
 {
-    query.exec(myQuery);
-    while (query.seek(index)) {
-        setText(query.value(0).toString());
-        qDebug()<<query.value(0).toString();
-        break;
+    if (isItTranslation == false){
+        query.exec(myQuery);
+        while (query.seek(index)) {
+            setText(query.value(0).toString(), false);
+            qDebug()<<query.value(0).toString();
+            break;
+        }
+    }
+    else {
+        query.exec(myQuery);
+        while (query.seek(index)) {
+            setText(query.value(0).toString(), true);
+            qDebug()<<query.value(0).toString();
+            break;
+        }
     }
 }
 
@@ -103,7 +119,11 @@ bool Word::getIfPickedToRandomListOfWords()
     return pickedToRandomListOfWords;
 }
 
-QString Word::getText()
+QString Word::getText(bool returnTranslation)
 {
-    return word;
+    if (returnTranslation == false){
+
+        return word;
+    }
+    else return translation;
 }

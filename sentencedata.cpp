@@ -10,7 +10,7 @@ SentenceData::SentenceData()
 {
     setSchemeToWords();
     setRandomOrderList();
-    setSentence();
+    setSentenceAndTranslation();
 }
 
 void SentenceData::setSentenceScheme()
@@ -24,7 +24,8 @@ void SentenceData::setSchemeToWords()
 
         Word *word = new Word();
         word->defineInstance(0,sentenceScheme.getRolesOfWordsInSentence()[i],
-                             apperiance->fontComicSans,sentenceScheme.getQuerySQLList()[i],sentenceScheme.getIndexList()[i]);
+                             apperiance->fontComicSans,sentenceScheme.getQuerySQLList(true)[i],sentenceScheme.getIndexList(true)[i],
+                             sentenceScheme.getQuerySQLList(false)[i], sentenceScheme.getIndexList(false)[i]);
         listOfWords.append(word);
     }
 }
@@ -41,10 +42,14 @@ void SentenceData::setRandomOrderList()
     }while(numberOfPickedWordsToRandomList != listOfWords.size());
 }
 
-void SentenceData::setSentence()
+void SentenceData::setSentenceAndTranslation()
 {
     for (size_t i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
-        listCorrectSentence.append(listOfWords[i]->getText());
+        listCorrectSentence.append(listOfWords[i]->getText(false));
+    }
+
+    for (size_t i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
+        correctTranslationString.append(listOfWords[i]->getText(true)+QString(" "));
     }
 }
 
@@ -61,4 +66,9 @@ QList<Word *> SentenceData::getListOfWordsInRandomOrder()
 QList<QString> SentenceData::getCorrectSentence()
 {
     return listCorrectSentence;
+}
+
+QString SentenceData::getCorrectTranslationString()
+{
+    return correctTranslationString;
 }

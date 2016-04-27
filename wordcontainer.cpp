@@ -102,7 +102,7 @@ QPointF WordContainer::getStartPosition()
 
 QString WordContainer::getTextFromWord()
 {
-    return text->getText();
+    return text->getText(false);
 }
 
 bool WordContainer::getIsOnSentenceArea(){

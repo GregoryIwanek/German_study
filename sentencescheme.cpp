@@ -39,12 +39,22 @@ int SentenceScheme::getNumberOfExtraWords()
 
 void SentenceScheme::setIndex(int max)
 {
-    indexList.append(rand()%max);
+    indexList.append(rand()%(max));
+    indexTranslationList.append(indexList.last());
+    qDebug()<<indexList.last();
 }
 
-QList<int> SentenceScheme::getIndexList()
+QList<int> SentenceScheme::getIndexList(bool returnIndexList)
 {
-    return indexList;
+    if (returnIndexList == true){
+        return indexList;
+    }
+    else return indexTranslationList;
+}
+
+void SentenceScheme::increaseCount()
+{
+    ++count;
 }
 
 void SentenceScheme::setTypeOfSentence()
@@ -117,8 +127,15 @@ void SentenceScheme::setSubjectData()
 {
     setSubjectTypeSQLTable(); //direct or non-direct_subject
     setSubjectType();
-    setIndex(1);
-    setQuerySQL(subjectType);
+    setIndex(8);
+    setQuerySQL(subjectType, NULL);
+    setSubjectTranslation();
+    increaseCount();
+}
+
+void SentenceScheme::setSubjectTranslation()
+{
+    setQuerySQL(NULL, QString("translation"));
 }
 
 void SentenceScheme::setSubjectTypeSQLTable()
@@ -139,25 +156,7 @@ void SentenceScheme::setSubjectType()
 {
     if (subjectTable == "DIRECT_SUBJECT"){
 
-        subjectIndexDirect = rand()%8;
-        switch (subjectIndexDirect){
-        case 0: subjectType = "ich";
-            break;
-        case 1: subjectType = "du";
-            break;
-        case 2: subjectType = "er";
-            break;
-        case 3: subjectType = "sie";
-            break;
-        case 4: subjectType = "es";
-            break;
-        case 5: subjectType = "wir";
-            break;
-        case 6: subjectType = "ihr";
-            break;
-        case 7: subjectType = "Sie[3]";
-            break;
-        }
+        subjectType = "word";
     }
     else {
 
@@ -180,16 +179,40 @@ void SentenceScheme::setVerbTypeSQLTable()
 }
 
 void SentenceScheme::setVerbType()
-{
-    verbType = "";
+{    
+    switch (indexList.last()){
+    case 0: verbType = "ich";
+        break;
+    case 1: verbType = "du";
+        break;
+    case 2: verbType = "er";
+        break;
+    case 3: verbType = "sie";
+        break;
+    case 4: verbType = "es";
+        break;
+    case 5: verbType = "wir";
+        break;
+    case 6: verbType = "ihr";
+        break;
+    case 7: verbType = "sie_3";
+        break;
+    }
 }
 
 void SentenceScheme::setVerbData()
 {
     setVerbTypeSQLTable();
     setVerbType();
-    setIndex(7);
-    setQuerySQL(subjectType);
+    setIndex(28);
+    setQuerySQL(verbType, NULL);
+    setVerbTranslation();
+    increaseCount();
+}
+
+void SentenceScheme::setVerbTranslation()
+{
+    setQuerySQL(NULL, QString("translation"));
 }
 
 void SentenceScheme::setNounTypeSQLTable()
@@ -225,17 +248,21 @@ void SentenceScheme::setSQLColumn()
     if (isNounSingular == true){
         if (isNounDefined == true) {
             nounType = "singularG_der_die_das";
+            nounTypeSwitch = 0;
         }
         else{
             nounType = "singularG_ein_eine_einem";
+            nounTypeSwitch = 1;
         }
     }
     else {
         if (isNounDefined == true){
             nounType = "plurarG_der_die_das";
+            nounTypeSwitch = 2;
         }
         else {
             nounType = "plurarG_ein_eine_einem";
+            nounTypeSwitch = 3;
         }
     }
 }
@@ -244,8 +271,30 @@ void SentenceScheme::setNounData()
 {
     setNounTypeSQLTable();
     setNounType();
-    setIndex(10);
-    setQuerySQL(nounType);
+    setIndex(30);
+    setQuerySQL(nounType, NULL);
+    setNounTranslation();
+    increaseCount();
+}
+
+void SentenceScheme::setNounTranslation()
+{
+    QString translationColumn;
+
+    switch (nounTypeSwitch) {
+    case 0: translationColumn = "singularThe";
+        break;
+    case 1: translationColumn = "singularA";
+        break;
+    case 2: translationColumn = "plurarThe";
+        break;
+    case 3: translationColumn = "plurarA";
+        break;
+    default:
+        break;
+    }
+
+    setQuerySQL(NULL, translationColumn);
 }
 
 QList<QString> SentenceScheme::getRolesOfWordsInSentence()
@@ -253,11 +302,18 @@ QList<QString> SentenceScheme::getRolesOfWordsInSentence()
     return rolesOfWordsInSentence;
 }
 
-void SentenceScheme::setQuerySQL(QString column)
+void SentenceScheme::setQuerySQL(QString columnWord, QString columnTranslation)
 {
-    querySQL = QString("SELECT") + " " + column + " FROM " +rolesOfWordsInSentence[count];
-    querySQLList.append(querySQL);
-    ++count;
+    if (columnWord != NULL){
+        querySQL = QString("SELECT") + " " + columnWord + " FROM " +rolesOfWordsInSentence[count];
+        querySQLList.append(querySQL);
+        qDebug()<<querySQL;
+    }
+    else if (columnTranslation != NULL) {
+        querySQLTranslation = QString("SELECT") + " " + columnTranslation + " FROM " +rolesOfWordsInSentence[count];
+        querySQLTranslationList.append(querySQLTranslation);
+        qDebug()<<querySQLTranslation;
+    }
 }
 
 QString SentenceScheme::getQuerySQL()
@@ -265,7 +321,10 @@ QString SentenceScheme::getQuerySQL()
     return querySQL;
 }
 
-QList<QString> SentenceScheme::getQuerySQLList()
+QList<QString> SentenceScheme::getQuerySQLList(bool returnQuerySQLList)
 {
-    return querySQLList;
+    if (returnQuerySQLList == true){
+        return querySQLList;
+    }
+    else return querySQLTranslationList;
 }

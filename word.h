@@ -13,24 +13,26 @@ public:
     Word();
     Word(const Word &word);
 
-    void defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, int wordIndex);
+    void defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, int wordIndex,
+                        QString translationQuery, int translationIndex);
     void defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, QString subject);
-    void setText(QString text);
+    void setText(QString text, bool isItTranslation);
     void setWordFont(QFont font);
     void setVariables();
     void setWidthOfText();
     void setHeightOfText();
     void setRoleInSentence(QString role);
-    void pickWordFromSQL(QString myQuery, int index =0);
+    void pickWordFromSQL(QString myQuery, int index =0, bool isItTranslation =false);
     void saveWordToSQL(QString role);
     int getWidthOfText();
     int getHeightOfText();
     void setIfPickedToRandomListOfWords(bool isPicked);
     bool getIfPickedToRandomListOfWords();
-    QString getText();
+    QString getText(bool returnTranslation);
 
 private:
     QString word;
+    QString translation;
     QString roleInSentence;
     QSqlQuery query;
     bool pickedToRandomListOfWords = false;

@@ -23,11 +23,13 @@ public:
     void setSubjectTypeSQLTable();
     void setSubjectType();
     void setSubjectData();
+    void setSubjectTranslation();
 
     //verb
     void setVerbTypeSQLTable();
     void setVerbType();
     void setVerbData();
+    void setVerbTranslation();
 
     //adjective
 
@@ -40,18 +42,22 @@ public:
     void setIfNounDefined();
     void setSQLColumn();
     void setNounData();
+    void setNounTranslation();
 
     QList<QString> getRolesOfWordsInSentence();
 
-    void setQuerySQL(QString column);
+    void setQuerySQL(QString columnWord, QString columnTranslation);
     QString getQuerySQL();
-    QList<QString> getQuerySQLList();
+    QList<QString> getQuerySQLList(bool returnQuerySQLList);
     void setIndex(int max);
-    QList<int> getIndexList();
+    QList<int> getIndexList(bool returnIndexList);
+    void increaseCount();
 
 private:
     QList<QString> rolesOfWordsInSentence;
     QList<QString> querySQLList;
+    QList<QString> querySQLTranslationList;
+    QList<int> indexTranslationList;
     QList<int> indexList;
     int numberOfSubsentenceses;
     int numberOfExtraWords;
@@ -72,9 +78,10 @@ private:
     QString no;
 
     QString nounType;
+    int nounTypeSwitch;
     bool isNounSingular, isNounDefined;
 
-    QString querySQL;
+    QString querySQL, querySQLTranslation;
 };
 
 #endif // SENTENCESCHEME
