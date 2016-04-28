@@ -46,6 +46,7 @@ public slots:
 signals:
     void clicked(WordContainer *wordContainer);
     void stopped(WordContainer *wordContainer, bool isWordContainerMoved);
+    void removeGapInSpace(WordContainer *wordContainer);
 private:
     Word *text,word;
     QTimer *timer;

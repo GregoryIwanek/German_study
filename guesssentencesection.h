@@ -6,6 +6,7 @@
 #include <QGraphicsView>
 #include <QObject>
 #include <QLineEdit>
+#include <QKeyEvent>
 #include "mybutton.h"
 #include "wordcontainer.h"
 #include "sentence.h"
@@ -17,6 +18,7 @@ public:
     GuessSentenceSection();
 
     void setSceneFromMainWindow(CustomScene *myScene);
+    void setKeyEventFromMainWindow(QKeyEvent *event);
 
     void setMenu();
     void setButtons();
@@ -49,12 +51,17 @@ public slots:
     void updatePoints(bool increased);
     void updateSentenceText();
     void updatePointsText();
+    void removeGapFromSentenceArea(WordContainer *wordContainer);
     void back();
     void clearSentence();
     void setGuessSentenceSectionVisible();
+    void keyPressEvent(QKeyEvent *event);
 signals:
     void pointsChanged();
     void sentenceChanged();
+    void keyStartPressed();
+    void keyCheckPressed();
+    void keyClearPressed();
 private:
     bool isWordContainerMoved = false;
     int pointsOfPlayer=0;
@@ -69,5 +76,6 @@ private:
     QLineEdit *lineEdit;
     QPointF nextWordContainerPosition,*nextWordContainerPositionPointer;
     QTime *systemTime;
+    QKeyEvent *myKeyEvent;
 };
 #endif // GUESSSENTENCESECTION

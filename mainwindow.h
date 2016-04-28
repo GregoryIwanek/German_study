@@ -26,6 +26,7 @@ public:
     void setNextWordContainerPosition(WordContainer *wordContainer, bool isWordContainerMoved);
     void setVariables();
     void checkWordContainerCollision(QPointF startPointOfChecked);
+    void keyPressEvent(QKeyEvent *event);
 
     QPointF getClosestGridPoint(QPointF point);
 
@@ -35,6 +36,7 @@ public slots:
     void setGuessSentenceSectionVisible();
 signals:
     void startButtonClicked();
+    void keyPressed(QKeyEvent*);
 private:
     bool isWordContainerMoved = false;
     QGraphicsView *view;

@@ -61,6 +61,7 @@ void MainWindow::setGuessSentenceSectionVisible()
     guessSentenceSection = new GuessSentenceSection();
     guessSentenceSection->setSceneFromMainWindow(scene);
     guessSentenceSection->setGuessSentenceSectionVisible();
+    connect(this,SIGNAL(keyPressed(QKeyEvent*)),guessSentenceSection,SLOT(keyPressEvent(QKeyEvent*)));
     //scene->addItem(guessSentenceSection);
     ////setBorderRect();
     //setWordContainers();
@@ -159,6 +160,11 @@ void MainWindow::checkWordContainerCollision(QPointF startPointOfChecked)
             wordContainerList[i]->setPos(QPointF(startingPoint.x()+20,startingPoint.y()+20));
         }
     }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    emit keyPressed(event);
 }
 
 QPointF MainWindow::getClosestGridPoint(QPointF point)

@@ -29,6 +29,7 @@ void WordContainer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     else {
         setDistanceAndDirectionToMoveFromArea();
         emit clicked(this);
+        //emit removeGapInSpace(this);
     }
 
     if (timer->isActive() == false){

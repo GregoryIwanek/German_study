@@ -28,6 +28,11 @@ void GuessSentenceSection::setSceneFromMainWindow(CustomScene *myScene)
     this->scene = myScene;
 }
 
+void GuessSentenceSection::setKeyEventFromMainWindow(QKeyEvent *event)
+{
+
+}
+
 void GuessSentenceSection::setMenu()
 {
     setBorderRect();
@@ -108,6 +113,23 @@ void GuessSentenceSection::setConnections()
 {
     connect(this,SIGNAL(pointsChanged()),this,SLOT(updatePointsText()));
     connect(this,SIGNAL(sentenceChanged()),this,SLOT(updateSentenceText()));
+    connect(this,SIGNAL(keyStartPressed()),this,SLOT(setNewSentence()));
+    connect(this,SIGNAL(keyCheckPressed()),this,SLOT(checkIfSentenceCorrect()));
+    connect(this,SIGNAL(keyClearPressed()),this,SLOT(clearSentence()));
+}
+
+void GuessSentenceSection::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Space){
+
+        emit keyStartPressed();
+    }
+    else if (event->key() == Qt::Key_Return && sentenceList.last()->getIfSentenceChecked() == false){
+        if (sentenceList.isEmpty() == false){
+            emit keyCheckPressed();
+        }
+    }
+    else if (event->key() == Qt::Key_Return) emit keyClearPressed();
 }
 
 void GuessSentenceSection::setWordContainers(Sentence *sentence)
@@ -134,6 +156,7 @@ void GuessSentenceSection::setRow(int y, Sentence *sentence)
         wordContainerList.append(wordContainer);
         connect(wordContainer,SIGNAL(stopped(WordContainer*,bool)),this,SLOT(setNextWordContainerPosition(WordContainer*,bool)));
         connect(wordContainer,SIGNAL(clicked(WordContainer*)),this,SLOT(sendWordContainerToSentenceAreaAndBack(WordContainer*)));
+        //connect(wordContainer,SIGNAL(removeGapInSpace(WordContainer*)),this,SLOT(removeGapFromSentenceArea(WordContainer*)));
         //connect(wordContainer,SIGNAL(clicked(WordContainer*)),this,SLOT(updateSentence(WordContainer*)));
     }
     endOfWordContainer = 0;
@@ -210,6 +233,7 @@ void GuessSentenceSection::setIndexOfWordContainerOnSentenceArea(WordContainer *
 {
     if (wordContainer->getIsOnSentenceArea() == true){
         --indexOfWordContainerOnSentenceArea;//9
+        removeGapFromSentenceArea(wordContainer);
         updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());//6
     }
     else {
@@ -221,7 +245,7 @@ void GuessSentenceSection::setIndexOfWordContainerOnSentenceArea(WordContainer *
 void GuessSentenceSection::updateIndexOfWordContainersOnSentenceArea(int index)
 {
     for (size_t i=0, n=wordContainerList.size(); i<n; ++i){
-        if (wordContainerList[i]->getIsOnSentenceArea() == true && wordContainerList[i]->getIndexOnSentenceArea() > index){
+        if (wordContainerList[i]->getIsOnSentenceArea() == false && wordContainerList[i]->getIndexOnSentenceArea() > index){
             wordContainerList[i]->setIndexOnSentenceArea(wordContainerList[i]->getIndexOnSentenceArea()-1);
         }
     }
@@ -312,6 +336,21 @@ void GuessSentenceSection::updatePointsText()
 {
     if (pointsOfPlayer >= 0){
         points->setPlainText(QString("SCORE: ")+QString::number(pointsOfPlayer));
+    }
+}
+
+void GuessSentenceSection::removeGapFromSentenceArea(WordContainer *wordContainer)
+{
+    for (size_t i=0, n=wordContainerList.size(); i<n; ++i){
+        qDebug()<<"proba "<<i;
+        qDebug()<<wordContainerList[i]->pos();
+        if (wordContainerList[i]->getIndexOnSentenceArea() != NULL &&
+                wordContainerList[i]->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea()){
+            wordContainerList[i]->setPos(QPointF(wordContainerList[i]->pos().x()-(wordContainer->getWidthOfRect()+20), wordContainerList[i]->pos().y()));
+
+            qDebug()<<wordContainer->getWidthOfRect();
+            qDebug()<<wordContainerList[i]->pos();
+        }
     }
 }
 
