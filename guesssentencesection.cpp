@@ -37,10 +37,15 @@ void GuessSentenceSection::setMenu()
 {
     setBorderRect();
     setSentenceAreas();
-    setInputComponents();
+    setUIComponents();
+    setConnections();
+}
+
+void GuessSentenceSection::setUIComponents()
+{
     setButtons();
     setUiTexts();
-    setConnections();
+    setInputUIComponents();
 }
 
 void GuessSentenceSection::setButtons()
@@ -72,26 +77,53 @@ void GuessSentenceSection::setButtons()
 
 void GuessSentenceSection::setUiTexts()
 {
-    setPoints();
-    setTranslationText();
-}
-
-void GuessSentenceSection::setPoints()
-{
     points = new QGraphicsTextItem();
     points->setPos(100,300);
     points->setFont(apperiance->fontComicSans);
     points->setPlainText(QString("SCORE: ")+QString::number(pointsOfPlayer));
     scene->addItem(points);
-}
 
-void GuessSentenceSection::setTranslationText()
-{
     translation = new QGraphicsTextItem();
     translation->setPos(100,350);
     translation->setFont(apperiance->fontComicSans);
     translation->setPlainText(QString("WELCOME"));
     scene->addItem(translation);
+
+    result = new QGraphicsTextItem();
+    result->setPos(300,300);
+    result->setFont(apperiance->fontComicSans);
+    result->setPlainText(" ");
+    scene->addItem(result);
+}
+
+void GuessSentenceSection::setInputUIComponents(){
+    lineEdit = new QLineEdit();
+    lineEdit->setFixedSize(800,50);
+    lineEdit->setFont(apperiance->fontComicSans_15);
+    lineEdit->move(100,400);
+    scene->addWidget(lineEdit);
+}
+
+void GuessSentenceSection::checkIfSentenceInputInQLineEditIsCorrect()
+{
+
+    if (QString::compare(lineEdit->text(),sentence,Qt::CaseInsensitive)){
+        updatePoints(true);
+    }
+    else {
+        updatePoints(false);
+    }
+}
+
+void GuessSentenceSection::setConnections()
+{
+    connect(this,SIGNAL(pointsChanged()),this,SLOT(updatePointsText()));
+    connect(this,SIGNAL(sentenceChanged()),this,SLOT(updateSentenceText()));
+    connect(this,SIGNAL(resultChanged(bool)),this,SLOT(updateResultText(bool)));
+    connect(this,SIGNAL(keyStartPressed()),this,SLOT(setNewSentence()));
+    connect(this,SIGNAL(keyCheckPressed()),this,SLOT(checkIfSentenceCorrect()));
+    connect(this,SIGNAL(keyClearPressed()),this,SLOT(clearSentence()));
+    connect(lineEdit,SIGNAL(returnPressed()),this,SLOT(checkIfSentenceInputInQLineEditIsCorrect()));
 }
 
 void GuessSentenceSection::setBorderRect()
@@ -109,27 +141,17 @@ void GuessSentenceSection::setBorderRect()
     this->scene->addPolygon(borderRectangleInner);
 }
 
-void GuessSentenceSection::setConnections()
-{
-    connect(this,SIGNAL(pointsChanged()),this,SLOT(updatePointsText()));
-    connect(this,SIGNAL(sentenceChanged()),this,SLOT(updateSentenceText()));
-    connect(this,SIGNAL(keyStartPressed()),this,SLOT(setNewSentence()));
-    connect(this,SIGNAL(keyCheckPressed()),this,SLOT(checkIfSentenceCorrect()));
-    connect(this,SIGNAL(keyClearPressed()),this,SLOT(clearSentence()));
-}
-
 void GuessSentenceSection::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space){
-
         emit keyStartPressed();
     }
-    else if (event->key() == Qt::Key_Return && sentenceList.last()->getIfSentenceChecked() == false){
-        if (sentenceList.isEmpty() == false){
-            emit keyCheckPressed();
-        }
+    else if (event->key() == Qt::Key_Return && sentenceList.isEmpty() == false && sentenceList.last()->getIfSentenceChecked() == false){
+        emit keyCheckPressed();
     }
-    else if (event->key() == Qt::Key_Return) emit keyClearPressed();
+    else if (event->key() == Qt::Key_Return && sentenceList.isEmpty() == false){
+        emit keyClearPressed();
+    }
 }
 
 void GuessSentenceSection::setWordContainers(Sentence *sentence)
@@ -173,11 +195,6 @@ void GuessSentenceSection::setSentenceAreas(){
     }
 }
 
-void GuessSentenceSection::setInputComponents(){
-    lineEdit = new QLineEdit();
-    lineEdit->setFixedSize(800,50);
-}
-
 void GuessSentenceSection::setNextWordContainerPosition(WordContainer *wordContainer, bool isWordContainerMoved)
 {
     if (isWordContainerMoved == true){
@@ -199,7 +216,7 @@ void GuessSentenceSection::updateSentence(WordContainer *wordContainer)
     }
     else {
         sentenceInputByUserList.removeAt(wordContainer->getIndexOnSentenceArea());
-        //updateIndexOfSentenceInputByUserList(wordContainer);
+        //updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());
         wordContainer->setIndexOnSentenceArea(NULL);
     }
 }
@@ -232,9 +249,9 @@ void GuessSentenceSection::checkWordContainerCollision(QPointF startPointOfCheck
 void GuessSentenceSection::setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer)
 {
     if (wordContainer->getIsOnSentenceArea() == true){
-        --indexOfWordContainerOnSentenceArea;//9
+        --indexOfWordContainerOnSentenceArea;
         removeGapFromSentenceArea(wordContainer);
-        updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());//6
+        updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());
     }
     else {
         wordContainer->setIndexOnSentenceArea(indexOfWordContainerOnSentenceArea);
@@ -245,7 +262,7 @@ void GuessSentenceSection::setIndexOfWordContainerOnSentenceArea(WordContainer *
 void GuessSentenceSection::updateIndexOfWordContainersOnSentenceArea(int index)
 {
     for (size_t i=0, n=wordContainerList.size(); i<n; ++i){
-        if (wordContainerList[i]->getIsOnSentenceArea() == false && wordContainerList[i]->getIndexOnSentenceArea() > index){
+        if (wordContainerList[i]->getIsOnSentenceArea() == true && wordContainerList[i]->getIndexOnSentenceArea() > index){
             wordContainerList[i]->setIndexOnSentenceArea(wordContainerList[i]->getIndexOnSentenceArea()-1);
         }
     }
@@ -320,15 +337,31 @@ void GuessSentenceSection::updatePoints(bool increased)
 {
     if (increased == true){
         ++pointsOfPlayer;
+        updateColorOfCorrectWordContainers();
+        emit resultChanged(true);
     }
     else if(increased == false && pointsOfPlayer > 0){
         --pointsOfPlayer;
+        emit resultChanged(false);
     }
+    else emit resultChanged(false);
+
     emit pointsChanged();
+}
+
+void GuessSentenceSection::updateColorOfCorrectWordContainers()
+{
+    for (size_t i=0, n=wordContainerList.size(); i<n; ++i){
+
+        if (wordContainerList[i]->getIsOnSentenceArea() == true){
+            wordContainerList[i]->setBrush(apperiance->brushGreen);
+        }
+    }
 }
 
 void GuessSentenceSection::updateSentenceText()
 {
+    sentence.append(sentenceList.last()->sentenceData.getCorrectSentenceString());
     translation->setPlainText(sentenceList.last()->sentenceData.getCorrectTranslationString());
 }
 
@@ -339,17 +372,27 @@ void GuessSentenceSection::updatePointsText()
     }
 }
 
+void GuessSentenceSection::updateResultText(bool isCorrect)
+{
+    if (isCorrect == true){
+        result->setPlainText(QString("CORRECT! YOU GET A POINT!"));
+        result->setDefaultTextColor(Qt::green);
+    }
+    else {
+        result->setPlainText(QString("WRONG! YOU LOSE A POINT!"));
+        result->setDefaultTextColor(Qt::blue);
+    }
+}
+
 void GuessSentenceSection::removeGapFromSentenceArea(WordContainer *wordContainer)
 {
     for (size_t i=0, n=wordContainerList.size(); i<n; ++i){
-        qDebug()<<"proba "<<i;
-        qDebug()<<wordContainerList[i]->pos();
+
         if (wordContainerList[i]->getIndexOnSentenceArea() != NULL &&
                 wordContainerList[i]->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea()){
-            wordContainerList[i]->setPos(QPointF(wordContainerList[i]->pos().x()-(wordContainer->getWidthOfRect()+20), wordContainerList[i]->pos().y()));
 
-            qDebug()<<wordContainer->getWidthOfRect();
-            qDebug()<<wordContainerList[i]->pos();
+            wordContainerList[i]->setPos(QPointF(wordContainerList[i]->pos().x()-(wordContainer->getWidthOfRect()+20),
+                                                 wordContainerList[i]->pos().y()));
         }
     }
 }
@@ -370,6 +413,8 @@ void GuessSentenceSection::clearSentence()
     wordContainerList.clear();
     sentenceInputByUserList.clear();
     sentenceList.clear();
+    sentence.clear();
+    result->setPlainText(QString(" "));
     indexOfWordContainerOnSentenceArea = 0;
 }
 

@@ -17,12 +17,13 @@ public:
     QList<Word *> getListOfWordsInRandomOrder();
     QList<QString> getCorrectSentence();
     QString getCorrectTranslationString();
+    QString getCorrectSentenceString();
 
 private:
     QList<Word*> listOfWords;
     QList<Word*> listOfWordsRandomOrder;
     QList<QString> listCorrectSentence;
-    QString correctTranslationString;
+    QString correctTranslationString, correctSentenceString;
     SentenceScheme sentenceScheme;
     int indexToPick, numberOfPickedWordsToRandomList=0;
 };

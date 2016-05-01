@@ -3,6 +3,7 @@
 #include <QBrush>
 #include <QPen>
 #include <QFont>
+#include <QPalette>
 
 class Apperiance{
 
@@ -12,6 +13,7 @@ public:
     void defineBrush();
     void definePen();
     void defineFont();
+    void definePalette();
     QBrush getBrush(QBrush brushToGet);
 
     //public attributes
@@ -42,6 +44,9 @@ public:
     QPen blackPen;
 
     QFont fontComicSans;
+    QFont fontComicSans_15;
+
+    QPalette paletteTransparent;
 private:
 
 };

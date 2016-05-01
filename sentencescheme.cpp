@@ -2,9 +2,12 @@
 #include "QString"
 #include <math.h>
 #include <QDebug>
+
 SentenceScheme::SentenceScheme(){
 
+    setVariables();
     setTypeOfSentence(true);
+    setDefineExtraWords();
 }
 
 void SentenceScheme::updateScheme(QString update)
@@ -12,11 +15,25 @@ void SentenceScheme::updateScheme(QString update)
     rolesOfWordsInSentence.append(update);
 }
 
+void SentenceScheme::setDefineExtraWords()
+{
+    for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
+        setExtraWords();
+    }
+}
+
+void SentenceScheme::setVariables()
+{
+    numberOfSubsentenceses = 1;
+    numberOfExtraWords = 0;
+    count=0;
+}
+
 void SentenceScheme::setExtraWords()
 {
-    numberOfExtraWords = rand()%5;
+    int number = rand()%3;
 
-    for (size_t i=0, n=numberOfExtraWords; i<n; ++i){
+    for (size_t i=0, n=number; i<n; ++i){
         int pickWord = rand()%3;
         switch (pickWord){
         case 0:
@@ -29,6 +46,7 @@ void SentenceScheme::setExtraWords()
             setNounData();
             break;
         }
+        ++numberOfExtraWords;
     }
 }
 
@@ -41,7 +59,6 @@ void SentenceScheme::setIndex(int max)
 {
     indexList.append(rand()%(max));
     indexTranslationList.append(indexList.last());
-    qDebug()<<indexList.last();
 }
 
 QList<int> SentenceScheme::getIndexList(bool returnIndexList)
@@ -60,12 +77,10 @@ void SentenceScheme::increaseCount()
 void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 {
     int type;
-
     if (complexSentenceAllowed == true){
         type = rand()%2;
     }
-    else type = rand()%1;
-
+    else type = 0;
     switch(type){
     case 0:
         typeOfSentence = "declarative";
@@ -94,7 +109,6 @@ void SentenceScheme::setDeclarativeSentence()
     setSubjectData();
     setVerbData();
     setNounData();
-    setExtraWords();
 }
 
 void SentenceScheme::setNegativeSentence()
@@ -130,7 +144,10 @@ void SentenceScheme::setComplexSentence()
 
     for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
         setTypeOfSentence(false);
-        setSeparator();
+
+        if (i < numberOfSubsentenceses-1){
+            setSeparator();
+        }
     }
 }
 
@@ -258,11 +275,11 @@ void SentenceScheme::setSQLColumn()
 {
     if (isNounSingular == true){
         if (isNounDefined == true) {
-            nounType = "singularG_der_die_das";
+            nounType = "singularG_nominativ_der_die_das";
             nounTypeSwitch = 0;
         }
         else{
-            nounType = "singularG_ein_eine_einem";
+            nounType = "singularG_nominativ_ein_eine_einem";
             nounTypeSwitch = 1;
         }
     }
@@ -310,7 +327,27 @@ void SentenceScheme::setNounTranslation()
 
 void SentenceScheme::setSeparator()
 {
+    setSeparatorTypeSQLTable();
+    setSeparatorType();
+    setIndex(5);
+    setQuerySQL(separatorType,NULL);
+    setSeparatorTranslation();
+    increaseCount();
+}
 
+void SentenceScheme::setSeparatorTypeSQLTable()
+{
+    updateScheme(QString("SEPARATORS"));
+}
+
+void SentenceScheme::setSeparatorType()
+{
+    separatorType = "word";
+}
+
+void SentenceScheme::setSeparatorTranslation()
+{
+    setQuerySQL(NULL,QString("translation"));
 }
 
 QList<QString> SentenceScheme::getRolesOfWordsInSentence()

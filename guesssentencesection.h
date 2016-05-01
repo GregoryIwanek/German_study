@@ -23,8 +23,8 @@ public:
     void setMenu();
     void setButtons();
     void setUiTexts();
-    void setPoints();
-    void setTranslationText();
+    void setUIComponents();
+    void setInputUIComponents();
     void setBorderRect();
     void setConnections();
 
@@ -32,7 +32,6 @@ public:
     void setColumn(Sentence *sentence);
     void setRow(int y, Sentence *sentence);
     void setSentenceAreas();
-    void setInputComponents();
     void setSignNextWordContainerPositionToContainers();
     void setVariables();
     void checkWordContainerCollision(QPointF startPointOfChecked);
@@ -49,8 +48,11 @@ public slots:
     void setNewSentence();
     void checkIfSentenceCorrect();
     void updatePoints(bool increased);
+    void checkIfSentenceInputInQLineEditIsCorrect();
+    void updateColorOfCorrectWordContainers();
     void updateSentenceText();
     void updatePointsText();
+    void updateResultText(bool isCorrect);
     void removeGapFromSentenceArea(WordContainer *wordContainer);
     void back();
     void clearSentence();
@@ -59,6 +61,7 @@ public slots:
 signals:
     void pointsChanged();
     void sentenceChanged();
+    void resultChanged(bool isCorrect);
     void keyStartPressed();
     void keyCheckPressed();
     void keyClearPressed();
@@ -72,7 +75,8 @@ private:
     QList<WordContainer*> wordContainerList;
     QList<Sentence*> sentenceList;
     QList<QString> sentenceInputByUserList;
-    QGraphicsTextItem *sentence, *points, *translation;
+    QGraphicsTextItem *points, *translation, *result;
+    QString sentence;
     QLineEdit *lineEdit;
     QPointF nextWordContainerPosition,*nextWordContainerPositionPointer;
     QTime *systemTime;

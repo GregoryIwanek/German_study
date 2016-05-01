@@ -6,6 +6,7 @@ Apperiance::Apperiance(){
     defineBrush();
     definePen();
     defineFont();
+    definePalette();
 }
 
 void Apperiance::defineBrush(){
@@ -78,6 +79,14 @@ void Apperiance::definePen(){
 void Apperiance::defineFont(){
     fontComicSans.setFamily("comic sans");
     fontComicSans.setPointSizeF(20);
+
+    fontComicSans_15.setFamily("comic sans");
+    fontComicSans_15.setPointSizeF(15);
+}
+
+void Apperiance::definePalette()
+{
+    paletteTransparent.setColor(QPalette::Base, Qt::transparent);
 }
 
 QBrush Apperiance::getBrush(QBrush brushToGet){

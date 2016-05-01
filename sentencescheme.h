@@ -10,6 +10,8 @@ public:
     //void setHowManySubsentenceses();
     void updateScheme(QString update);
     void setExtraWords();
+    void setDefineExtraWords();
+    void setVariables();
     int getNumberOfExtraWords();
 
     //types of sentences
@@ -21,6 +23,7 @@ public:
 
     //subject
     void setSubjectTypeSQLTable();
+    void setCase();
     void setSubjectType();
     void setSubjectData();
     void setSubjectTranslation();
@@ -46,6 +49,9 @@ public:
 
     //separator ( but, or, and etc.)
     void setSeparator();
+    void setSeparatorTypeSQLTable();
+    void setSeparatorType();
+    void setSeparatorTranslation();
 
     QList<QString> getRolesOfWordsInSentence();
 
@@ -64,14 +70,12 @@ private:
     QList<int> indexList;
     int numberOfSubsentenceses;
     int numberOfExtraWords;
-    int count=0;
+    int count;
     QString typeOfSentence;
 
     bool isSubjectDirect;
     QString subjectType, subjectTable;
-    int subjectIndexDirect,
-    subjectIndexIfNonDirect,
-    singularPlurarIfNonDirect;
+    int subjectIndexDirect, subjectIndexIfNonDirect, singularPlurarIfNonDirect;
 
     QString verbType;
     int verbRowIndex;
@@ -83,6 +87,8 @@ private:
     QString nounType;
     int nounTypeSwitch;
     bool isNounSingular, isNounDefined;
+
+    QString separatorType;
 
     QString querySQL, querySQLTranslation;
 };

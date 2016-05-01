@@ -46,6 +46,7 @@ void SentenceData::setSentenceAndTranslation()
 {
     for (size_t i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
         listCorrectSentence.append(listOfWords[i]->getText(false));
+        correctSentenceString.append(listOfWords[i]->getText(false)+QString(" "));
     }
 
     for (size_t i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
@@ -71,4 +72,9 @@ QList<QString> SentenceData::getCorrectSentence()
 QString SentenceData::getCorrectTranslationString()
 {
     return correctTranslationString;
+}
+
+QString SentenceData::getCorrectSentenceString()
+{
+    return correctSentenceString;
 }
