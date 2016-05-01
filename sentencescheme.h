@@ -13,7 +13,7 @@ public:
     int getNumberOfExtraWords();
 
     //types of sentences
-    void setTypeOfSentence();
+    void setTypeOfSentence(bool complexSentenceAllowed);
     void setDeclarativeSentence();
     void setNegativeSentence();
     void setInterrogativeSentence();
@@ -43,6 +43,9 @@ public:
     void setSQLColumn();
     void setNounData();
     void setNounTranslation();
+
+    //separator ( but, or, and etc.)
+    void setSeparator();
 
     QList<QString> getRolesOfWordsInSentence();
 

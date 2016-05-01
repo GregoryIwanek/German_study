@@ -4,7 +4,7 @@
 #include <QDebug>
 SentenceScheme::SentenceScheme(){
 
-    setTypeOfSentence();
+    setTypeOfSentence(true);
 }
 
 void SentenceScheme::updateScheme(QString update)
@@ -57,13 +57,23 @@ void SentenceScheme::increaseCount()
     ++count;
 }
 
-void SentenceScheme::setTypeOfSentence()
+void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 {
-    int type = 1;
+    int type;
+
+    if (complexSentenceAllowed == true){
+        type = rand()%2;
+    }
+    else type = rand()%1;
+
     switch(type){
-    case 1:
+    case 0:
         typeOfSentence = "declarative";
         setDeclarativeSentence();
+        break;
+    case 1:
+        typeOfSentence = "complex";
+        setComplexSentence();
         break;
     case 2:
         typeOfSentence = "negative";
@@ -72,10 +82,6 @@ void SentenceScheme::setTypeOfSentence()
     case 3:
         typeOfSentence = "interrogative";
         setInterrogativeSentence();
-        break;
-    case 4:
-        typeOfSentence = "complex";
-        setComplexSentence();
         break;
     default:
         typeOfSentence = "rest";
@@ -120,7 +126,12 @@ void SentenceScheme::setInterrogativeSentence()
 
 void SentenceScheme::setComplexSentence()
 {
+    numberOfSubsentenceses = rand()%2+1;
 
+    for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
+        setTypeOfSentence(false);
+        setSeparator();
+    }
 }
 
 void SentenceScheme::setSubjectData()
@@ -295,6 +306,11 @@ void SentenceScheme::setNounTranslation()
     }
 
     setQuerySQL(NULL, translationColumn);
+}
+
+void SentenceScheme::setSeparator()
+{
+
 }
 
 QList<QString> SentenceScheme::getRolesOfWordsInSentence()
