@@ -1,85 +1,32 @@
 #ifndef GUESSSENTENCESECTION
 #define GUESSSENTENCESECTION
-#include <QGraphicsRectItem>
-#include <QMainWindow>
-#include <QGraphicsScene>
-#include <QGraphicsView>
 #include <QObject>
-#include <QLineEdit>
-#include <QKeyEvent>
-#include "mybutton.h"
-#include "wordcontainer.h"
-#include "sentence.h"
-#include "sentencearea.h"
+#include "guesssentencesectionui.h"
+#include "guesssentencesectionlogic.h"
 #include "customscene.h"
-class GuessSentenceSection:public QObject, public QGraphicsRectItem{
+
+class GuessSentenceSection:public QObject{
     Q_OBJECT
 public:
     GuessSentenceSection();
 
     void setSceneFromMainWindow(CustomScene *myScene);
-    void setKeyEventFromMainWindow(QKeyEvent *event);
+    void setGuessSentenceSectionUI();
+    void setGuessSentenceSectionLogic();
 
-    void setMenu();
-    void setButtons();
-    void setUiTexts();
-    void setUIComponents();
-    void setInputUIComponents();
-    void setBorderRect();
-    void setConnections();
-
-    void setWordContainers(Sentence *sentence);
-    void setColumn(Sentence *sentence);
-    void setRow(int y, Sentence *sentence);
-    void setSentenceAreas();
-    void setSignNextWordContainerPositionToContainers();
-    void setVariables();
-    void checkWordContainerCollision(QPointF startPointOfChecked);
-    void setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer);
-    void updateIndexOfWordContainersOnSentenceArea(int index);
-    void updateIndexOfSentenceInputByUserList(WordContainer *wordContainer);
-
-    QPointF getClosestGridPoint(QPointF point);
-
+    void setConnectionsSwitch(bool isConnected);
+    void setConnectionsForSection();
 public slots:
-    void sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer);
-    void setNextWordContainerPosition(WordContainer *wordContainer, bool isWordContainerMoved);
-    void updateSentence(WordContainer *wordContainer);
-    void setNewSentence();
-    void checkIfSentenceCorrect();
-    void updatePoints(bool increased);
-    void checkIfSentenceInputInQLineEditIsCorrect();
-    void updateColorOfCorrectWordContainers();
-    void updateSentenceText();
-    void updatePointsText();
-    void updateResultText(bool isCorrect);
-    void removeGapFromSentenceArea(WordContainer *wordContainer);
-    void back();
-    void clearSentence();
-    void setGuessSentenceSectionVisible();
     void keyPressEvent(QKeyEvent *event);
+    void switchConnections();
 signals:
-    void pointsChanged();
-    void sentenceChanged();
-    void resultChanged(bool isCorrect);
-    void keyStartPressed();
-    void keyCheckPressed();
-    void keyClearPressed();
+    void keyPressed(QKeyEvent *event);
 private:
-    bool isWordContainerMoved = false;
-    int pointsOfPlayer=0;
-    int endOfWordContainer = 0;
-    int indexOfWordContainerOnSentenceArea = 0;
     CustomScene *scene;
-    QList<SentenceArea*> sentenceAreaList;
-    QList<WordContainer*> wordContainerList;
-    QList<Sentence*> sentenceList;
-    QList<QString> sentenceInputByUserList;
-    QGraphicsTextItem *points, *translation, *result;
-    QString sentence;
-    QLineEdit *lineEdit;
-    QPointF nextWordContainerPosition,*nextWordContainerPositionPointer;
-    QTime *systemTime;
-    QKeyEvent *myKeyEvent;
+    GuessSentenceSectionUI *guessSentenceSectionUI;
+    GuessSentenceSectionLogic * guessSentenceSectionLogic;
+
+    bool connectionsSwitch = true;
 };
+
 #endif // GUESSSENTENCESECTION

@@ -9,6 +9,7 @@
 #include "sentencearea.h"
 #include "customscene.h"
 #include "guesssentencesection.h"
+
 class MainWindow: public QMainWindow {
     Q_OBJECT
 public:
@@ -48,6 +49,7 @@ private:
     QString correctSequenceOfWords;
     QTime *systemTime;
     GuessSentenceSection *guessSentenceSection;
+
 };
 
 #endif // MAINWINDOW

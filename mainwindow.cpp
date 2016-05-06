@@ -8,7 +8,6 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QGraphicsWidget>
-#include "test.h"
 #include "customscene.h"
 #include "QTime"
 #include <stdlib.h>
@@ -41,6 +40,7 @@ void MainWindow::setMainMenu()
     MyButton *buttonOptions = new MyButton();
     buttonOptions->setGeometryOfButton(100,250,200,100);
     buttonOptions->defineTextOfButton(QString("OPTIONS"), apperiance->brushRed, apperiance->fontComicSans);
+    connect(buttonOptions,SIGNAL(clicked()),this,SLOT(setGuessSentenceSectionVisible()));
     scene->addItem(buttonOptions);
 
     MyButton *buttonQuit = new MyButton();
@@ -60,15 +60,10 @@ void MainWindow::setGuessSentenceSectionVisible()
     scene->clear();
     guessSentenceSection = new GuessSentenceSection();
     guessSentenceSection->setSceneFromMainWindow(scene);
-    guessSentenceSection->setGuessSentenceSectionVisible();
+    guessSentenceSection->setGuessSentenceSectionUI();
+    guessSentenceSection->setGuessSentenceSectionLogic();
+    guessSentenceSection->setConnectionsForSection();
     connect(this,SIGNAL(keyPressed(QKeyEvent*)),guessSentenceSection,SLOT(keyPressEvent(QKeyEvent*)));
-    //scene->addItem(guessSentenceSection);
-    ////setBorderRect();
-    //setWordContainers();
-    ////setSentenceAreas();
-    ////setInputComponents();
-    //setVariables();
-    ////setSession();
 }
 
 void MainWindow::setSession()
