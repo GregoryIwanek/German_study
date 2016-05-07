@@ -9,8 +9,8 @@ public:
     SentenceScheme();
     //void setHowManySubsentenceses();
     void updateScheme(QString update);
-    void setExtraWords();
     void setDefineExtraWords();
+    void setExtraWords();
     void setVariables();
     int getNumberOfExtraWords();
 
@@ -22,10 +22,9 @@ public:
     void setComplexSentence();
 
     //subject
-    void setSubjectTypeSQLTable();
-    void setCase();
-    void setSubjectType();
     void setSubjectData();
+    void setSubjectTypeSQLTable();
+    void setSubjectType();
     void setSubjectTranslation();
 
     //verb
@@ -39,12 +38,17 @@ public:
     //no
 
     //noun
+    void setNounData(bool isNounSentenceSubject = false);
     void setNounTypeSQLTable();
     void setNounType();
+    void setIfNounIsSubject(bool isNounSentenceSubject = false);
     void setIfNounSingular();
     void setIfNounDefined();
+    void setNounCase();
+    void setNounArticle();
+    void setArticleIfDefined();
+    void setArticleIfSingular();
     void setSQLColumn();
-    void setNounData();
     void setNounTranslation();
 
     //separator ( but, or, and etc.)
@@ -84,9 +88,9 @@ private:
 
     QString no;
 
-    QString nounType;
+    QString nounType, nounCase, nounArticleColumn;
     int nounTypeSwitch;
-    bool isNounSingular, isNounDefined;
+    bool isNounSingular, isNounDefined, isNounASubject;
 
     QString separatorType;
 

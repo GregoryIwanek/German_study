@@ -4,7 +4,7 @@
 #include <QDebug>
 
 SentenceScheme::SentenceScheme(){
-
+    
     setVariables();
     setTypeOfSentence(true);
     setDefineExtraWords();
@@ -22,17 +22,10 @@ void SentenceScheme::setDefineExtraWords()
     }
 }
 
-void SentenceScheme::setVariables()
-{
-    numberOfSubsentenceses = 1;
-    numberOfExtraWords = 0;
-    count=0;
-}
-
 void SentenceScheme::setExtraWords()
 {
-    int number = rand()%3;
-
+    int number = rand()%5;
+    
     for (size_t i=0, n=number; i<n; ++i){
         int pickWord = rand()%3;
         switch (pickWord){
@@ -48,6 +41,13 @@ void SentenceScheme::setExtraWords()
         }
         ++numberOfExtraWords;
     }
+}
+
+void SentenceScheme::setVariables()
+{
+    numberOfSubsentenceses = 1;
+    numberOfExtraWords = 0;
+    count=0;
 }
 
 int SentenceScheme::getNumberOfExtraWords()
@@ -127,24 +127,24 @@ void SentenceScheme::setNegativeSentence()
 void SentenceScheme::setInterrogativeSentence()
 {
     rolesOfWordsInSentence.append(QString("VERB"));
-
+    
     if (isSubjectDirect == true){
         rolesOfWordsInSentence.append(QString("DIRECT_SUBJECT"));
     }
     else {
         rolesOfWordsInSentence.append(QString("NON_DIRECT_SUBJECT"));
     }
-
+    
     rolesOfWordsInSentence.append(QString("NOUN"));
 }
 
 void SentenceScheme::setComplexSentence()
 {
     numberOfSubsentenceses = rand()%2+1;
-
+    
     for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
         setTypeOfSentence(false);
-
+        
         if (i < numberOfSubsentenceses-1){
             setSeparator();
         }
@@ -161,15 +161,10 @@ void SentenceScheme::setSubjectData()
     increaseCount();
 }
 
-void SentenceScheme::setSubjectTranslation()
-{
-    setQuerySQL(NULL, QString("translation"));
-}
-
 void SentenceScheme::setSubjectTypeSQLTable()
 {
     isSubjectDirect = true;
-
+    
     if (isSubjectDirect == true){
         subjectTable = "DIRECT_SUBJECT";
         updateScheme(subjectTable);
@@ -183,11 +178,11 @@ void SentenceScheme::setSubjectTypeSQLTable()
 void SentenceScheme::setSubjectType()
 {
     if (subjectTable == "DIRECT_SUBJECT"){
-
+        
         subjectType = "word";
     }
     else {
-
+        
         singularPlurarIfNonDirect = rand()%3;
         switch (singularPlurarIfNonDirect){
         case 0:
@@ -199,6 +194,11 @@ void SentenceScheme::setSubjectType()
         }
         subjectIndexIfNonDirect = rand()%3;
     }
+}
+
+void SentenceScheme::setSubjectTranslation()
+{
+    setQuerySQL(NULL, QString("translation"));
 }
 
 void SentenceScheme::setVerbTypeSQLTable()
@@ -243,6 +243,25 @@ void SentenceScheme::setVerbTranslation()
     setQuerySQL(NULL, QString("translation"));
 }
 
+void SentenceScheme::setNounData(bool isNounSentenceSubject)
+{
+    setIfNounIsSubject(isNounSentenceSubject);
+    setNounType();
+    setNounArticle();
+    setNounTranslation();
+    setNounTypeSQLTable();
+    setSQLColumn();
+    setIndex(30);
+    setQuerySQL(nounType, NULL);
+    setNounTranslation();
+    increaseCount();
+}
+
+void SentenceScheme::setIfNounIsSubject(bool isNounSentenceSubject)
+{
+    isNounASubject = isNounSentenceSubject;
+}
+
 void SentenceScheme::setNounTypeSQLTable()
 {
     updateScheme(QString("NOUN"));
@@ -252,7 +271,7 @@ void SentenceScheme::setNounType()
 {
     setIfNounSingular();
     setIfNounDefined();
-    setSQLColumn();
+    setNounCase();
 }
 
 void SentenceScheme::setIfNounSingular()
@@ -269,6 +288,59 @@ void SentenceScheme::setIfNounDefined()
         isNounDefined = true;
     }
     else isNounDefined = false;
+}
+
+void SentenceScheme::setNounCase()
+{
+    if (isNounASubject == true){
+        nounCase = "Noinativ";
+        indexList.append(0);
+        indexTranslationList.append(0);
+    }
+    else {
+        nounCase = "Dativ";
+        indexList.append(2);
+        indexTranslationList.append(2);
+    }
+}
+
+void SentenceScheme::setNounArticle()
+{
+    updateScheme("ARTICLE");
+    setArticleIfSingular();
+    setArticleIfDefined();
+    setQuerySQL(nounArticleColumn,NULL);
+}
+
+void SentenceScheme::setArticleIfSingular()
+{
+    int article;
+    article = rand()%3;
+
+    if (isNounSingular == false){
+        switch (article) {
+        case 0:
+            nounArticleColumn = "masculine_";
+            break;
+        case 1:
+            nounArticleColumn = "feminine_";
+            break;
+        case 2:
+            nounArticleColumn = "neutral_";
+            break;
+        default:
+            break;
+        }
+    }
+    else nounArticleColumn = "plurar_";
+}
+
+void SentenceScheme::setArticleIfDefined()
+{
+    if (isNounDefined == true){
+        nounArticleColumn.append("defined");
+    }
+    else nounArticleColumn.append("undefined");
 }
 
 void SentenceScheme::setSQLColumn()
@@ -295,20 +367,10 @@ void SentenceScheme::setSQLColumn()
     }
 }
 
-void SentenceScheme::setNounData()
-{
-    setNounTypeSQLTable();
-    setNounType();
-    setIndex(30);
-    setQuerySQL(nounType, NULL);
-    setNounTranslation();
-    increaseCount();
-}
-
 void SentenceScheme::setNounTranslation()
 {
     QString translationColumn;
-
+    
     switch (nounTypeSwitch) {
     case 0: translationColumn = "singularThe";
         break;
@@ -321,7 +383,7 @@ void SentenceScheme::setNounTranslation()
     default:
         break;
     }
-
+    
     setQuerySQL(NULL, translationColumn);
 }
 

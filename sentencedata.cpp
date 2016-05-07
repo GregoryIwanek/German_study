@@ -48,6 +48,7 @@ void SentenceData::setSentenceAndTranslation()
         listCorrectSentence.append(listOfWords[i]->getText(false));
         correctSentenceString.append(listOfWords[i]->getText(false)+QString(" "));
     }
+    correctSentenceString.remove(correctSentenceString.length()-1,1);
 
     for (size_t i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
         correctTranslationString.append(listOfWords[i]->getText(true)+QString(" "));

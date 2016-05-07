@@ -2,6 +2,7 @@
 #define SENTENCEAREA
 #include <QObject>
 #include <QGraphicsRectItem>
+#include <QMap>
 
 class SentenceArea:public QObject, public QGraphicsRectItem{
     Q_OBJECT
@@ -14,9 +15,14 @@ public:
     void setBrushes();
     void setSpaceLeft();
     void setWordContainerStartPosition(QPointF position);
+    void getPositionFromSceneToVariable(QPointF position);
+    void setCornersToMap();
 
     int getSpaceLeft();
     QPointF getWordContainerStartPosition();
+    int getWidth();
+    int getHeight();
+    QPointF getSentenceAreaCorners(QString nameOfCorner);
 
 private:
     int lineWidth, lineHeight;
@@ -24,8 +30,9 @@ private:
     int spaceLeft;
     int numberOfWordsIn;
     bool isFull;
-    QPointF wordContainerStartPosition;
+    QPointF wordContainerStartPosition, positionOnScene;
     QGraphicsRectItem lineTop, lineBottom;
+    QMap<QString, QPointF> sentenceAreaCorners;
 };
 
 #endif // SENTENCEAREA

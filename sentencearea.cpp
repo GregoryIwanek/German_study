@@ -1,6 +1,6 @@
 #include "sentencearea.h"
 #include "apperiance.h"
-
+#include <QDebug>
 extern Apperiance *apperiance;
 
 SentenceArea::SentenceArea(){
@@ -13,6 +13,8 @@ SentenceArea::SentenceArea(){
 
 void SentenceArea::setSizeOfArea(){
     setRect(0,0,1080,80);
+    width = boundingRect().width();
+    height = boundingRect().height();
 }
 
 void SentenceArea::setSizeOfLines(){
@@ -28,9 +30,10 @@ void SentenceArea::setLinesPosition(){
 }
 
 void SentenceArea::setBrushes(){
-    setBrush(apperiance->brushGreen);
+    setBrush(apperiance->brushBlack);
     lineTop.setBrush(apperiance->brushBlack);
     lineBottom.setBrush(apperiance->brushBlack);
+    setOpacity(0.5);
 }
 
 void SentenceArea::setSpaceLeft(){
@@ -42,11 +45,39 @@ void SentenceArea::setWordContainerStartPosition(QPointF position){
     wordContainerStartPosition.setX(position.x());
 }
 
+void SentenceArea::getPositionFromSceneToVariable(QPointF position)
+{
+    positionOnScene = position;
+}
+
+void SentenceArea::setCornersToMap()
+{
+    sentenceAreaCorners["leftTop"] = positionOnScene;
+    sentenceAreaCorners["leftBottom"] = QPointF(positionOnScene.x(), positionOnScene.y() + height);
+    sentenceAreaCorners["rightBottom"] = QPointF(positionOnScene.x() + width, positionOnScene.y() + height);
+    sentenceAreaCorners["rightTop"] = QPointF(positionOnScene.x() + width, positionOnScene.y());
+}
+
 int SentenceArea::getSpaceLeft(){
     return spaceLeft;
 }
 
 QPointF SentenceArea::getWordContainerStartPosition(){
     return wordContainerStartPosition;
+}
+
+int SentenceArea::getWidth()
+{
+    return width;
+}
+
+int SentenceArea::getHeight()
+{
+    return height;
+}
+
+QPointF SentenceArea::getSentenceAreaCorners(QString nameOfCorner)
+{
+    return sentenceAreaCorners[nameOfCorner];
 }
 

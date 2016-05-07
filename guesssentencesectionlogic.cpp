@@ -46,6 +46,11 @@ void GuessSentenceSectionLogic::updateWordContainerNextPositionOnSentenceArea(Wo
     }
 }
 
+void GuessSentenceSectionLogic::setNextPosition(WordContainer *wordContainer)
+{
+
+}
+
 void GuessSentenceSectionLogic::sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer)
 {
     if (wordContainer->getIsOnSentenceArea()==false) {
@@ -73,15 +78,22 @@ void GuessSentenceSectionLogic::removeGapFromSentenceArea(WordContainer *wordCon
     }
 }
 
-void GuessSentenceSectionLogic::updateColorOfCorrectWordContainers()
+void GuessSentenceSectionLogic::updateColorOfCorrectWordContainers(bool isAnswerCorrect)
 {
     for (size_t i=0, n=wordContainersList.size(); i<n; ++i){
-
-        if (wordContainersList[i]->getIsOnSentenceArea() == true){
-            wordContainersList[i]->setBrush(apperiance->brushGreen);
+        if (isAnswerCorrect == true){
+            updateColorOfWordContainersIfAnswerCorrect(i);
         }
         else wordContainersList[i]->setBrush(apperiance->brushRed);
     }
+}
+
+void GuessSentenceSectionLogic::updateColorOfWordContainersIfAnswerCorrect(int index)
+{
+    if (wordContainersList[index]->getIsOnSentenceArea() == true){
+        wordContainersList[index]->setBrush(apperiance->brushGreen);
+    }
+    else wordContainersList[index]->setBrush(apperiance->brushRed);
 }
 
 void GuessSentenceSectionLogic::keyPressEvent(QKeyEvent *event)
@@ -126,12 +138,12 @@ void GuessSentenceSectionLogic::defineWordContainers(int x, int y, Sentence *sen
     endOfWordContainer += wordContainer->boundingRect().width() +20;
     wordContainersList.append(wordContainer);
     this->scene->addItem(wordContainer);
-    checkIfWordContainerOutOfBoard(wordContainer, y);
+    checkIfWordContainerInCollision(wordContainer, y, true, false);
 }
 
 void GuessSentenceSectionLogic::putWordContainerOnBoard(WordContainer *wordContainer, int y)
 {
-    wordContainer->setPos(QPointF(60+endOfWordContainer, 220 + (y+rowIndex)*(wordContainer->boundingRect().height()+20)));
+    wordContainer->setPos(QPointF(80+endOfWordContainer, 240 + (y+rowIndex)*(wordContainer->boundingRect().height()+20)));
     wordContainer->setStartPosition(wordContainer->pos());
 }
 
@@ -143,19 +155,37 @@ void GuessSentenceSectionLogic::setWordContainerConnections(WordContainer *wordC
     //connect(wordContainer,SIGNAL(clicked(WordContainer*)),this,SLOT(updateSentence(WordContainer*)));
 }
 
-bool GuessSentenceSectionLogic::checkIfWordContainerOutOfBoard(WordContainer *wordContainer, int y)
+bool GuessSentenceSectionLogic::checkIfWordContainerInCollision(WordContainer *wordContainer, int y, bool checkBoard, bool checkSentenceArea)
 {
     QList<QGraphicsItem *> collidingItems = wordContainer->collidingItems();
-    for (int i=0, n=collidingItems.size(); i<n; ++i){
-        if (typeid(*(collidingItems[i])) == typeid(QGraphicsLineItem)){
-            ++rowIndex;
-            endOfWordContainer = 0;
-            putWordContainerOnBoard(wordContainer, y);
-            endOfWordContainer += wordContainer->boundingRect().width() +20;
+
+    for (int i=0, n=collidingItems.size(); i<n; ++i)
+    {
+        if (typeid(*(collidingItems[i])) == typeid(QGraphicsLineItem) && checkBoard == true)
+        {
+            wordContainerOutOfBoard(wordContainer, y);
+            return true;
+        }
+        else if (typeid(*(collidingItems[i])) == typeid(QGraphicsLineItem) && checkSentenceArea == true)
+        {
+            wordContainerOutOfSentenceArea(wordContainer);
             return true;
         }
     }
     return false;
+}
+
+void GuessSentenceSectionLogic::wordContainerOutOfBoard(WordContainer *wordContainer, int y)
+{
+    ++rowIndex;
+    endOfWordContainer = 0;
+    putWordContainerOnBoard(wordContainer, y);
+    endOfWordContainer += wordContainer->boundingRect().width() +20;
+}
+
+void GuessSentenceSectionLogic::wordContainerOutOfSentenceArea(WordContainer *wordContainer)
+{
+
 }
 
 void GuessSentenceSectionLogic::setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer)
@@ -203,12 +233,12 @@ void GuessSentenceSectionLogic::checkIfSentenceIsCorrect()
     if (sentenceInputByUserList.isEmpty() == false){
         if (sentence->sentenceData.getCorrectSentence() == sentenceInputByUserList && sentence->getIfSentenceChecked() == false){
             updatePoints(true);
-            updateColorOfCorrectWordContainers();
+            updateColorOfCorrectWordContainers(true);
             sentence->setSentenceChecked(true);
         }
         else if (sentence->getIfSentenceChecked() == false){
             updatePoints(false);
-            updateColorOfCorrectWordContainers();
+            updateColorOfCorrectWordContainers(false);
             sentence->setSentenceChecked(true);
         }
     }

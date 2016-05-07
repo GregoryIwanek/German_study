@@ -21,11 +21,11 @@ MainWindow::MainWindow(){
 
 void MainWindow::setMainWindow(){
     scene = new CustomScene(this);
-    scene->setSceneRect(0,0,1200,600);
-    setFixedSize(1200,600);
+    scene->setSceneRect(0,0,1200,620);
+    setFixedSize(1200,620);
     view = new QGraphicsView(scene);
     setCentralWidget(view);
-    scene->setBackgroundBrush(apperiance->brushMainMenuTexture.texture().scaled(QSize(1200,600),Qt::IgnoreAspectRatio));
+    scene->setBackgroundBrush(apperiance->brushMainMenuTexture.texture().scaled(QSize(1200,620),Qt::IgnoreAspectRatio));
     setMainMenu();
 }
 

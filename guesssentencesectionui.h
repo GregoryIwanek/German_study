@@ -20,7 +20,9 @@ public:
     void buildUI();
 
     void setBorderRect();
-    void setCollisionRect();
+    void setCollisionRects();
+    void setSentenceAreaCollisionRect();
+    void drawCollisionRect(QVector<QPointF> listOfPoints);
     void setSentenceAreas();
     void setUIComponents();
     void setButtons();
