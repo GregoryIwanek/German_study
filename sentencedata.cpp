@@ -20,10 +20,9 @@ void SentenceData::setSentenceScheme()
 
 void SentenceData::setSchemeToWords()
 {
-    for (auto i=0, n=sentenceScheme.getRolesOfWordsInSentence().size(); i<n; ++i){
-
+    for (auto i=0, n=sentenceScheme.getNumberOfWords(); i<n; ++i){
         Word *word = new Word();
-        word->defineInstance(0,sentenceScheme.getRolesOfWordsInSentence()[i], apperiance->fontComicSans,
+        word->defineInstance(0, apperiance->fontComicSans,
                              sentenceScheme.getQuerySQLList(true)[i],sentenceScheme.getIndexList(true)[i],
                              sentenceScheme.getQuerySQLList(false)[i], sentenceScheme.getIndexList(false)[i]);
         listOfWords.append(word);

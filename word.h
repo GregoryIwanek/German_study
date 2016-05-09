@@ -13,9 +13,9 @@ public:
     Word();
     Word(const Word &word);
 
-    void defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, int wordIndex,
+    void defineInstance(QGraphicsItem *parent, QFont font, QString myQuery, int wordIndex,
                         QString translationQuery, int translationIndex);
-    void defineInstance(QGraphicsItem *parent, QString text, QFont font, QString myQuery, QString subject);
+    void defineInstance(QGraphicsItem *parent, QFont font, QString myQuery);
     void setText(QString text, bool isItTranslation);
     void setWordFont(QFont font);
     void setVariables();

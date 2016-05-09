@@ -4,13 +4,12 @@
 
 AlgorythmNoun::AlgorythmNoun()
 {
-    setInputFromSentenceScheme();
     setData();
 }
 
-void AlgorythmNoun::setInputFromSentenceScheme(int nounMaxIndex)
+void AlgorythmNoun::setInputFromSentenceScheme()
 {
-    nounIndex = nounMaxIndex;
+
 }
 
 void AlgorythmNoun::setData()
@@ -39,7 +38,7 @@ void AlgorythmNoun::setGrammarCase()
     if (isSentenceSubject == true){
         nounCase = "nominativ";
     }
-    else nounCase = "dativ";
+    else nounCase = "akkusativ";
 }
 
 void AlgorythmNoun::setIfIsSingular()
@@ -149,8 +148,7 @@ void AlgorythmNoun::setArticleQuery()
 {
     //create query only when case is not true, becouse for PLURAR UNDEFINED nouns in german have NO ARTICLE, so we don't pick it
     if (nounArticleColumn != "plurar_undefined"){
-        querySQLArticle = "SELECT " + nounArticleColumn +" FROM " + articleTable
-                + " WITH(INDEX(" + QString::number(articleIndex) + "))";
+        querySQLArticle = "SELECT " + nounArticleColumn +" FROM " + articleTable;
     }
 
 }
@@ -200,7 +198,6 @@ void AlgorythmNoun::setNounSQLIndex()
     //picking random word with correct grammar gender ( article and noun gender)
     int random = rand()%indexListOfNouns.size();
     nounIndex = indexListOfNouns[random];
-    qDebug()<<nounIndex;
 }
 
 void AlgorythmNoun::setNounQuery()
@@ -232,6 +229,7 @@ void AlgorythmNoun::setNounTranslationQuery()
     //beacouse in german there is no article ( just word)
     if (isSingular != true && isDefined != true){
         querySQLNounTranslation = "SELECT articleUndefined || ' ' || plurarEnglish FROM " + nounTable;
+        isQueryArticleNounCombined = true;
     }
     else if (isSingular != true && isDefined == true){
         querySQLNounTranslation = "SELECT plurarEnglish FROM " + nounTable;
@@ -241,13 +239,45 @@ void AlgorythmNoun::setNounTranslationQuery()
     }
 }
 
-
-QString AlgorythmNoun::getQueries()
+QString AlgorythmNoun::getQueryArticle()
 {
-    return querySQLArticle, querySQLArticleTranslation, querySQLNoun, querySQLNounTranslation;
+    return getIfPlurarUndefined(querySQLArticle);
 }
 
-int AlgorythmNoun::getQueriesRowsIndex()
+QString AlgorythmNoun::getQueryArticleTranslation()
 {
-    return articleIndex, nounIndex;
+    return getIfPlurarUndefined(querySQLArticleTranslation);
 }
+
+QString AlgorythmNoun::getQueryNoun()
+{
+    return querySQLNoun;
+}
+
+QString AlgorythmNoun::getQueryNounTranslation()
+{
+    return querySQLNounTranslation;
+}
+
+QString AlgorythmNoun::getIfPlurarUndefined(QString toReturn)
+{
+    if (nounArticleColumn != "plurar_undefined"){
+        return toReturn;
+    }
+    else return NULL;
+}
+
+int AlgorythmNoun::getQueryArticleRowIndex()
+{
+    if (nounArticleColumn != "plurar_undefined"){
+        return articleIndex;
+    }
+    else return NULL;
+}
+
+int AlgorythmNoun::getQueryNounRowIndex()
+{
+    return nounIndex;
+}
+
+

@@ -3,7 +3,13 @@
 
 AlgorythmVerb::AlgorythmVerb()
 {
+    setData();
+}
 
+AlgorythmVerb::AlgorythmVerb(int subjectIndex)
+{
+    setIndexBySubjectIndex(subjectIndex);
+    setData();
 }
 
 void AlgorythmVerb::setData()
@@ -28,7 +34,7 @@ void AlgorythmVerb::defineVerb()
 
 void AlgorythmVerb::setVerbSQLTable()
 {
-    verbTable = "VERBS_ANIMALS";
+    verbTable = "VERB_ANIMALS";
 }
 
 void AlgorythmVerb::setVerbSQLColumn()
@@ -89,14 +95,19 @@ void AlgorythmVerb::setVerbTranslationQuery()
     querySQLVerbTranslation = "SELECT " + verbTranslationColumn + " FROM " + verbTable;
 }
 
-QString AlgorythmVerb::getQueries()
+QString AlgorythmVerb::getQuery()
 {
-    return querySQLVerb, querySQLVerbTranslation;
+    return querySQLVerb;
+}
+
+QString AlgorythmVerb::getQueryTranslation()
+{
+    return querySQLVerbTranslation;
 }
 
 int AlgorythmVerb::getVerbIndex()
 {
-    return verbIndex, verbIndex;
+    return verbIndex;
 }
 
 void AlgorythmVerb::setIndexBySubjectIndex(int index)

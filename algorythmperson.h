@@ -17,7 +17,8 @@ public:
     void setPersonTranslationSQLColumn();
     void setPersonTranslationQuery();
 
-    QString getQueries();
+    QString getQuery();
+    QString getQueryTranslation();
     int getPersonIndex();
 signals:
     void subjectType(int subjectIndex); // emits subject's index in SQL table, then correct version of VERB is picked by this subject

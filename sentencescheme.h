@@ -1,107 +1,62 @@
 #ifndef SENTENCESCHEME
 #define SENTENCESCHEME
+#include <QObject>
 #include <QString>
 #include <QList>
 #include "algorythmnoun.h"
 #include "algorythmverb.h"
 #include "algorythmperson.h"
+#include "algorythmseparator.h"
 
-class SentenceScheme {
-
+class SentenceScheme:public QObject {
+    Q_OBJECT
 public:
     SentenceScheme();
-    //void setHowManySubsentenceses();
-    void updateScheme(QString update);
+    void setData();
     void setDefineExtraWords();
     void setExtraWords();
     void setVariables();
     int getNumberOfExtraWords();
+    void setConnections();
 
-    //types of sentences
     void setTypeOfSentence(bool complexSentenceAllowed);
     void setDeclarativeSentence();
     void setNegativeSentence();
     void setInterrogativeSentence();
     void setComplexSentence();
 
-    //subject
-    void setSubjectData();
-    void setSubjectTypeSQLTable();
-    void setSubjectType();
-    void setSubjectTranslation();
-
-    //verb
-    void setVerbTypeSQLTable();
-    void setVerbType();
-    void setVerbData();
-    void setVerbTranslation();
-
-    //adjective
-
-    //no
-
-    //noun
-    void setNounData(bool isNounSentenceSubject = false);
-    void setNounTypeSQLTable();
-    void setNounType();
-    void setIfNounIsSubject(bool isNounSentenceSubject = false);
-    void setIfNounSingular();
-    void setIfNounDefined();
-    void setNounCase();
-    void setNounArticle();
-    void setArticleIfDefined();
-    void setArticleIfSingular();
-    void setSQLColumn();
-    void setNounTranslation();
-
-    //separator ( but, or, and etc.)
-    void setSeparator();
-    void setSeparatorTypeSQLTable();
-    void setSeparatorType();
-    void setSeparatorTranslation();
-
-    QList<QString> getRolesOfWordsInSentence();
+    void setPersonAlgorythm();
+    void setVerbAlgorythm();
+    void setNounAlgorythm();
+    void setSeparatorAlgorythm();
+    void setAlgorythm(QString queryWord = NULL, QString queryTranslation = NULL, int index = 0);
 
     void setQuerySQL(QString columnWord, QString columnTranslation);
-    QString getQuerySQL();
+    void incrementNumberOfExtraWords();
     QList<QString> getQuerySQLList(bool returnQuerySQLList);
     void setIndex(int max);
     QList<int> getIndexList(bool returnIndexList);
     void increaseCount();
-
+    int getNumberOfWords();
+public slots:
+    void setCorrespondingSubjectSlot(int personIndex);
+signals:
 private:
-    QList<QString> rolesOfWordsInSentence;
     QList<QString> querySQLList;
     QList<QString> querySQLTranslationList;
     QList<int> indexTranslationList;
     QList<int> indexList;
     int numberOfSubsentenceses;
-    int numberOfExtraWords;
+    int numberOfExtraWords = 0;
+    bool addingExtraWords = false;
     int count;
     QString typeOfSentence;
-
-    bool isSubjectDirect;
-    QString subjectType, subjectTable;
-    int subjectIndexDirect, subjectIndexIfNonDirect, singularPlurarIfNonDirect;
-
-    QString verbType;
-    int verbRowIndex;
-
-    QString adjective;
-
-    QString no;
-
-    QString nounType, nounCase, nounArticleColumn;
-    int nounTypeSwitch;
-    bool isNounSingular, isNounDefined, isNounASubject;
-
-    QString separatorType;
-
-    QString querySQL, querySQLTranslation;
+    int correspondingSubjectPerson=8;
 
     AlgorythmPerson *algorythmPerson;
     AlgorythmVerb *algorythmVerb;
     AlgorythmNoun *algorythmNoun;
+    AlgorythmSeparator *algorythmSeparator;
 };
 
 #endif // SENTENCESCHEME

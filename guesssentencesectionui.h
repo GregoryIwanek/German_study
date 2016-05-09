@@ -54,7 +54,7 @@ signals:
     void signalSendLineEditData(QString text);
 private:
     CustomScene *scene;
-    MyButton *buttonBack, *buttonClear, *buttonCheck, *buttonStart;
+    MyButton *buttonBack, *buttonClear, *buttonCheck, *buttonStart, *buttonHint;
     QGraphicsTextItem *points, *translation, *result;
     QLineEdit *lineEdit;
     QList<SentenceArea*> sentenceAreaList;

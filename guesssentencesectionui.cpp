@@ -122,6 +122,12 @@ void GuessSentenceSectionUI::setButtons()
     buttonStart->setGeometryOfButton(600,500,125,60);
     buttonStart->defineTextOfButton(QString("START"), apperiance->brushYellow, apperiance->fontComicSans);
     scene->addItem(buttonStart);
+
+    buttonHint = new MyButton();
+    buttonHint->setGeometryOfButton(1000,430,100,40);
+    buttonHint->defineTextOfButton(QString("HINT"), apperiance->brushYellow, apperiance->fontComicSans);
+    buttonHint->setHoverEvents(apperiance->brushGreen, apperiance->brushYellow);
+    scene->addItem(buttonHint);
 }
 
 void GuessSentenceSectionUI::setUiTexts()

@@ -1,5 +1,6 @@
 #include "mybutton.h"
 #include <QGraphicsView>
+#include <QDebug>
 
 MyButton::MyButton()
 {
@@ -10,14 +11,21 @@ void MyButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
     emit clicked();
 }
 
+void MyButton::setHoverEvents(QBrush brushEnter, QBrush brushLeave)
+{
+    this->setAcceptHoverEvents(true);
+    onHoverEventEnter = brushEnter;
+    onHoverEventLeave = brushLeave;
+}
+
 void MyButton::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-
+    this->setBrush(onHoverEventEnter);
 }
 
 void MyButton::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-
+    this->setBrush(onHoverEventLeave);
 }
 
 void MyButton::setGeometryOfButton(int x, int y, int width, int height)

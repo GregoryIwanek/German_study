@@ -3,7 +3,7 @@
 
 AlgorythmPerson::AlgorythmPerson()
 {
-
+    setData();
 }
 
 void AlgorythmPerson::setData()
@@ -33,6 +33,7 @@ void AlgorythmPerson::setPersonSQLColumn()
 void AlgorythmPerson::setPersonSQLRowIndex(int indexMax)
 {
     personIndex = rand()%indexMax;
+    emit subjectType(personIndex);
 }
 
 void AlgorythmPerson::setPersonQuery()
@@ -56,12 +57,17 @@ void AlgorythmPerson::setPersonTranslationQuery()
     querySQLPersonTranslation = "SELECT " + personTranslationColumn + " FROM " + personTable;
 }
 
-QString AlgorythmPerson::getQueries()
+QString AlgorythmPerson::getQuery()
 {
-    return querySQLPerson, querySQLPersonTranslation;
+    return querySQLPerson;
+}
+
+QString AlgorythmPerson::getQueryTranslation()
+{
+    return querySQLPersonTranslation;
 }
 
 int AlgorythmPerson::getPersonIndex()
 {
-    return personIndex, personIndex;
+    return personIndex;
 }

@@ -3,43 +3,22 @@
 #include <math.h>
 #include <QDebug>
 
-SentenceScheme::SentenceScheme(){
+SentenceScheme::SentenceScheme()
+{
+    setData();
+}
+
+void SentenceScheme::setData()
+{
+    setConnections();
     setVariables();
     setTypeOfSentence(true);
     setDefineExtraWords();
 }
 
-void SentenceScheme::updateScheme(QString update)
+void SentenceScheme::setConnections()
 {
-    rolesOfWordsInSentence.append(update);
-}
-
-void SentenceScheme::setDefineExtraWords()
-{
-    for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
-        setExtraWords();
-    }
-}
-
-void SentenceScheme::setExtraWords()
-{
-    int number = rand()%5;
-    
-    for (size_t i=0, n=number; i<n; ++i){
-        int pickWord = rand()%3;
-        switch (pickWord){
-        case 0:
-            setSubjectData();
-            break;
-        case 1:
-            setVerbData();
-            break;
-        case 2:
-            setNounData();
-            break;
-        }
-        ++numberOfExtraWords;
-    }
+    //connect(algorythmPerson,SIGNAL(subjectType(int)),this,SLOT(setCorrespondingSubjectSlot(int)));
 }
 
 void SentenceScheme::setVariables()
@@ -47,30 +26,6 @@ void SentenceScheme::setVariables()
     numberOfSubsentenceses = 1;
     numberOfExtraWords = 0;
     count=0;
-}
-
-int SentenceScheme::getNumberOfExtraWords()
-{
-    return numberOfExtraWords;
-}
-
-void SentenceScheme::setIndex(int max)
-{
-    indexList.append(rand()%(max));
-    indexTranslationList.append(indexList.last());
-}
-
-QList<int> SentenceScheme::getIndexList(bool returnIndexList)
-{
-    if (returnIndexList == true){
-        return indexList;
-    }
-    else return indexTranslationList;
-}
-
-void SentenceScheme::increaseCount()
-{
-    ++count;
 }
 
 void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
@@ -105,334 +60,156 @@ void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 
 void SentenceScheme::setDeclarativeSentence()
 {
-    setSubjectData();
-    setVerbData();
-    setNounData();
+    setPersonAlgorythm();
+    setVerbAlgorythm();
+    setNounAlgorythm();
 }
 
 void SentenceScheme::setNegativeSentence()
 {
-    if (isSubjectDirect == true){
-        rolesOfWordsInSentence.append(QString("DIRECT_SUBJECT"));
-    }
-    else {
-        rolesOfWordsInSentence.append(QString("NON_DIRECT_SUBJECT"));
-    }
-    rolesOfWordsInSentence.append(QString("NO"));
-    rolesOfWordsInSentence.append(QString("VERB"));
-    rolesOfWordsInSentence.append(QString("NOUN"));
+    setPersonAlgorythm();
 }
 
 void SentenceScheme::setInterrogativeSentence()
 {
-    rolesOfWordsInSentence.append(QString("VERB"));
-    
-    if (isSubjectDirect == true){
-        rolesOfWordsInSentence.append(QString("DIRECT_SUBJECT"));
-    }
-    else {
-        rolesOfWordsInSentence.append(QString("NON_DIRECT_SUBJECT"));
-    }
-    
-    rolesOfWordsInSentence.append(QString("NOUN"));
+
 }
 
 void SentenceScheme::setComplexSentence()
 {
     numberOfSubsentenceses = rand()%2+1;
-    
+
     for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
         setTypeOfSentence(false);
-        
+
         if (i < numberOfSubsentenceses-1){
-            setSeparator();
+            setSeparatorAlgorythm();
         }
     }
 }
 
-void SentenceScheme::setSubjectData()
+void SentenceScheme::setPersonAlgorythm()
 {
-    setSubjectTypeSQLTable(); //direct or non-direct_subject
-    setSubjectType();
-    setIndex(8);
-    setQuerySQL(subjectType, NULL);
-    setSubjectTranslation();
+    algorythmPerson = new AlgorythmPerson();
+    setCorrespondingSubjectSlot(algorythmPerson->getPersonIndex());
+    setAlgorythm(algorythmPerson->getQuery(),algorythmPerson->getQueryTranslation(),algorythmPerson->getPersonIndex());
     increaseCount();
 }
 
-void SentenceScheme::setSubjectTypeSQLTable()
+void SentenceScheme::setVerbAlgorythm()
 {
-    isSubjectDirect = true;
-    
-    if (isSubjectDirect == true){
-        subjectTable = "DIRECT_SUBJECT";
-        updateScheme(subjectTable);
-    }
-    else {
-        subjectTable = "NON_DIRECT_SUBJECT";
-        updateScheme(subjectTable);
-    }
-}
-
-void SentenceScheme::setSubjectType()
-{
-    if (subjectTable == "DIRECT_SUBJECT"){
-        
-        subjectType = "word";
-    }
-    else {
-        
-        singularPlurarIfNonDirect = rand()%3;
-        switch (singularPlurarIfNonDirect){
-        case 0:
-            break;
-        case 1: ;
-            break;
-        case 2:
-            break;
-        }
-        subjectIndexIfNonDirect = rand()%3;
-    }
-}
-
-void SentenceScheme::setSubjectTranslation()
-{
-    setQuerySQL(NULL, QString("translation"));
-}
-
-void SentenceScheme::setVerbTypeSQLTable()
-{
-    updateScheme(QString("VERB_ANIMALS"));
-}
-
-void SentenceScheme::setVerbType()
-{    
-    switch (indexList.last()){
-    case 0: verbType = "ich";
-        break;
-    case 1: verbType = "du";
-        break;
-    case 2: verbType = "er";
-        break;
-    case 3: verbType = "sie";
-        break;
-    case 4: verbType = "es";
-        break;
-    case 5: verbType = "wir";
-        break;
-    case 6: verbType = "ihr";
-        break;
-    case 7: verbType = "sie_3";
-        break;
-    }
-}
-
-void SentenceScheme::setVerbData()
-{
-    setVerbTypeSQLTable();
-    setVerbType();
-    setIndex(28);
-    setQuerySQL(verbType, NULL);
-    setVerbTranslation();
+    algorythmVerb = new AlgorythmVerb(correspondingSubjectPerson);
+    setAlgorythm(algorythmVerb->getQuery(),algorythmVerb->getQueryTranslation(),algorythmVerb->getVerbIndex());
     increaseCount();
 }
 
-void SentenceScheme::setVerbTranslation()
+void SentenceScheme::setNounAlgorythm()
 {
-    setQuerySQL(NULL, QString("translation"));
-}
-
-void SentenceScheme::setNounData(bool isNounSentenceSubject)
-{
-    setIfNounIsSubject(isNounSentenceSubject);
-    setNounType();
-    setNounArticle();
-    setNounTranslation();
-    setNounTypeSQLTable();
-    setSQLColumn();
-    setIndex(30);
-    setQuerySQL(nounType, NULL);
-    setNounTranslation();
+    algorythmNoun = new AlgorythmNoun();
+    if (algorythmNoun->getQueryArticle() != NULL){
+        setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),algorythmNoun->getQueryArticleRowIndex());
+        increaseCount();
+    }
+    setAlgorythm(algorythmNoun->getQueryNoun(),algorythmNoun->getQueryNounTranslation(),algorythmNoun->getQueryNounRowIndex());
     increaseCount();
 }
 
-void SentenceScheme::setIfNounIsSubject(bool isNounSentenceSubject)
+void SentenceScheme::setSeparatorAlgorythm()
 {
-    isNounASubject = isNounSentenceSubject;
-}
-
-void SentenceScheme::setNounTypeSQLTable()
-{
-    updateScheme(QString("NOUN"));
-}
-
-void SentenceScheme::setNounType()
-{
-    setIfNounSingular();
-    setIfNounDefined();
-    setNounCase();
-}
-
-void SentenceScheme::setIfNounSingular()
-{
-    if (rand()%2 == 1){
-        isNounSingular = true;
-    }
-    else isNounSingular = false;
-}
-
-void SentenceScheme::setIfNounDefined()
-{
-    if (rand()%2 == 1){
-        isNounDefined = true;
-    }
-    else isNounDefined = false;
-}
-
-void SentenceScheme::setNounCase()
-{
-    if (isNounASubject == true){
-        nounCase = "Noinativ";
-        indexList.append(0);
-        indexTranslationList.append(0);
-    }
-    else {
-        nounCase = "Dativ";
-        indexList.append(2);
-        indexTranslationList.append(2);
-    }
-}
-
-void SentenceScheme::setNounArticle()
-{
-    updateScheme("ARTICLE");
-    setArticleIfSingular();
-    setArticleIfDefined();
-    setQuerySQL(nounArticleColumn,NULL);
-}
-
-void SentenceScheme::setArticleIfSingular()
-{
-    int article;
-    article = rand()%3;
-
-    if (isNounSingular == false){
-        switch (article) {
-        case 0:
-            nounArticleColumn = "masculine_";
-            break;
-        case 1:
-            nounArticleColumn = "feminine_";
-            break;
-        case 2:
-            nounArticleColumn = "neutral_";
-            break;
-        default:
-            break;
-        }
-    }
-    else nounArticleColumn = "plurar_";
-}
-
-void SentenceScheme::setArticleIfDefined()
-{
-    if (isNounDefined == true){
-        nounArticleColumn.append("defined");
-    }
-    else nounArticleColumn.append("undefined");
-}
-
-void SentenceScheme::setSQLColumn()
-{
-    if (isNounSingular == true){
-        if (isNounDefined == true) {
-            nounType = "singularG_nominativ_der_die_das";
-            nounTypeSwitch = 0;
-        }
-        else{
-            nounType = "singularG_nominativ_ein_eine_einem";
-            nounTypeSwitch = 1;
-        }
-    }
-    else {
-        if (isNounDefined == true){
-            nounType = "plurarG_der_die_das";
-            nounTypeSwitch = 2;
-        }
-        else {
-            nounType = "plurarG_ein_eine_einem";
-            nounTypeSwitch = 3;
-        }
-    }
-}
-
-void SentenceScheme::setNounTranslation()
-{
-    QString translationColumn;
-    
-    switch (nounTypeSwitch) {
-    case 0: translationColumn = "singularThe";
-        break;
-    case 1: translationColumn = "singularA";
-        break;
-    case 2: translationColumn = "plurarThe";
-        break;
-    case 3: translationColumn = "plurarA";
-        break;
-    default:
-        break;
-    }
-    
-    setQuerySQL(NULL, translationColumn);
-}
-
-void SentenceScheme::setSeparator()
-{
-    setSeparatorTypeSQLTable();
-    setSeparatorType();
-    setIndex(5);
-    setQuerySQL(separatorType,NULL);
-    setSeparatorTranslation();
+    algorythmSeparator = new AlgorythmSeparator();
+    setAlgorythm(algorythmSeparator->getQuery(),algorythmSeparator->getQueryTranslation(),algorythmSeparator->getSeparatorIndex());
     increaseCount();
 }
 
-void SentenceScheme::setSeparatorTypeSQLTable()
+void SentenceScheme::setAlgorythm(QString queryWord, QString queryTranslation, int index)
 {
-    updateScheme(QString("SEPARATORS"));
-}
-
-void SentenceScheme::setSeparatorType()
-{
-    separatorType = "word";
-}
-
-void SentenceScheme::setSeparatorTranslation()
-{
-    setQuerySQL(NULL,QString("translation"));
-}
-
-QList<QString> SentenceScheme::getRolesOfWordsInSentence()
-{
-    return rolesOfWordsInSentence;
+    setQuerySQL(queryWord, NULL);
+    setQuerySQL(NULL, queryTranslation);
+    setIndex(index);
 }
 
 void SentenceScheme::setQuerySQL(QString columnWord, QString columnTranslation)
 {
     if (columnWord != NULL){
-        querySQL = QString("SELECT") + " " + columnWord + " FROM " +rolesOfWordsInSentence[count];
-        querySQLList.append(querySQL);
-        qDebug()<<querySQL;
+        querySQLList.append(columnWord);
+        incrementNumberOfExtraWords();
     }
     else if (columnTranslation != NULL) {
-        querySQLTranslation = QString("SELECT") + " " + columnTranslation + " FROM " +rolesOfWordsInSentence[count];
-        querySQLTranslationList.append(querySQLTranslation);
-        qDebug()<<querySQLTranslation;
+        querySQLTranslationList.append(columnTranslation);
     }
 }
 
-QString SentenceScheme::getQuerySQL()
+void SentenceScheme::incrementNumberOfExtraWords()
 {
-    return querySQL;
+    if (addingExtraWords == true){
+        ++numberOfExtraWords;
+    }
+}
+
+void SentenceScheme::setIndex(int max)
+{
+    indexList.append(max);
+    indexTranslationList.append(max);
+}
+
+void SentenceScheme::increaseCount()
+{
+    ++count;
+}
+
+void SentenceScheme::setDefineExtraWords()
+{
+    addingExtraWords = true;
+
+    for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
+        setExtraWords();
+    }
+}
+
+void SentenceScheme::setExtraWords()
+{
+    int number = rand()%4;
+    
+    for (size_t i=0, n=number; i<n; ++i){
+        int pickWord = rand()%3;
+        switch (pickWord){
+        case 0:
+            setPersonAlgorythm();
+            break;
+        case 1:
+            setVerbAlgorythm();
+            break;
+        case 2:
+            setNounAlgorythm();
+            break;
+        case 3:
+            setSeparatorAlgorythm();
+            break;
+        }
+    }
+}
+
+int SentenceScheme::getNumberOfExtraWords()
+{
+    return numberOfExtraWords;
+}
+
+QList<int> SentenceScheme::getIndexList(bool returnIndexList)
+{
+    if (returnIndexList == true){
+        return indexList;
+    }
+    else return indexTranslationList;
+}
+
+int SentenceScheme::getNumberOfWords()
+{
+    return count;
+}
+
+void SentenceScheme::setCorrespondingSubjectSlot(int personIndex)
+{
+    correspondingSubjectPerson = personIndex;
 }
 
 QList<QString> SentenceScheme::getQuerySQLList(bool returnQuerySQLList)

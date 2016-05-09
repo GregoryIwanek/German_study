@@ -3,6 +3,7 @@
 
 #include <QGraphicsRectItem>
 #include <QBrush>
+#include <QGraphicsSceneMouseEvent>
 #include "apperiance.h"
 
 extern Apperiance *apperiance;
@@ -13,6 +14,7 @@ public:
     MyButton();
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void setHoverEvents(QBrush brushEnter, QBrush brushLeave);
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     void setGeometryOfButton(int x, int y, int width, int height);
