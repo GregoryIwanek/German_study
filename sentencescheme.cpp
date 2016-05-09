@@ -4,7 +4,6 @@
 #include <QDebug>
 
 SentenceScheme::SentenceScheme(){
-    
     setVariables();
     setTypeOfSentence(true);
     setDefineExtraWords();

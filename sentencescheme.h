@@ -2,6 +2,9 @@
 #define SENTENCESCHEME
 #include <QString>
 #include <QList>
+#include "algorythmnoun.h"
+#include "algorythmverb.h"
+#include "algorythmperson.h"
 
 class SentenceScheme {
 
@@ -95,6 +98,10 @@ private:
     QString separatorType;
 
     QString querySQL, querySQLTranslation;
+
+    AlgorythmPerson *algorythmPerson;
+    AlgorythmVerb *algorythmVerb;
+    AlgorythmNoun *algorythmNoun;
 };
 
 #endif // SENTENCESCHEME

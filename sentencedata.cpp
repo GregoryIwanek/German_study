@@ -20,11 +20,11 @@ void SentenceData::setSentenceScheme()
 
 void SentenceData::setSchemeToWords()
 {
-    for (size_t i=0, n=sentenceScheme.getRolesOfWordsInSentence().size(); i<n; ++i){
+    for (auto i=0, n=sentenceScheme.getRolesOfWordsInSentence().size(); i<n; ++i){
 
         Word *word = new Word();
-        word->defineInstance(0,sentenceScheme.getRolesOfWordsInSentence()[i],
-                             apperiance->fontComicSans,sentenceScheme.getQuerySQLList(true)[i],sentenceScheme.getIndexList(true)[i],
+        word->defineInstance(0,sentenceScheme.getRolesOfWordsInSentence()[i], apperiance->fontComicSans,
+                             sentenceScheme.getQuerySQLList(true)[i],sentenceScheme.getIndexList(true)[i],
                              sentenceScheme.getQuerySQLList(false)[i], sentenceScheme.getIndexList(false)[i]);
         listOfWords.append(word);
     }
@@ -44,13 +44,13 @@ void SentenceData::setRandomOrderList()
 
 void SentenceData::setSentenceAndTranslation()
 {
-    for (size_t i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
+    for (auto i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
         listCorrectSentence.append(listOfWords[i]->getText(false));
         correctSentenceString.append(listOfWords[i]->getText(false)+QString(" "));
     }
     correctSentenceString.remove(correctSentenceString.length()-1,1);
 
-    for (size_t i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
+    for (auto i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
         correctTranslationString.append(listOfWords[i]->getText(true)+QString(" "));
     }
 }

@@ -66,8 +66,8 @@ void WordContainer::setText(Word *myWord)
 
 void WordContainer::setTextPosition()
 {
-    int x = this->boundingRect().width()/2 - widthOfText/2;
-    int y = this->boundingRect().height()/2 - heightOfText/2;
+    //int x = this->boundingRect().width()/2 - widthOfText/2;
+    //int y = this->boundingRect().height()/2 - heightOfText/2;
     text->setParentItem(this);
 }
 

@@ -4,8 +4,7 @@
 #include <stdlib.h>
 GuessSentenceSectionLogic::GuessSentenceSectionLogic()
 {
-    systemTime = new QTime();
-    srand(time_t(systemTime));
+
 }
 
 void GuessSentenceSectionLogic::setSceneFromParent(CustomScene *myScene)
@@ -27,7 +26,7 @@ void GuessSentenceSectionLogic::setWordContainerPositionOnSentenceArea()
 
 void GuessSentenceSectionLogic::setWordContainerNextPositionToContainers()
 {
-    for (size_t i=0, n=wordContainersList.size(); i<n; i++){
+    for (auto i=0, n=wordContainersList.size(); i<n; i++){
         wordContainersList[i]->setNextContainerPositionInSentenceArea(wordContainerPositionOnSentenceAreaPointer);
     }
 }
@@ -67,7 +66,7 @@ void GuessSentenceSectionLogic::sendWordContainerToSentenceAreaAndBack(WordConta
 
 void GuessSentenceSectionLogic::removeGapFromSentenceArea(WordContainer *wordContainer)
 {
-    for (size_t i=0, n=wordContainersList.size(); i<n; ++i){
+    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
 
         if (wordContainersList[i]->getIndexOnSentenceArea() != NULL &&
                 wordContainersList[i]->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea()){
@@ -80,7 +79,7 @@ void GuessSentenceSectionLogic::removeGapFromSentenceArea(WordContainer *wordCon
 
 void GuessSentenceSectionLogic::updateColorOfCorrectWordContainers(bool isAnswerCorrect)
 {
-    for (size_t i=0, n=wordContainersList.size(); i<n; ++i){
+    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
         if (isAnswerCorrect == true){
             updateColorOfWordContainersIfAnswerCorrect(i);
         }
@@ -203,7 +202,7 @@ void GuessSentenceSectionLogic::setIndexOfWordContainerOnSentenceArea(WordContai
 
 void GuessSentenceSectionLogic::updateIndexOfWordContainersOnSentenceArea(int index)
 {
-    for (size_t i=0, n=wordContainersList.size(); i<n; ++i){
+    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
         if (wordContainersList[i]->getIsOnSentenceArea() == true && wordContainersList[i]->getIndexOnSentenceArea() > index){
             wordContainersList[i]->setIndexOnSentenceArea(wordContainersList[i]->getIndexOnSentenceArea()-1);
         }
@@ -260,7 +259,7 @@ void GuessSentenceSectionLogic::checkIfSentenceIsCorrectInLineEdit(QString text)
 
 void GuessSentenceSectionLogic::clearSentence()
 {
-    for (size_t i=0, n=wordContainersList.size(); i<n; ++i){
+    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
         scene->removeItem(wordContainersList[i]);
         delete wordContainersList[i];
     }

@@ -6,6 +6,7 @@ class Sentence{
 
 public:
     Sentence();
+
     SentenceData sentenceData;
 
     void setSentenceChecked(bool isChecked);

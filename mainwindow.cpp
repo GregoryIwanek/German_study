@@ -13,10 +13,12 @@
 #include <stdlib.h>
 #include "sentence.h"
 #include "mybutton.h"
+#include "algorythmnoun.h"
 extern Apperiance *apperiance;
 
 MainWindow::MainWindow(){
     setMainWindow();
+    AlgorythmNoun *ooo = new AlgorythmNoun();
 }
 
 void MainWindow::setMainWindow(){

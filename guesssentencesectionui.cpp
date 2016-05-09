@@ -1,5 +1,6 @@
 #include "guesssentencesectionui.h"
 #include <QDebug>
+
 GuessSentenceSectionUI::GuessSentenceSectionUI()
 {
 
@@ -77,7 +78,7 @@ void GuessSentenceSectionUI::setSentenceAreaCollisionRect()
 
 void GuessSentenceSectionUI::drawCollisionRect(QVector<QPointF> listOfPoints)
 {
-    for (size_t i=0, n=listOfPoints.size()-1; i<n; ++i){
+    for (auto i=0, n=listOfPoints.size()-1; i<n; ++i){
         QPointF start(listOfPoints[i]);
         QPointF end(listOfPoints[i+1]);
         QGraphicsLineItem *line = new QGraphicsLineItem(start.x(),start.y(),end.x(),end.y());

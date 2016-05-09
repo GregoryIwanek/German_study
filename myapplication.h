@@ -12,8 +12,9 @@ public:
     void setMainWindowVisible();
 
     //public attributes
-    MainWindow mainWindow;
     MyApplicationData myApplicationData;
+    MainWindow mainWindow;
+
 };
 
 #endif // MYAPPLICATION
