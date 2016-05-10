@@ -58,6 +58,8 @@ void GuessSentenceSection::setConnectionsForSection()
     connect(guessSentenceSectionUI->getMyButton("buttonClear"),SIGNAL(clicked()),guessSentenceSectionLogic,SLOT(clearSentence()));
     connect(guessSentenceSectionUI->getMyButton("buttonCheck"),SIGNAL(clicked()),guessSentenceSectionLogic,SLOT(checkIfSentenceIsCorrect()));
     connect(guessSentenceSectionUI->getMyButton("buttonStart"),SIGNAL(clicked()),guessSentenceSectionLogic,SLOT(setNewSentence()));
+    connect(guessSentenceSectionUI->getMyButton("buttonHint"),SIGNAL(hoverEvent()),guessSentenceSectionUI,SLOT(showHideHint()));
+
 
     connect(guessSentenceSectionLogic,SIGNAL(sentenceCreated(QString)),guessSentenceSectionUI,SLOT(updateSentenceText(QString)));
     connect(guessSentenceSectionLogic,SIGNAL(pointsChanged(int)),guessSentenceSectionUI,SLOT(updatePointsText(int)));

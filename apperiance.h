@@ -4,6 +4,7 @@
 #include <QPen>
 #include <QFont>
 #include <QPalette>
+#include <QPixmap>
 
 class Apperiance{
 
@@ -14,6 +15,7 @@ public:
     void definePen();
     void defineFont();
     void definePalette();
+    void definePixmap();
     QBrush getBrush(QBrush brushToGet);
 
     //public attributes
@@ -45,6 +47,8 @@ public:
 
     QFont fontComicSans;
     QFont fontComicSans_15;
+
+    QPixmap pixmapHintImage;
 
     QPalette paletteTransparent;
 private:

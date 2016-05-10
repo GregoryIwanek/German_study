@@ -4,6 +4,7 @@
 #include <QList>
 #include <QLineEdit>
 #include <QGraphicsTextItem>
+#include <QGraphicsPixmapItem>
 #include <QKeyEvent>
 #include "mybutton.h"
 #include "customscene.h"
@@ -28,6 +29,7 @@ public:
     void setButtons();
     void setUiTexts();
     void setInputUIComponents();
+    void setHintImage();
 
     void setMyButtonsMap();
 
@@ -46,16 +48,19 @@ public slots:
     void updateResultText(bool isResultCorrect);
     void clearUIText(bool isCompleteClear);
     void sendLineEditData();
+    void showHideHint();
 signals:
     void signalBack();
     void signalClearSentence();
     void signalCheckIfSentenceIsCorrectButton();
     void signalSetNewSentence();
     void signalSendLineEditData(QString text);
+    void signalShowHint();
 private:
     CustomScene *scene;
     MyButton *buttonBack, *buttonClear, *buttonCheck, *buttonStart, *buttonHint;
     QGraphicsTextItem *points, *translation, *result;
+    QGraphicsPixmapItem *hintImage;
     QLineEdit *lineEdit;
     QList<SentenceArea*> sentenceAreaList;
 

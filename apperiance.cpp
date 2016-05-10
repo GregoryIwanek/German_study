@@ -7,6 +7,7 @@ Apperiance::Apperiance(){
     definePen();
     defineFont();
     definePalette();
+    definePixmap();
 }
 
 void Apperiance::defineBrush(){
@@ -87,6 +88,11 @@ void Apperiance::defineFont(){
 void Apperiance::definePalette()
 {
     paletteTransparent.setColor(QPalette::Base, Qt::transparent);
+}
+
+void Apperiance::definePixmap()
+{
+    pixmapHintImage.load(":/graphics/graphics/articles.jpg");
 }
 
 QBrush Apperiance::getBrush(QBrush brushToGet){

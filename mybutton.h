@@ -29,6 +29,7 @@ public slots:
     void quit();
 signals:
     void clicked();
+    void hoverEvent();
 private:
     QBrush onHoverEventEnter, onHoverEventLeave;
     QGraphicsTextItem textToDisplay;

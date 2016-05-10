@@ -18,36 +18,16 @@ public:
     void setMainWindow();
     void setMainMenu();
     void setGuessSentenceSectionMenu();
-    void setBorderRect();
-    void setWordContainers();
-    void setColumn();
-    void setRow(int y, Word *myWord);
-    void setSentenceAreas();
-    void setInputComponents();
-    void setNextWordContainerPosition(WordContainer *wordContainer, bool isWordContainerMoved);
-    void setVariables();
-    void checkWordContainerCollision(QPointF startPointOfChecked);
     void keyPressEvent(QKeyEvent *event);
 
-    QPointF getClosestGridPoint(QPointF point);
-
 public slots:
-    void sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer);
-    void setSession();
     void setGuessSentenceSectionVisible();
 signals:
     void startButtonClicked();
     void keyPressed(QKeyEvent*);
 private:
-    bool isWordContainerMoved = false;
     QGraphicsView *view;
     CustomScene *scene;
-    QList<SentenceArea*> sentenceAreaList;
-    QList<WordContainer*> wordContainerList;
-    QLineEdit *lineEdit;
-    QPointF nextWordContainerPosition;
-    QString correctSequenceOfWords;
-    QTime *systemTime;
     GuessSentenceSection *guessSentenceSection;
 
 };

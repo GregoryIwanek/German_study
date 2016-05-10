@@ -21,11 +21,13 @@ void MyButton::setHoverEvents(QBrush brushEnter, QBrush brushLeave)
 void MyButton::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     this->setBrush(onHoverEventEnter);
+    emit hoverEvent();
 }
 
 void MyButton::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     this->setBrush(onHoverEventLeave);
+    emit hoverEvent();
 }
 
 void MyButton::setGeometryOfButton(int x, int y, int width, int height)

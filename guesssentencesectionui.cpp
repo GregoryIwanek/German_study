@@ -1,5 +1,8 @@
 #include "guesssentencesectionui.h"
 #include <QDebug>
+#include "apperiance.h"
+
+extern Apperiance *apperiance;
 
 GuessSentenceSectionUI::GuessSentenceSectionUI()
 {
@@ -31,6 +34,7 @@ void GuessSentenceSectionUI::setUIComponents()
     setButtons();
     setUiTexts();
     setInputUIComponents();
+    setHintImage();
 }
 
 void GuessSentenceSectionUI::setBorderRect()
@@ -58,8 +62,8 @@ void GuessSentenceSectionUI::setCollisionRects()
 
     QVector<QPointF> endCollisionRect;
     endCollisionRect << getClosestGridPoint(QPointF(0,0)) << getClosestGridPoint(QPointF(0,620))
-                       << getClosestGridPoint(QPointF(1200,620)) << getClosestGridPoint(QPointF(1200,0))
-                       << getClosestGridPoint(QPointF(0,0));
+                     << getClosestGridPoint(QPointF(1200,620)) << getClosestGridPoint(QPointF(1200,0))
+                     << getClosestGridPoint(QPointF(0,0));
     drawCollisionRect(endCollisionRect);
 }
 
@@ -124,7 +128,7 @@ void GuessSentenceSectionUI::setButtons()
     scene->addItem(buttonStart);
 
     buttonHint = new MyButton();
-    buttonHint->setGeometryOfButton(1000,430,100,40);
+    buttonHint->setGeometryOfButton(1000,500,100,60);
     buttonHint->defineTextOfButton(QString("HINT"), apperiance->brushYellow, apperiance->fontComicSans);
     buttonHint->setHoverEvents(apperiance->brushGreen, apperiance->brushYellow);
     scene->addItem(buttonHint);
@@ -160,12 +164,22 @@ void GuessSentenceSectionUI::setInputUIComponents()
     scene->addWidget(lineEdit);
 }
 
+void GuessSentenceSectionUI::setHintImage()
+{
+    hintImage = new QGraphicsPixmapItem(apperiance->pixmapHintImage);
+    hintImage->setPos(1100 - hintImage->boundingRect().width(), 500 - hintImage->boundingRect().height());
+    hintImage->setZValue(1);
+    hintImage->hide();
+    scene->addItem(hintImage);
+}
+
 void GuessSentenceSectionUI::setMyButtonsMap()
 {
     myButtonsMap["buttonBack"] = buttonBack;
     myButtonsMap["buttonClear"] = buttonClear;
     myButtonsMap["buttonCheck"] = buttonCheck;
     myButtonsMap["buttonStart"] = buttonStart;
+    myButtonsMap["buttonHint"] = buttonHint;
 }
 
 QPointF GuessSentenceSectionUI::getClosestGridPoint(QPointF point)
@@ -250,4 +264,12 @@ void GuessSentenceSectionUI::clearUIText(bool isCompleteClear)
 void GuessSentenceSectionUI::sendLineEditData()
 {
     emit signalSendLineEditData(lineEdit->text());
+}
+
+void GuessSentenceSectionUI::showHideHint()
+{
+    if (hintImage->isVisible() == true){
+        hintImage->hide();
+    }
+    else hintImage->show();
 }

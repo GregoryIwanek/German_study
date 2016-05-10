@@ -189,7 +189,7 @@ void AlgorythmNoun::setCorrespondingIndexResultsFromDataBase()
     query.exec(querySQLNoun);
     while (query.next()) {
         result = query.value(0).toString();
-        indexListOfNouns.append(result.toInt());
+        indexListOfNouns.append(result.toInt()-1);
     }
 }
 

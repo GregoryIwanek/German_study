@@ -79,6 +79,7 @@ void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)
     if (isItTranslation == false){
         query.exec(myQuery);
         while (query.seek(index)) {
+            qDebug()<<"original querry: "<<query.value(0).toString();
             setText(query.value(0).toString(), false);
             break;
         }
@@ -86,6 +87,7 @@ void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)
     else {
         query.exec(myQuery);
         while (query.seek(index)) {
+            qDebug()<<"translation querry: "<<query.value(0).toString();
             setText(query.value(0).toString(), true);
             break;
         }

@@ -1,5 +1,6 @@
 #include "customscene.h"
 #include <QDebug>
+
 CustomScene::CustomScene(QObject *parent): QGraphicsScene(parent), gridSize(20)
 {
 

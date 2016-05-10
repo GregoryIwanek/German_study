@@ -107,7 +107,7 @@ void SentenceScheme::setNounAlgorythm()
 {
     algorythmNoun = new AlgorythmNoun();
     if (algorythmNoun->getQueryArticle() != NULL){
-        setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),algorythmNoun->getQueryArticleRowIndex());
+        setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());
         increaseCount();
     }
     setAlgorythm(algorythmNoun->getQueryNoun(),algorythmNoun->getQueryNounTranslation(),algorythmNoun->getQueryNounRowIndex());
@@ -121,11 +121,11 @@ void SentenceScheme::setSeparatorAlgorythm()
     increaseCount();
 }
 
-void SentenceScheme::setAlgorythm(QString queryWord, QString queryTranslation, int index)
+void SentenceScheme::setAlgorythm(QString queryWord, QString queryTranslation, int index, int indexTranslation)
 {
     setQuerySQL(queryWord, NULL);
     setQuerySQL(NULL, queryTranslation);
-    setIndex(index);
+    setIndex(index, indexTranslation);
 }
 
 void SentenceScheme::setQuerySQL(QString columnWord, QString columnTranslation)
@@ -146,10 +146,16 @@ void SentenceScheme::incrementNumberOfExtraWords()
     }
 }
 
-void SentenceScheme::setIndex(int max)
+void SentenceScheme::setIndex(int indexWord, int indexTranslation)
 {
-    indexList.append(max);
-    indexTranslationList.append(max);
+    if (indexTranslation == NULL){
+        indexList.append(indexWord);
+        indexTranslationList.append(indexWord);
+    }
+    else {
+        indexList.append(indexWord);
+        indexTranslationList.append(indexTranslation);
+    }
 }
 
 void SentenceScheme::increaseCount()
