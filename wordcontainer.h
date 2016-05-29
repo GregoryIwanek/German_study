@@ -30,19 +30,19 @@ public:
     void setNextContainerPositionInSentenceArea(QPointF *point);
     void setIndexOnSentenceArea(int index);
 
-    int getWidthOfRect();
-    int getHeightOfRect();
+    double getWidthOfRect();
+    double getHeightOfRect();
     QPointF getStartPosition();
     QString getTextFromWord();
     bool getIsOnSentenceArea();
     int getIndexOnSentenceArea();
 public slots:
-    void sendToSentenceArea(QPointF point);
+    void sendToSentenceArea();
     void move();
     void checkIfStopMovement();
     void setDistanceAndDirectionToMoveToArea();
     void setDistanceAndDirectionToMoveFromArea();
-    void sendToStartArea(QPointF point);
+    void sendToStartArea();
 signals:
     void clicked(WordContainer *wordContainer);
     void stopped(WordContainer *wordContainer, bool isWordContainerMoved);
@@ -50,11 +50,11 @@ signals:
 private:
     Word *text,word;
     QTimer *timer;
-    int widthOfRect;
-    int heightOfRect;
+    double widthOfRect;
+    double heightOfRect;
     int widthOfText, heightOfText;
-    int angleToMove;
-    int indexOnSentenceArea = NULL;
+    double angleToMove;
+    int indexOnSentenceArea = -1;
     QPointF startPosition, *nextContainerPositionInSentenceArea;
     bool isOnSentenceArea = false;
 protected:

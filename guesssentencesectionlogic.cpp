@@ -2,6 +2,7 @@
 #include <QList>
 #include <QGraphicsItem>
 #include <stdlib.h>
+#include <typeinfo.h>
 GuessSentenceSectionLogic::GuessSentenceSectionLogic()
 {
 
@@ -45,11 +46,6 @@ void GuessSentenceSectionLogic::updateWordContainerNextPositionOnSentenceArea(Wo
     }
 }
 
-void GuessSentenceSectionLogic::setNextPosition(WordContainer *wordContainer)
-{
-
-}
-
 void GuessSentenceSectionLogic::sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer)
 {
     if (wordContainer->getIsOnSentenceArea()==false) {
@@ -68,7 +64,7 @@ void GuessSentenceSectionLogic::removeGapFromSentenceArea(WordContainer *wordCon
 {
     for (auto i=0, n=wordContainersList.size(); i<n; ++i){
 
-        if (wordContainersList[i]->getIndexOnSentenceArea() != NULL &&
+        if (wordContainersList[i]->getIndexOnSentenceArea() > -1 &&
                 wordContainersList[i]->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea()){
 
             wordContainersList[i]->setPos(QPointF(wordContainersList[i]->pos().x()-(wordContainer->getWidthOfRect()+20),
@@ -167,7 +163,6 @@ bool GuessSentenceSectionLogic::checkIfWordContainerInCollision(WordContainer *w
         }
         else if (typeid(*(collidingItems[i])) == typeid(QGraphicsLineItem) && checkSentenceArea == true)
         {
-            wordContainerOutOfSentenceArea(wordContainer);
             return true;
         }
     }
@@ -180,11 +175,6 @@ void GuessSentenceSectionLogic::wordContainerOutOfBoard(WordContainer *wordConta
     endOfWordContainer = 0;
     putWordContainerOnBoard(wordContainer, y);
     endOfWordContainer += wordContainer->boundingRect().width() +20;
-}
-
-void GuessSentenceSectionLogic::wordContainerOutOfSentenceArea(WordContainer *wordContainer)
-{
-
 }
 
 void GuessSentenceSectionLogic::setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer)
@@ -297,6 +287,6 @@ void GuessSentenceSectionLogic::updateSentence(WordContainer *wordContainer)
     else {
         sentenceInputByUserList.removeAt(wordContainer->getIndexOnSentenceArea());
         //updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());
-        wordContainer->setIndexOnSentenceArea(NULL);
+        wordContainer->setIndexOnSentenceArea(-1);
     }
 }

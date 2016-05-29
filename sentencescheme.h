@@ -29,12 +29,12 @@ public:
     void setVerbAlgorythm();
     void setNounAlgorythm();
     void setSeparatorAlgorythm();
-    void setAlgorythm(QString queryWord = NULL, QString queryTranslation = NULL, int index = 0, int indexTranslation = NULL);
+    void setAlgorythm(QString queryWord = NULL, QString queryTranslation = NULL, int index = 0, int indexTranslation = -1);
 
     void setQuerySQL(QString columnWord, QString columnTranslation);
     void incrementNumberOfExtraWords();
     QList<QString> getQuerySQLList(bool returnQuerySQLList);
-    void setIndex(int indexWord, int indexTranslation = NULL);
+    void setIndex(int indexWord, int indexTranslation = -1);
     QList<int> getIndexList(bool returnIndexList);
     void increaseCount();
     int getNumberOfWords();

@@ -107,7 +107,8 @@ void SentenceScheme::setNounAlgorythm()
 {
     algorythmNoun = new AlgorythmNoun();
     if (algorythmNoun->getQueryArticle() != NULL){
-        setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());
+        setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),
+                     algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());
         increaseCount();
     }
     setAlgorythm(algorythmNoun->getQueryNoun(),algorythmNoun->getQueryNounTranslation(),algorythmNoun->getQueryNounRowIndex());
@@ -148,7 +149,7 @@ void SentenceScheme::incrementNumberOfExtraWords()
 
 void SentenceScheme::setIndex(int indexWord, int indexTranslation)
 {
-    if (indexTranslation == NULL){
+    if (indexTranslation < 0){
         indexList.append(indexWord);
         indexTranslationList.append(indexWord);
     }

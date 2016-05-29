@@ -6,7 +6,7 @@ CustomScene::CustomScene(QObject *parent): QGraphicsScene(parent), gridSize(20)
 
 }
 
-const int CustomScene::getGridSize()
+int CustomScene::getGridSize()
 {
     return gridSize;
 }

@@ -32,7 +32,6 @@ public:
     bool checkIfWordContainerInCollision(WordContainer *wordContainer, int y, bool checkBoard, bool checkSentenceArea);
     void wordContainerOutOfBoard(WordContainer *wordContainer, int y);
     bool checkIfWordContainerOutOfSentenceArea(WordContainer *wordContainer);
-    void wordContainerOutOfSentenceArea(WordContainer *wordContainer);
 public slots:
     void setNewSentence();
     void checkIfSentenceIsCorrect();
@@ -41,7 +40,6 @@ public slots:
     void updatePoints(bool increased);
     void updateSentence(WordContainer *wordContainer);
     void updateWordContainerNextPositionOnSentenceArea(WordContainer *wordContainer, bool isOnSentenceArea);
-    void setNextPosition(WordContainer *wordContainer);
     void sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer);
     void removeGapFromSentenceArea(WordContainer *wordContainer);
     void updateColorOfCorrectWordContainers(bool isAnswerCorrect);

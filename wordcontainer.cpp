@@ -91,7 +91,7 @@ void WordContainer::setIsOnSentenceArea(bool isChecked)
     isOnSentenceArea = isChecked;
 }
 
-int WordContainer::getHeightOfRect()
+double WordContainer::getHeightOfRect()
 {
     return heightOfRect;
 }
@@ -115,7 +115,7 @@ int WordContainer::getIndexOnSentenceArea()
     return indexOnSentenceArea;
 }
 
-void WordContainer::sendToStartArea(QPointF point)
+void WordContainer::sendToStartArea()
 {
     setPos(startPosition);
     setIsOnSentenceArea(false);
@@ -160,7 +160,7 @@ void WordContainer::setIndexOnSentenceArea(int index)
     indexOnSentenceArea = index;
 }
 
-void WordContainer::sendToSentenceArea(QPointF point)
+void WordContainer::sendToSentenceArea()
 {
     int stepSize = 10;
     double alpha = rotation(); //converting to degrees, angle has to be a double
@@ -209,7 +209,7 @@ void WordContainer::setDistanceAndDirectionToMoveFromArea()
     angleToMove = -1* line.angle();
 }
 
-int WordContainer::getWidthOfRect()
+double WordContainer::getWidthOfRect()
 {
     return widthOfRect;
 }
