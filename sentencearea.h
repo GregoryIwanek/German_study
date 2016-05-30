@@ -20,13 +20,13 @@ public:
 
     int getSpaceLeft();
     QPointF getWordContainerStartPosition();
-    int getWidth();
-    int getHeight();
+    double getWidth();
+    double getHeight();
     QPointF getSentenceAreaCorners(QString nameOfCorner);
 
 private:
-    int lineWidth, lineHeight;
-    int width, height;
+    double lineWidth, lineHeight;
+    double width, height;
     int spaceLeft;
     int numberOfWordsIn;
     bool isFull;

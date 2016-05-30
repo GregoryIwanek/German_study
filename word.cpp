@@ -55,7 +55,7 @@ void Word::setVariables(){
 
 void Word::setWidthOfText()
 {
-    if (this->boundingRect().width()){
+    if (this->boundingRect().width() > 0){
         widthOfText = this->boundingRect().width();
     }
     else widthOfText = 100;
@@ -63,7 +63,7 @@ void Word::setWidthOfText()
 
 void Word::setHeightOfText()
 {
-    if (this->boundingRect().height()){
+    if (this->boundingRect().height() > 0){
         heightOfText = this->boundingRect().height();
     }
     else heightOfText = 40;
@@ -79,7 +79,6 @@ void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)
     if (isItTranslation == false){
         query.exec(myQuery);
         while (query.seek(index)) {
-            qDebug()<<"original querry: "<<query.value(0).toString();
             setText(query.value(0).toString(), false);
             break;
         }
@@ -87,24 +86,23 @@ void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)
     else {
         query.exec(myQuery);
         while (query.seek(index)) {
-            qDebug()<<"translation querry: "<<query.value(0).toString();
             setText(query.value(0).toString(), true);
             break;
         }
     }
 }
 
-void Word::saveWordToSQL(QString role)
+void Word::saveWordToSQL()
 {
 
 }
 
-int Word::getWidthOfText()
+double Word::getWidthOfText()
 {
     return widthOfText;
 }
 
-int Word::getHeightOfText()
+double Word::getHeightOfText()
 {
     return heightOfText;
 }

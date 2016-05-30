@@ -8,5 +8,5 @@ MyApplicationData::MyApplicationData()
 void MyApplicationData::setRandom()
 {
     systemTime = new QTime();
-    srand(time_t(systemTime));
+    qsrand(time_t(systemTime));
 }

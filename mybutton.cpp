@@ -73,8 +73,8 @@ void MyButton::setTextOfButton(QString text)
 
 void MyButton::setTextOfButtonPosition()
 {
-    int x = this->boundingRect().width()/2 - textToDisplay.boundingRect().width()/2;
-    int y = this->boundingRect().height()/2 - textToDisplay.boundingRect().height()/2;
+    auto x = this->boundingRect().width()/2 - textToDisplay.boundingRect().width()/2;
+    auto y = this->boundingRect().height()/2 - textToDisplay.boundingRect().height()/2;
     textToDisplay.setPos(x,y);
 }
 

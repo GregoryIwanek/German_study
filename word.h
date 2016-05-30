@@ -23,9 +23,9 @@ public:
     void setHeightOfText();
     void setRoleInSentence(QString role);
     void pickWordFromSQL(QString myQuery, int index =0, bool isItTranslation =false);
-    void saveWordToSQL(QString role);
-    int getWidthOfText();
-    int getHeightOfText();
+    void saveWordToSQL();
+    double getWidthOfText();
+    double getHeightOfText();
     void setIfPickedToRandomListOfWords(bool isPicked);
     bool getIfPickedToRandomListOfWords();
     QString getText(bool returnTranslation);
@@ -36,8 +36,8 @@ private:
     QString roleInSentence;
     QSqlQuery query;
     bool pickedToRandomListOfWords = false;
-    int widthOfText = 100;
-    int heightOfText = 40;
+    double widthOfText = 100;
+    double heightOfText = 40;
 };
 
 #endif // WORD

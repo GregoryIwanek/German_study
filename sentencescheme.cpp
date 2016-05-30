@@ -79,7 +79,7 @@ void SentenceScheme::setComplexSentence()
 {
     numberOfSubsentenceses = rand()%2+1;
 
-    for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
+    for (auto i=0, n=numberOfSubsentenceses; i<n; ++i){
         setTypeOfSentence(false);
 
         if (i < numberOfSubsentenceses-1){
@@ -168,7 +168,7 @@ void SentenceScheme::setDefineExtraWords()
 {
     addingExtraWords = true;
 
-    for (size_t i=0, n=numberOfSubsentenceses; i<n; ++i){
+    for (auto i=0, n=numberOfSubsentenceses; i<n; ++i){
         setExtraWords();
     }
 }
@@ -177,7 +177,7 @@ void SentenceScheme::setExtraWords()
 {
     int number = rand()%4;
     
-    for (size_t i=0, n=number; i<n; ++i){
+    for (auto i=0, n=number; i<n; ++i){
         int pickWord = rand()%3;
         switch (pickWord){
         case 0:

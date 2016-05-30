@@ -66,12 +66,12 @@ QPointF SentenceArea::getWordContainerStartPosition(){
     return wordContainerStartPosition;
 }
 
-int SentenceArea::getWidth()
+double SentenceArea::getWidth()
 {
     return width;
 }
 
-int SentenceArea::getHeight()
+double SentenceArea::getHeight()
 {
     return height;
 }

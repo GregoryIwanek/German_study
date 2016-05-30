@@ -52,7 +52,7 @@ private:
     QTimer *timer;
     double widthOfRect;
     double heightOfRect;
-    int widthOfText, heightOfText;
+    double widthOfText, heightOfText;
     double angleToMove;
     int indexOnSentenceArea = -1;
     QPointF startPosition, *nextContainerPositionInSentenceArea;
