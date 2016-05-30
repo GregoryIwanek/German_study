@@ -16,8 +16,6 @@ WordContainer::WordContainer(Word *myWord)
     setTextPosition();
 
     setTimersAndConnections();
-
-    //setStartPosition(point); called from mainWindow.cpp
 }
 
 void WordContainer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -66,9 +64,8 @@ void WordContainer::setText(Word *myWord)
 
 void WordContainer::setTextPosition()
 {
-    //int x = this->boundingRect().width()/2 - widthOfText/2;
-    //int y = this->boundingRect().height()/2 - heightOfText/2;
     text->setParentItem(this);
+    text->setPos(this->boundingRect().width()/2 - widthOfText/2, this->boundingRect().height()/2 - heightOfText/2);
 }
 
 void WordContainer::setSizeOfRect()

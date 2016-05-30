@@ -32,7 +32,7 @@ void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 {
     int type;
     if (complexSentenceAllowed == true){
-        type = rand()%2;
+        type = qrand()%2;
     }
     else type = 0;
     switch(type){
@@ -60,9 +60,18 @@ void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 
 void SentenceScheme::setDeclarativeSentence()
 {
-    setPersonAlgorythm();
-    setVerbAlgorythm();
-    setNounAlgorythm();
+    int sequence = qrand()%2;
+    switch (sequence) {
+    case 0:
+        setPersonAlgorythm();
+        setVerbAlgorythm();
+        setNounAlgorythm();
+        break;
+    case 1:
+        setNounAlgorythmAsSubject();
+        setVerbAlgorythm();
+        setNounAlgorythm();
+    }
 }
 
 void SentenceScheme::setNegativeSentence()
@@ -106,6 +115,21 @@ void SentenceScheme::setVerbAlgorythm()
 void SentenceScheme::setNounAlgorythm()
 {
     algorythmNoun = new AlgorythmNoun();
+    if (algorythmNoun->getQueryArticle() != NULL){
+        setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),
+                     algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());
+        increaseCount();
+    }
+    setAlgorythm(algorythmNoun->getQueryNoun(),algorythmNoun->getQueryNounTranslation(),algorythmNoun->getQueryNounRowIndex());
+    increaseCount();
+}
+
+void SentenceScheme::setNounAlgorythmAsSubject()
+{
+    algorythmNoun = new AlgorythmNoun(true);
+
+    setCorrespondingSubjectSlot(3);
+
     if (algorythmNoun->getQueryArticle() != NULL){
         setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),
                      algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());

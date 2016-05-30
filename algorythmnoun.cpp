@@ -4,6 +4,13 @@
 
 AlgorythmNoun::AlgorythmNoun()
 {
+    setIfIsSubject();
+    setData();
+}
+
+AlgorythmNoun::AlgorythmNoun(bool isSubject)
+{
+    setIfIsSubject(isSubject);
     setData();
 }
 
@@ -22,15 +29,15 @@ void AlgorythmNoun::setData()
 
 void AlgorythmNoun::defineVariables()
 {
-    setIfIsSubject();
     setGrammarCase();
     setIfIsSingular();
     setIfIsDefined();
+    setSubjectIndex();
 }
 
 void AlgorythmNoun::setIfIsSubject(bool isNounASubject)
 {
-    isSentenceSubject = isNounASubject;
+        isSentenceSubject = isNounASubject;
 }
 
 void AlgorythmNoun::setGrammarCase()
@@ -55,6 +62,18 @@ void AlgorythmNoun::setIfIsDefined()
         isDefined = true;
     }
     else isDefined = false;
+}
+
+void AlgorythmNoun::setSubjectIndex()
+{
+    //only is noun is a subject in a sentence
+    //sets index of row in SQL base, so we can pick correct version of a verb
+    if (isSentenceSubject == true){
+        if (isSingular == true){
+            subjectIndex = 3; //case "third person", he, she, it
+        }
+        else subjectIndex = 7; //case "they"
+    }
 }
 
 void AlgorythmNoun::defineNounArticle()
@@ -278,6 +297,12 @@ int AlgorythmNoun::getQueryArticleRowIndex()
 int AlgorythmNoun::getQueryNounRowIndex()
 {
     return nounIndex;
+}
+
+int AlgorythmNoun::getSubjectIndex()
+{
+    //only if noun is a subject, mathod is called from sentenceScheme.cpp
+    return subjectIndex;
 }
 
 

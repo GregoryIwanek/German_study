@@ -7,6 +7,7 @@
 class AlgorythmNoun{
 public:
     AlgorythmNoun();
+    AlgorythmNoun(bool isSubject);
 
     void setInputFromSentenceScheme();
 
@@ -33,6 +34,7 @@ public:
     void defineTranslations();
     void setArticleTranslationQuery();
     void setNounTranslationQuery();
+    void setSubjectIndex();
 
     QString getQueryArticle();
     QString getQueryArticleTranslation();
@@ -41,6 +43,7 @@ public:
     QString getIfPlurarUndefined(QString toReturn);
     int getQueryArticleRowIndex();
     int getQueryNounRowIndex();
+    int getSubjectIndex();
 
 private:
     QString querySQLArticle, querySQLArticleTranslation, querySQLNoun, querySQLNounTranslation;
@@ -49,6 +52,7 @@ private:
     QString nounCase, nounGender, nounArticleColumn, nounColumn;
     bool isSentenceSubject = NULL, isSingular, isDefined;
     int articleIndex, nounIndex;
+    int subjectIndex;
     QList<int> indexListOfNouns;
     QSqlQuery query;
 

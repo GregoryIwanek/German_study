@@ -28,6 +28,7 @@ public:
     void setPersonAlgorythm();
     void setVerbAlgorythm();
     void setNounAlgorythm();
+    void setNounAlgorythmAsSubject();
     void setSeparatorAlgorythm();
     void setAlgorythm(QString queryWord = NULL, QString queryTranslation = NULL, int index = 0, int indexTranslation = -1);
 
