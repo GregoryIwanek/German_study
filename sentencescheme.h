@@ -23,6 +23,7 @@ public:
     void setDeclarativeSentence();
     void setNegativeSentence();
     void setInterrogativeSentence();
+    void setExpression();
     void setComplexSentence();
 
     void setPersonAlgorythm();

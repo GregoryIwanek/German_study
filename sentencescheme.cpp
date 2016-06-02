@@ -52,6 +52,10 @@ void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
         typeOfSentence = "interrogative";
         setInterrogativeSentence();
         break;
+    case 4:
+        typeOfSentence = "interrogative";
+        setInterrogativeSentence();
+        break;
     default:
         typeOfSentence = "rest";
         break;
@@ -80,6 +84,11 @@ void SentenceScheme::setNegativeSentence()
 }
 
 void SentenceScheme::setInterrogativeSentence()
+{
+
+}
+
+void SentenceScheme::setExpression()
 {
 
 }
