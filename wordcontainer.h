@@ -13,7 +13,8 @@ extern Apperiance *apperiance;
 class WordContainer:public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
-    WordContainer(Word *myWord);
+    WordContainer(Word *myWord = NULL);
+    WordContainer(int width = 0, int height = 0, Word *myWord = NULL);
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     void setTimersAndConnections();
@@ -24,6 +25,7 @@ public:
     void setText(Word *myWord);
     void setTextPosition();
     void setSizeOfRect();
+    void setFixedSizeOfRect(int width, int height);
     void setStartPosition(QPointF point);
     void setIsOnSentenceArea(bool isChecked);
     void setPos(const QPointF & pos);

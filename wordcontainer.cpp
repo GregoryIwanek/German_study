@@ -18,6 +18,16 @@ WordContainer::WordContainer(Word *myWord)
     setTimersAndConnections();
 }
 
+WordContainer::WordContainer(int width, int height, Word *myWord )
+{
+    setText(myWord);
+    setFixedSizeOfRect(width, height);
+    setColor(apperiance->brushDarkGray);
+    setTextPosition();
+
+    setTimersAndConnections();
+}
+
 void WordContainer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     if (isOnSentenceArea == false){
@@ -76,6 +86,11 @@ void WordContainer::setSizeOfRect()
     widthOfRect = round(((widthOfText/gridSize)+1))*gridSize;
     heightOfRect = round(heightOfText/gridSize)*gridSize;
     setRect(0,0,widthOfRect,40);
+}
+
+void WordContainer::setFixedSizeOfRect(int width, int height)
+{
+    setRect(0,0,width,height);
 }
 
 void WordContainer::setStartPosition(QPointF point)

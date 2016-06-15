@@ -9,7 +9,7 @@
 #include "sentencearea.h"
 #include "customscene.h"
 #include "guesssentencesection.h"
-
+#include "flashcardssection.h"
 class MainWindow: public QMainWindow {
     Q_OBJECT
 public:
@@ -22,6 +22,7 @@ public:
 
 public slots:
     void setGuessSentenceSectionVisible();
+    void setFlashCardSectionVisible();
 signals:
     void startButtonClicked();
     void keyPressed(QKeyEvent*);
@@ -29,7 +30,7 @@ private:
     QGraphicsView *view;
     CustomScene *scene;
     GuessSentenceSection *guessSentenceSection;
-
+    FLashCardSection *flashCardSection;
 };
 
 #endif // MAINWINDOW
