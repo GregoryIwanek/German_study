@@ -1,6 +1,7 @@
 #ifndef GUESSSENTENCESECTION
 #define GUESSSENTENCESECTION
 #include <QObject>
+#include <QGraphicsItem>
 #include "guesssentencesectionui.h"
 #include "guesssentencesectionlogic.h"
 #include "customscene.h"
@@ -9,6 +10,7 @@ class GuessSentenceSection:public QObject{
     Q_OBJECT
 public:
     GuessSentenceSection();
+    friend class MainWindow;
 
     void setSceneFromMainWindow(CustomScene *myScene);
     void setGuessSentenceSectionUI();

@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QObject>
 #include <QLineEdit>
+#include "mybutton.h"
 #include "wordcontainer.h"
 #include "sentencearea.h"
 #include "customscene.h"
@@ -18,19 +19,22 @@ public:
     void setMainWindow();
     void setMainMenu();
     void setGuessSentenceSectionMenu();
+    void setConnections();
     void keyPressEvent(QKeyEvent *event);
+
+    void setButtonsVisible();
 
 public slots:
     void setGuessSentenceSectionVisible();
     void setFlashCardSectionVisible();
+    void setMainWindowVisible(QObject *section);
 signals:
     void startButtonClicked();
     void keyPressed(QKeyEvent*);
 private:
     QGraphicsView *view;
     CustomScene *scene;
-    GuessSentenceSection *guessSentenceSection;
-    FLashCardSection *flashCardSection;
+    MyButton *buttonStart, *buttonFlashCards, *buttonOptions, *buttonQuit;
 };
 
 #endif // MAINWINDOW

@@ -1,45 +1,48 @@
 #include "flashcardssection.h"
 
-FLashCardSection::FLashCardSection()
+FlashCardSection::FlashCardSection()
 {
 
 }
 
-void FLashCardSection::setSceneFromMainWindow(CustomScene *myScene)
+void FlashCardSection::setSceneFromMainWindow(CustomScene *myScene)
 {
     scene = myScene;
 }
 
-void FLashCardSection::setFlashCardSectionUI()
+void FlashCardSection::setFlashCardSectionUI()
 {
     scene->clear();
     flashCardSectionUI = new FlashCardSectionUI();
+    flashCardSectionUI->setParent(this);
     flashCardSectionUI->setSceneFromParent(scene);
     flashCardSectionUI->buildUI();
 }
 
-void FLashCardSection::setFlashCardSectionLogic()
+void FlashCardSection::setFlashCardSectionLogic()
 {
     flashCardSectionLogic = new FlashCardSectionLogic();
+    flashCardSectionLogic->setParent(this);
     flashCardSectionLogic->setSceneFromParent(scene);
 }
 
-void FLashCardSection::setConnectionsSwitch(bool isConnected)
+void FlashCardSection::setConnectionsSwitch(bool isConnected)
 {
 
 }
 
-void FLashCardSection::setConnectionsForSection()
+void FlashCardSection::setConnectionsForSection()
+{
+    connect(flashCardSectionUI->getMyButton("buttonStart"),SIGNAL(clicked()),flashCardSectionLogic,SLOT(setNewSession()));
+    connect(flashCardSectionUI->getMyButton("buttonBack"),SIGNAL(clicked()),flashCardSectionUI,SLOT(back()));
+}
+
+void FlashCardSection::keyPressEvent(QKeyEvent *event)
 {
 
 }
 
-void FLashCardSection::keyPressEvent(QKeyEvent *event)
-{
-
-}
-
-void FLashCardSection::switchConnections()
+void FlashCardSection::switchConnections()
 {
 
 }

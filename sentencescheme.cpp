@@ -8,6 +8,14 @@ SentenceScheme::SentenceScheme()
     setData();
 }
 
+SentenceScheme::SentenceScheme(QString definedTypeOfSentence)
+{
+    //setConnections();
+    //setVariables();
+    setTypeOfSentence(true, definedTypeOfSentence);
+    setDefineExtraWords();
+}
+
 void SentenceScheme::setData()
 {
     setConnections();
@@ -28,38 +36,46 @@ void SentenceScheme::setVariables()
     count=0;
 }
 
-void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
+void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed, QString definedTypeOfSentence)
 {
-    int type;
-    if (complexSentenceAllowed == true){
-        type = qrand()%2;
+    if (definedTypeOfSentence == NULL)
+    {
+        int type;
+        if (complexSentenceAllowed == true){
+            type = qrand()%2;
+        }
+        else type = 0;
+        switch(type){
+        case 0:
+            typeOfSentence = "declarative";
+            setDeclarativeSentence();
+            break;
+        case 1:
+            typeOfSentence = "complex";
+            setComplexSentence();
+            break;
+        case 2:
+            typeOfSentence = "negative";
+            setNegativeSentence();
+            break;
+        case 3:
+            typeOfSentence = "interrogative";
+            setInterrogativeSentence();
+            break;
+        case 4:
+            typeOfSentence = "interrogative";
+            setInterrogativeSentence();
+            break;
+        case 5:
+            typeOfSentence = "flashCardList";
+            setFlashCardList();
+            break;
+        default:
+            typeOfSentence = "rest";
+            break;
+        }
     }
-    else type = 0;
-    switch(type){
-    case 0:
-        typeOfSentence = "declarative";
-        setDeclarativeSentence();
-        break;
-    case 1:
-        typeOfSentence = "complex";
-        setComplexSentence();
-        break;
-    case 2:
-        typeOfSentence = "negative";
-        setNegativeSentence();
-        break;
-    case 3:
-        typeOfSentence = "interrogative";
-        setInterrogativeSentence();
-        break;
-    case 4:
-        typeOfSentence = "interrogative";
-        setInterrogativeSentence();
-        break;
-    default:
-        typeOfSentence = "rest";
-        break;
-    }
+    else typeOfSentence = definedTypeOfSentence;
 }
 
 void SentenceScheme::setDeclarativeSentence()
@@ -104,6 +120,11 @@ void SentenceScheme::setComplexSentence()
             setSeparatorAlgorythm();
         }
     }
+}
+
+void SentenceScheme::setFlashCardList()
+{
+
 }
 
 void SentenceScheme::setPersonAlgorythm()

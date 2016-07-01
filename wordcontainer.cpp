@@ -18,7 +18,7 @@ WordContainer::WordContainer(Word *myWord)
     setTimersAndConnections();
 }
 
-WordContainer::WordContainer(int width, int height, Word *myWord )
+WordContainer::WordContainer(int width, int height, Word *myWord)
 {
     setText(myWord);
     setFixedSizeOfRect(width, height);

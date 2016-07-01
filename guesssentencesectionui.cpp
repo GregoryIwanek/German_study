@@ -182,6 +182,11 @@ void GuessSentenceSectionUI::setMyButtonsMap()
     myButtonsMap["buttonHint"] = buttonHint;
 }
 
+void GuessSentenceSectionUI::addToList(QGraphicsItem *item)
+{
+    listOfItems.append(item);
+}
+
 QPointF GuessSentenceSectionUI::getClosestGridPoint(QPointF point)
 {
     return scene->getGridPoint(point);
@@ -202,9 +207,14 @@ QLineEdit *GuessSentenceSectionUI::getMyLineEdit()
     return lineEdit;
 }
 
+QList<QGraphicsItem *> GuessSentenceSectionUI::getGraphicsItemList()
+{
+    return listOfItems;
+}
+
 void GuessSentenceSectionUI::back()
 {
-    emit signalBack();
+    emit signalBack(this->parent());
 }
 
 void GuessSentenceSectionUI::clearSentence()

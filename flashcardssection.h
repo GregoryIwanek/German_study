@@ -5,10 +5,11 @@
 #include "flashcardssectionlogic.h"
 #include "flashcardssectionui.h"
 
-class FLashCardSection:public QObject{
+class FlashCardSection:public QObject{
     Q_OBJECT
 public:
-    FLashCardSection();
+    FlashCardSection();
+    friend class MainWindow;
 
     void setSceneFromMainWindow(CustomScene *myScene);
     void setFlashCardSectionUI();

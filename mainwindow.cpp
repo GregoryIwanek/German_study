@@ -32,25 +32,25 @@ void MainWindow::setMainWindow(){
 
 void MainWindow::setMainMenu()
 {
-    MyButton *buttonStart = new MyButton();
+    buttonStart = new MyButton();
     buttonStart->setGeometryOfButton(100,75,200,100);
     buttonStart->defineTextOfButton(QString("SENTENCE"), apperiance->brushDarkGray, apperiance->fontComicSans);
     connect(buttonStart,SIGNAL(clicked()),this,SLOT(setGuessSentenceSectionVisible()));
     scene->addItem(buttonStart);
 
-    MyButton *buttonFlashCards = new MyButton();
+    buttonFlashCards = new MyButton();
     buttonFlashCards->setGeometryOfButton(350,75,200,100);
     buttonFlashCards->defineTextOfButton(QString("FLASH CARDS"), apperiance->brushDarkGray, apperiance->fontComicSans);
     connect(buttonFlashCards,SIGNAL(clicked()),this,SLOT(setFlashCardSectionVisible()));
     scene->addItem(buttonFlashCards);
 
-    MyButton *buttonOptions = new MyButton();
+    buttonOptions = new MyButton();
     buttonOptions->setGeometryOfButton(100,250,200,100);
     buttonOptions->defineTextOfButton(QString("OPTIONS"), apperiance->brushRed, apperiance->fontComicSans);
     connect(buttonOptions,SIGNAL(clicked()),this,SLOT(setGuessSentenceSectionVisible()));
     scene->addItem(buttonOptions);
 
-    MyButton *buttonQuit = new MyButton();
+    buttonQuit = new MyButton();
     buttonQuit->setGeometryOfButton(100,425,200,100);
     buttonQuit->defineTextOfButton(QString("QUIT"), apperiance->brushYellow, apperiance->fontComicSans);
     connect(buttonQuit,SIGNAL(clicked()),this,SLOT(close()));
@@ -60,23 +60,32 @@ void MainWindow::setMainMenu()
 void MainWindow::setGuessSentenceSectionVisible()
 {
     scene->clear();
-    guessSentenceSection = new GuessSentenceSection();
+    GuessSentenceSection *guessSentenceSection = new GuessSentenceSection();
     guessSentenceSection->setSceneFromMainWindow(scene);
     guessSentenceSection->setGuessSentenceSectionUI();
     guessSentenceSection->setGuessSentenceSectionLogic();
     guessSentenceSection->setConnectionsForSection();
     connect(this,SIGNAL(keyPressed(QKeyEvent*)),guessSentenceSection,SLOT(keyPressEvent(QKeyEvent*)));
+    connect(guessSentenceSection->guessSentenceSectionUI,SIGNAL(signalBack(QObject*)),this,SLOT(setMainWindowVisible(QObject*)));
 }
 
 void MainWindow::setFlashCardSectionVisible()
 {
     scene->clear();
-    flashCardSection = new FLashCardSection();
+    FlashCardSection *flashCardSection = new FlashCardSection();
     flashCardSection->setSceneFromMainWindow(scene);
     flashCardSection->setFlashCardSectionUI();
     flashCardSection->setFlashCardSectionLogic();
+    flashCardSection->setConnectionsForSection();
+    connect(flashCardSection->flashCardSectionUI,SIGNAL(signalBack(QObject*)),this,SLOT(setMainWindowVisible(QObject*)));
 }
 
+void MainWindow::setMainWindowVisible(QObject *section)
+{
+    delete section;
+    scene->clear();
+    setMainMenu();
+}
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {

@@ -15,6 +15,7 @@ void GuessSentenceSection::setGuessSentenceSectionUI()
 {
     scene->clear();
     guessSentenceSectionUI = new GuessSentenceSectionUI();
+    guessSentenceSectionUI->setParent(this);
     guessSentenceSectionUI->setSceneFromParent(scene);
     guessSentenceSectionUI->buildUI();
 }
@@ -22,6 +23,7 @@ void GuessSentenceSection::setGuessSentenceSectionUI()
 void GuessSentenceSection::setGuessSentenceSectionLogic()
 {
     guessSentenceSectionLogic = new GuessSentenceSectionLogic();
+    guessSentenceSectionLogic->setParent(this);
     guessSentenceSectionLogic->setSceneFromParent(scene);
     guessSentenceSectionLogic->setSentenceAreaList(guessSentenceSectionUI->getSentenceAreaList());
 }
@@ -59,7 +61,7 @@ void GuessSentenceSection::setConnectionsForSection()
     connect(guessSentenceSectionUI->getMyButton("buttonCheck"),SIGNAL(clicked()),guessSentenceSectionLogic,SLOT(checkIfSentenceIsCorrect()));
     connect(guessSentenceSectionUI->getMyButton("buttonStart"),SIGNAL(clicked()),guessSentenceSectionLogic,SLOT(setNewSentence()));
     connect(guessSentenceSectionUI->getMyButton("buttonHint"),SIGNAL(hoverEvent()),guessSentenceSectionUI,SLOT(showHideHint()));
-
+    connect(guessSentenceSectionUI->getMyButton("buttonBack"),SIGNAL(clicked()),guessSentenceSectionUI,SLOT(back()));
 
     connect(guessSentenceSectionLogic,SIGNAL(sentenceCreated(QString)),guessSentenceSectionUI,SLOT(updateSentenceText(QString)));
     connect(guessSentenceSectionLogic,SIGNAL(pointsChanged(int)),guessSentenceSectionUI,SLOT(updatePointsText(int)));

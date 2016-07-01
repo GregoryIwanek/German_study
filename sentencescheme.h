@@ -12,6 +12,7 @@ class SentenceScheme:public QObject {
     Q_OBJECT
 public:
     SentenceScheme();
+    SentenceScheme(QString definedTypeOfSentence);
     void setData();
     void setDefineExtraWords();
     void setExtraWords();
@@ -19,12 +20,13 @@ public:
     int getNumberOfExtraWords();
     void setConnections();
 
-    void setTypeOfSentence(bool complexSentenceAllowed);
+    void setTypeOfSentence(bool complexSentenceAllowed = true, QString definedTypeOfSentence = NULL);
     void setDeclarativeSentence();
     void setNegativeSentence();
     void setInterrogativeSentence();
     void setExpression();
     void setComplexSentence();
+    void setFlashCardList();
 
     void setPersonAlgorythm();
     void setVerbAlgorythm();
@@ -48,10 +50,10 @@ private:
     QList<QString> querySQLTranslationList;
     QList<int> indexTranslationList;
     QList<int> indexList;
-    int numberOfSubsentenceses;
+    int numberOfSubsentenceses = 0;
     int numberOfExtraWords = 0;
     bool addingExtraWords = false;
-    int count;
+    int count = 0;
     QString typeOfSentence;
     int correspondingSubjectPerson=8;
 

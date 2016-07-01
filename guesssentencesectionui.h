@@ -10,10 +10,13 @@
 #include "customscene.h"
 #include "sentencearea.h"
 #include <qmap.h>
+#include <QGraphicsItem>
+
 class GuessSentenceSectionUI:public QObject {
     Q_OBJECT
 public:
     GuessSentenceSectionUI();
+    friend class GuessSentenceSection;
 
     void setSceneFromParent(CustomScene *myScene);
     void setMenu();
@@ -32,11 +35,13 @@ public:
     void setHintImage();
 
     void setMyButtonsMap();
+    void addToList(QGraphicsItem *item);
 
     QPointF getClosestGridPoint(QPointF point);
     QList<SentenceArea *> getSentenceAreaList();
     MyButton *getMyButton(QString nameOfButton);
     QLineEdit *getMyLineEdit();
+    QList<QGraphicsItem *> getGraphicsItemList();
 
 public slots:
     void back();
@@ -50,7 +55,7 @@ public slots:
     void sendLineEditData();
     void showHideHint();
 signals:
-    void signalBack();
+    void signalBack(QObject *section);
     void signalClearSentence();
     void signalCheckIfSentenceIsCorrectButton();
     void signalSetNewSentence();
@@ -63,6 +68,8 @@ private:
     QGraphicsPixmapItem *hintImage;
     QLineEdit *lineEdit;
     QList<SentenceArea*> sentenceAreaList;
+
+    QList<QGraphicsItem*> listOfItems;
 
     QMap<QString, MyButton*> myButtonsMap;
 };

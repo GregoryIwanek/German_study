@@ -3,6 +3,10 @@
 #include "wordcontainer.h"
 #include "word.h"
 #include <QDebug>
+#include "apperiance.h"
+
+extern Apperiance *apperiance;
+
 FlashCardSectionUI::FlashCardSectionUI()
 {
 
@@ -28,6 +32,7 @@ void FlashCardSectionUI::setMenu()
 void FlashCardSectionUI::setUIComponents()
 {
     setButtons();
+    setUiTexts();
 }
 
 void FlashCardSectionUI::setButtons()
@@ -46,20 +51,15 @@ void FlashCardSectionUI::setButtons()
     buttonStart->setGeometryOfButton(600,500,125,60);
     buttonStart->defineTextOfButton(QString("START"), apperiance->brushYellow, apperiance->fontComicSans);
     scene->addItem(buttonStart);
-qDebug()<<1;
-    for (int i=0, n=20; i<n; ++i){
-        qDebug()<<2;
-        Word *word = new Word();
-        WordContainer *wc = new WordContainer(100,100,word);
-        scene->addItem(wc);
-        qDebug()<<2;
-        wc->setPos(QPointF(600,400));
-    }
 }
 
 void FlashCardSectionUI::setUiTexts()
 {
-
+    time = new QGraphicsTextItem();
+    time->setPos(450,500);
+    time->setFont(apperiance->fontComicSans);
+    time->setPlainText(QString("0:00.00"));
+    scene->addItem(time);
 }
 
 void FlashCardSectionUI::setBorderRect()
@@ -79,10 +79,22 @@ void FlashCardSectionUI::setBorderRect()
 
 void FlashCardSectionUI::setMyButtonsMap()
 {
-
+    myButtonsMap["buttonBack"] = buttonBack;
+    myButtonsMap["buttonClear"] = buttonClear;
+    myButtonsMap["buttonStart"] = buttonStart;
 }
 
 QPointF FlashCardSectionUI::getClosestGridPoint(QPointF point)
 {
     return scene->getGridPoint(point);
+}
+
+MyButton *FlashCardSectionUI::getMyButton(QString nameOfButton)
+{
+    return myButtonsMap[nameOfButton];
+}
+
+void FlashCardSectionUI::back()
+{
+    emit signalBack(this->parent());
 }
