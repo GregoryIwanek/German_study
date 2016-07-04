@@ -8,8 +8,10 @@ class SentenceData{
 
 public:
     SentenceData();
+    SentenceData(const SentenceData &sentenceData); //copy constructor- beacouse of errors
+    SentenceData(QString sectionToPickFor, QString categoryOfWords);
 
-    void setSentenceScheme();
+    void setSentenceScheme(QString sectionToPickFor, QString categoryOfWords);
     void setSchemeToWords();
     void setRandomOrderList();
     void setSentenceAndTranslation();
@@ -25,6 +27,7 @@ private:
     QList<QString> listCorrectSentence;
     QString correctTranslationString, correctSentenceString;
     SentenceScheme sentenceScheme;
+    SentenceScheme *sentenceSchemePointer;
     int indexToPick, numberOfPickedWordsToRandomList=0;
 };
 

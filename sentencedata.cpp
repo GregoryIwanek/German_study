@@ -8,23 +8,34 @@ extern Apperiance *apperiance;
 
 SentenceData::SentenceData()
 {
+
+}
+
+SentenceData::SentenceData(const SentenceData &sentenceData)
+{
+
+}
+
+SentenceData::SentenceData(QString sectionToPickFor, QString categoryOfWords)
+{
+    setSentenceScheme(sectionToPickFor, categoryOfWords);
     setSchemeToWords();
     setRandomOrderList();
     setSentenceAndTranslation();
 }
 
-void SentenceData::setSentenceScheme()
+void SentenceData::setSentenceScheme(QString sectionToPickFor, QString categoryOfWords)
 {
-
+    sentenceSchemePointer = new SentenceScheme(sectionToPickFor, categoryOfWords);
 }
 
 void SentenceData::setSchemeToWords()
 {
-    for (auto i=0, n=sentenceScheme.getNumberOfWords(); i<n; ++i){
+    for (auto i=0, n=sentenceSchemePointer->getNumberOfWords(); i<n; ++i){
         Word *word = new Word();
         word->defineInstance(0, apperiance->fontComicSans,
-                             sentenceScheme.getQuerySQLList(true)[i],sentenceScheme.getIndexList(true)[i],
-                             sentenceScheme.getQuerySQLList(false)[i], sentenceScheme.getIndexList(false)[i]);
+                             sentenceSchemePointer->getQuerySQLList(true)[i],sentenceSchemePointer->getIndexList(true)[i],
+                             sentenceSchemePointer->getQuerySQLList(false)[i], sentenceSchemePointer->getIndexList(false)[i]);
         listOfWords.append(word);
     }
 }
@@ -43,13 +54,13 @@ void SentenceData::setRandomOrderList()
 
 void SentenceData::setSentenceAndTranslation()
 {
-    for (auto i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
+    for (auto i=0, n = listOfWords.size()-sentenceSchemePointer->getNumberOfExtraWords(); i<n; ++i){
         listCorrectSentence.append(listOfWords[i]->getText(false));
         correctSentenceString.append(listOfWords[i]->getText(false)+QString(" "));
     }
     correctSentenceString.remove(correctSentenceString.length()-1,1);
 
-    for (auto i=0, n = listOfWords.size()-sentenceScheme.getNumberOfExtraWords(); i<n; ++i){
+    for (auto i=0, n = listOfWords.size()-sentenceSchemePointer->getNumberOfExtraWords(); i<n; ++i){
         correctTranslationString.append(listOfWords[i]->getText(true)+QString(" "));
     }
 }

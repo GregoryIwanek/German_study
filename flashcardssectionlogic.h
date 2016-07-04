@@ -11,7 +11,7 @@ public:
 
     void setSceneFromParent(CustomScene *myScene);
 
-    void setFlashCards(int rowNumber, int columnNumber, Sentence *sentence);
+    void setFlashCards(int rowNumber, int columnNumber, Sentence *sentence, int count);
     void setRow(int rowNumber);
     void setColumn(int rowIndex);
 
@@ -21,7 +21,7 @@ signals:
 
 private:
     CustomScene *scene;
-    Sentence *sentence;
+    int count = 0;
 };
 
 #endif // FLASHCARDSSECTIONLOGIC_H

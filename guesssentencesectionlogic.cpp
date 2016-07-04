@@ -119,7 +119,7 @@ void GuessSentenceSectionLogic::setRow(Sentence *sentence)
 
 void GuessSentenceSectionLogic::setColumn(int y, Sentence *sentence)
 {
-    for (int x=0, n=sentence->sentenceData.getListOfWordsInRandomOrder().size(); x<n; ++x)
+    for (int x=0, n=sentence->sentenceDataPointer->getListOfWordsInRandomOrder().size(); x<n; ++x)
     {
         defineWordContainers(x,y,sentence);
         setWordContainerConnections(wordContainersList.last());
@@ -128,7 +128,7 @@ void GuessSentenceSectionLogic::setColumn(int y, Sentence *sentence)
 
 void GuessSentenceSectionLogic::defineWordContainers(int x, int y, Sentence *sentence)
 {
-    WordContainer *wordContainer = new WordContainer(sentence->sentenceData.getListOfWordsInRandomOrder()[x]);
+    WordContainer *wordContainer = new WordContainer(sentence->sentenceDataPointer->getListOfWordsInRandomOrder()[x]);
     putWordContainerOnBoard(wordContainer, y);
     endOfWordContainer += wordContainer->boundingRect().width() +20;
     wordContainersList.append(wordContainer);
@@ -201,14 +201,14 @@ void GuessSentenceSectionLogic::updateIndexOfWordContainersOnSentenceArea(int in
 
 void GuessSentenceSectionLogic::updateSentenceTextToDisplay()
 {
-    sentenceString.append(sentence->sentenceData.getCorrectSentenceString());
-    translationString.append(sentence->sentenceData.getCorrectTranslationString());
+    sentenceString.append(sentence->sentenceDataPointer->getCorrectSentenceString());
+    translationString.append(sentence->sentenceDataPointer->getCorrectTranslationString());
 }
 
 void GuessSentenceSectionLogic::setNewSentence()
 {
     if (sentence == NULL){
-        sentence = new Sentence();
+        sentence = new Sentence(QString("GSSection"), QString("none"));
         setWordContainerPositionOnSentenceArea();
         setWordContainers(sentence);
         setWordContainerNextPositionToContainers();
@@ -220,7 +220,7 @@ void GuessSentenceSectionLogic::setNewSentence()
 void GuessSentenceSectionLogic::checkIfSentenceIsCorrect()
 {
     if (sentenceInputByUserList.isEmpty() == false){
-        if (sentence->sentenceData.getCorrectSentence() == sentenceInputByUserList && sentence->getIfSentenceChecked() == false){
+        if (sentence->sentenceDataPointer->getCorrectSentence() == sentenceInputByUserList && sentence->getIfSentenceChecked() == false){
             updatePoints(true);
             updateColorOfCorrectWordContainers(true);
             sentence->setSentenceChecked(true);
@@ -236,7 +236,7 @@ void GuessSentenceSectionLogic::checkIfSentenceIsCorrect()
 void GuessSentenceSectionLogic::checkIfSentenceIsCorrectInLineEdit(QString text)
 {
     if (sentence != NULL){
-        if (sentence->getIfSentenceChecked() == false && sentence->sentenceData.getCorrectSentenceString() == text){
+        if (sentence->getIfSentenceChecked() == false && sentence->sentenceDataPointer->getCorrectSentenceString() == text){
             updatePoints(true);
             sentence->setSentenceChecked(true);
         }

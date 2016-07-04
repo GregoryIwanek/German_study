@@ -5,23 +5,39 @@
 
 SentenceScheme::SentenceScheme()
 {
-    setData();
+
 }
 
-SentenceScheme::SentenceScheme(QString definedTypeOfSentence)
+SentenceScheme::SentenceScheme(QString sectionToPickFor, QString categoryOfWords)
 {
-    //setConnections();
-    //setVariables();
-    setTypeOfSentence(true, definedTypeOfSentence);
-    setDefineExtraWords();
+    setBasicData(sectionToPickFor, categoryOfWords);
 }
 
-void SentenceScheme::setData()
+void SentenceScheme::setBasicData(QString sectionToPickFor, QString categoryOfWords)
+{
+    if (sectionToPickFor == "GSSection")
+    {
+        setDataForGuessSentence();
+    }
+    else if (sectionToPickFor == "FCSection")
+    {
+        setDataForFlashCard(categoryOfWords);
+    }
+}
+
+void SentenceScheme::setDataForGuessSentence()
 {
     setConnections();
     setVariables();
     setTypeOfSentence(true);
     setDefineExtraWords();
+}
+
+void SentenceScheme::setDataForFlashCard(QString categoryOfWords)
+{
+    setConnections();
+    setVariables();
+    setFlashCardList(categoryOfWords);
 }
 
 void SentenceScheme::setConnections()
@@ -36,46 +52,38 @@ void SentenceScheme::setVariables()
     count=0;
 }
 
-void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed, QString definedTypeOfSentence)
+void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 {
-    if (definedTypeOfSentence == NULL)
-    {
-        int type;
-        if (complexSentenceAllowed == true){
-            type = qrand()%2;
-        }
-        else type = 0;
-        switch(type){
-        case 0:
-            typeOfSentence = "declarative";
-            setDeclarativeSentence();
-            break;
-        case 1:
-            typeOfSentence = "complex";
-            setComplexSentence();
-            break;
-        case 2:
-            typeOfSentence = "negative";
-            setNegativeSentence();
-            break;
-        case 3:
-            typeOfSentence = "interrogative";
-            setInterrogativeSentence();
-            break;
-        case 4:
-            typeOfSentence = "interrogative";
-            setInterrogativeSentence();
-            break;
-        case 5:
-            typeOfSentence = "flashCardList";
-            setFlashCardList();
-            break;
-        default:
-            typeOfSentence = "rest";
-            break;
-        }
+    int type;
+    if (complexSentenceAllowed == true){
+        type = qrand()%2;
     }
-    else typeOfSentence = definedTypeOfSentence;
+    else type = 0;
+    switch(type){
+    case 0:
+        typeOfSentence = "declarative";
+        setDeclarativeSentence();
+        break;
+    case 1:
+        typeOfSentence = "complex";
+        setComplexSentence();
+        break;
+    case 2:
+        typeOfSentence = "negative";
+        setNegativeSentence();
+        break;
+    case 3:
+        typeOfSentence = "interrogative";
+        setInterrogativeSentence();
+        break;
+    case 4:
+        typeOfSentence = "interrogative";
+        setInterrogativeSentence();
+        break;
+    default:
+        typeOfSentence = "rest";
+        break;
+    }
 }
 
 void SentenceScheme::setDeclarativeSentence()
@@ -120,11 +128,6 @@ void SentenceScheme::setComplexSentence()
             setSeparatorAlgorythm();
         }
     }
-}
-
-void SentenceScheme::setFlashCardList()
-{
-
 }
 
 void SentenceScheme::setPersonAlgorythm()
@@ -174,6 +177,11 @@ void SentenceScheme::setSeparatorAlgorythm()
     algorythmSeparator = new AlgorythmSeparator();
     setAlgorythm(algorythmSeparator->getQuery(),algorythmSeparator->getQueryTranslation(),algorythmSeparator->getSeparatorIndex());
     increaseCount();
+}
+
+void SentenceScheme::setWordAlgorythm(QString categoryOfWords)
+{
+
 }
 
 void SentenceScheme::setAlgorythm(QString queryWord, QString queryTranslation, int index, int indexTranslation)
@@ -247,6 +255,15 @@ void SentenceScheme::setExtraWords()
             setSeparatorAlgorythm();
             break;
         }
+    }
+}
+
+void SentenceScheme::setFlashCardList(QString categoryOfWords)
+{
+    //JUST FOR NOW!!! ToDo later-> create tables in SQLite speciefed for FCSection
+    for (auto i=0; i<numberFCWordsToPick; ++i){
+        setNounAlgorythm();
+        setWordAlgorythm(categoryOfWords);
     }
 }
 

@@ -7,32 +7,37 @@
 #include "algorythmverb.h"
 #include "algorythmperson.h"
 #include "algorythmseparator.h"
+#include "algorythmword.h"
 
 class SentenceScheme:public QObject {
     Q_OBJECT
 public:
     SentenceScheme();
-    SentenceScheme(QString definedTypeOfSentence);
-    void setData();
+    SentenceScheme(QString sectionToPickFor, QString categoryOfWords);
+
+    void setBasicData(QString sectionToPickFor, QString categoryOfWords);
+    void setDataForGuessSentence();
+    void setDataForFlashCard(QString categoryOfWords);
     void setDefineExtraWords();
     void setExtraWords();
     void setVariables();
     int getNumberOfExtraWords();
     void setConnections();
 
-    void setTypeOfSentence(bool complexSentenceAllowed = true, QString definedTypeOfSentence = NULL);
+    void setTypeOfSentence(bool complexSentenceAllowed = true);
     void setDeclarativeSentence();
     void setNegativeSentence();
     void setInterrogativeSentence();
     void setExpression();
     void setComplexSentence();
-    void setFlashCardList();
+    void setFlashCardList(QString categoryOfWords);
 
     void setPersonAlgorythm();
     void setVerbAlgorythm();
     void setNounAlgorythm();
     void setNounAlgorythmAsSubject();
     void setSeparatorAlgorythm();
+    void setWordAlgorythm(QString categoryOfWords);
     void setAlgorythm(QString queryWord = NULL, QString queryTranslation = NULL, int index = 0, int indexTranslation = -1);
 
     void setQuerySQL(QString columnWord, QString columnTranslation);
@@ -52,8 +57,9 @@ private:
     QList<int> indexList;
     int numberOfSubsentenceses = 0;
     int numberOfExtraWords = 0;
-    bool addingExtraWords = false;
     int count = 0;
+    int numberFCWordsToPick = 48;
+    bool addingExtraWords = false;
     QString typeOfSentence;
     int correspondingSubjectPerson=8;
 
