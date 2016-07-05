@@ -10,9 +10,16 @@ Word::Word()
 
 }
 
-Word::Word(const Word &word)
+Word::Word(const Word &copyWord)
 {
-
+    word = copyWord.word;
+    translation = copyWord.translation;
+    roleInSentence = copyWord.roleInSentence;
+    extraInformation = copyWord.extraInformation;
+    query = copyWord.query;
+    pickedToRandomListOfWords = copyWord.pickedToRandomListOfWords;
+    widthOfText = copyWord.widthOfText;
+    heightOfText = copyWord.heightOfText;
 }
 
 void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery, int wordIndex,
@@ -23,7 +30,6 @@ void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery, in
     pickWordFromSQL(myQuery, wordIndex, false);
     pickWordFromSQL(translationQuery, translationIndex, true);
     setWordFont(font);
-    setVariables();
 }
 
 void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery)
@@ -32,7 +38,6 @@ void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery)
     setRoleInSentence(myQuery);
     pickWordFromSQL(myQuery);
     setWordFont(font);
-    setVariables();
 }
 
 void Word::setText(QString text, bool isItTranslation){
@@ -41,14 +46,21 @@ void Word::setText(QString text, bool isItTranslation){
         word = text;
         setPlainText(text);
     }
-    else translation = text;
+    else
+    {
+        translation = text;
+        setPlainText(translation);
+    }
+
+    setVariablesSizeOfText();
 }
 
 void Word::setWordFont(QFont font){
     setFont(font);
+    setVariablesSizeOfText();
 }
 
-void Word::setVariables(){
+void Word::setVariablesSizeOfText(){
     setWidthOfText();
     setHeightOfText();
 }
@@ -92,6 +104,20 @@ void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)
     }
 }
 
+void Word::pickExtraInfoFromSQL(QString extraQuery, int index)
+{
+    //called from sentenceData class-> picks extra info from SQL column, such as gender, case etc.
+    if (extraQuery != "PLURAR_IS_FEMININE")
+    {
+        query.exec(extraQuery);
+        while (query.seek(index))
+        {
+            extraInformation = query.value(0).toString();
+        }
+    }
+    else extraInformation = "feminine";
+}
+
 void Word::saveWordToSQL()
 {
 
@@ -115,6 +141,16 @@ void Word::setIfPickedToRandomListOfWords(bool isPicked)
 bool Word::getIfPickedToRandomListOfWords()
 {
     return pickedToRandomListOfWords;
+}
+
+void Word::setIfIsTranslation(bool isItTranslation)
+{
+    isTranslation = isItTranslation;
+}
+
+bool Word::getIfIsTranslation()
+{
+    return isTranslation;
 }
 
 QString Word::getText(bool returnTranslation)

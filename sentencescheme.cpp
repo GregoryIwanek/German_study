@@ -17,10 +17,12 @@ void SentenceScheme::setBasicData(QString sectionToPickFor, QString categoryOfWo
 {
     if (sectionToPickFor == "GSSection")
     {
+        pickForFCSection = false;
         setDataForGuessSentence();
     }
     else if (sectionToPickFor == "FCSection")
     {
+        pickForFCSection = true;
         setDataForFlashCard(categoryOfWords);
     }
 }
@@ -181,7 +183,9 @@ void SentenceScheme::setSeparatorAlgorythm()
 
 void SentenceScheme::setWordAlgorythm(QString categoryOfWords)
 {
-
+    algorythmWord = new AlgorythmWord(categoryOfWords);
+    setAlgorythm(algorythmWord->getQuery(), algorythmWord->getQueryTranslation(),algorythmWord->getWordIndex());
+    increaseCount();
 }
 
 void SentenceScheme::setAlgorythm(QString queryWord, QString queryTranslation, int index, int indexTranslation)
@@ -189,6 +193,17 @@ void SentenceScheme::setAlgorythm(QString queryWord, QString queryTranslation, i
     setQuerySQL(queryWord, NULL);
     setQuerySQL(NULL, queryTranslation);
     setIndex(index, indexTranslation);
+
+    //FCSection Extras
+    if (pickForFCSection == true)
+    {
+        setGender(algorythmWord->getQueryGender());
+    }
+}
+
+void SentenceScheme::setGender(QString queryGender)
+{
+    querySQLGenderList.append(queryGender);
 }
 
 void SentenceScheme::setQuerySQL(QString columnWord, QString columnTranslation)
@@ -262,7 +277,6 @@ void SentenceScheme::setFlashCardList(QString categoryOfWords)
 {
     //JUST FOR NOW!!! ToDo later-> create tables in SQLite speciefed for FCSection
     for (auto i=0; i<numberFCWordsToPick; ++i){
-        setNounAlgorythm();
         setWordAlgorythm(categoryOfWords);
     }
 }
@@ -296,4 +310,9 @@ QList<QString> SentenceScheme::getQuerySQLList(bool returnQuerySQLList)
         return querySQLList;
     }
     else return querySQLTranslationList;
+}
+
+QList<QString> SentenceScheme::getQuerySQLGenderList()
+{
+    return querySQLGenderList;
 }

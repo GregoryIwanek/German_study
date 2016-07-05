@@ -47,6 +47,7 @@ public:
 
     QFont fontComicSans;
     QFont fontComicSans_15;
+    QFont fontComicSans_13;
 
     QPixmap pixmapHintImage;
 

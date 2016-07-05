@@ -24,6 +24,15 @@ SentenceData::SentenceData(QString sectionToPickFor, QString categoryOfWords)
     setSentenceAndTranslation();
 }
 
+void SentenceData::checkSectionToPickFor(QString sectionToPickFor)
+{
+    if (sectionToPickFor == "FCSection")
+    {
+        pickForFCSection = true;
+    }
+    else pickForFCSection = false;
+}
+
 void SentenceData::setSentenceScheme(QString sectionToPickFor, QString categoryOfWords)
 {
     sentenceSchemePointer = new SentenceScheme(sectionToPickFor, categoryOfWords);
@@ -36,6 +45,12 @@ void SentenceData::setSchemeToWords()
         word->defineInstance(0, apperiance->fontComicSans,
                              sentenceSchemePointer->getQuerySQLList(true)[i],sentenceSchemePointer->getIndexList(true)[i],
                              sentenceSchemePointer->getQuerySQLList(false)[i], sentenceSchemePointer->getIndexList(false)[i]);
+
+        if (pickForFCSection == true)
+        {
+            word->pickExtraInfoFromSQL(sentenceSchemePointer->getQuerySQLGenderList()[i], i);
+        }
+
         listOfWords.append(word);
     }
 }

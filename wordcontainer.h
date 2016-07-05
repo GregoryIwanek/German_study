@@ -14,7 +14,7 @@ class WordContainer:public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
     WordContainer(Word *myWord = NULL);
-    WordContainer(int width = 0, int height = 0, Word *myWord = NULL);
+    WordContainer(int width = 0, int height = 0, Word *myWord = NULL, bool isItTranslation = false);
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     void setTimersAndConnections();
@@ -22,7 +22,9 @@ public:
     void setMyFlags();
     void setSize(int width, int height);
     void setColor(QBrush brush);
+    void setIfIsTranslation(bool isItTranslation);
     void setText(Word *myWord);
+    void setWordFCSection(Word *myWord);
     void setTextPosition();
     void setSizeOfRect();
     void setFixedSizeOfRect(int width, int height);
@@ -59,6 +61,7 @@ private:
     int indexOnSentenceArea = -1;
     QPointF startPosition, *nextContainerPositionInSentenceArea;
     bool isOnSentenceArea = false;
+    bool isItDisplayingTranslation = false;
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };

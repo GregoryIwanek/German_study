@@ -18,8 +18,9 @@ WordContainer::WordContainer(Word *myWord)
     setTimersAndConnections();
 }
 
-WordContainer::WordContainer(int width, int height, Word *myWord)
+WordContainer::WordContainer(int width, int height, Word *myWord, bool isItTranslation)
 {
+    setIfIsTranslation(isItTranslation);
     setText(myWord);
     setFixedSizeOfRect(width, height);
     setColor(apperiance->brushDarkGray);
@@ -67,9 +68,30 @@ void WordContainer::setColor(QBrush brush)
     setOpacity(0.85);
 }
 
+void WordContainer::setIfIsTranslation(bool isItTranslation)
+{
+    /*for FCSection-> some wordContainers holds origin words, some hold translation of these words
+    difine here, which case has THIS WordContainer*/
+    isItDisplayingTranslation = isItTranslation;
+}
+
 void WordContainer::setText(Word *myWord)
 {
     text = myWord;
+
+    if (isItDisplayingTranslation == true)
+    {
+        text->setText(text->getText(true), true);
+    }
+    else text->setText(text->getText(false), false);
+
+    widthOfText = text->getWidthOfText();
+    heightOfText = text->getHeightOfText();
+}
+
+void WordContainer::setWordFCSection(Word *myWord)
+{
+
 }
 
 void WordContainer::setTextPosition()
@@ -81,8 +103,6 @@ void WordContainer::setTextPosition()
 void WordContainer::setSizeOfRect()
 {
     int gridSize = 20;
-    widthOfText = text->getWidthOfText();
-    heightOfText = text->getHeightOfText();
     widthOfRect = round(((widthOfText/gridSize)+1))*gridSize;
     heightOfRect = round(heightOfText/gridSize)*gridSize;
     setRect(0,0,widthOfRect,40);

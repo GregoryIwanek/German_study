@@ -11,6 +11,7 @@ public:
     SentenceData(const SentenceData &sentenceData); //copy constructor- beacouse of errors
     SentenceData(QString sectionToPickFor, QString categoryOfWords);
 
+    void checkSectionToPickFor(QString sectionToPickFor);
     void setSentenceScheme(QString sectionToPickFor, QString categoryOfWords);
     void setSchemeToWords();
     void setRandomOrderList();
@@ -29,6 +30,7 @@ private:
     SentenceScheme sentenceScheme;
     SentenceScheme *sentenceSchemePointer;
     int indexToPick, numberOfPickedWordsToRandomList=0;
+    bool pickForFCSection = false;
 };
 
 #endif // SENTENCEDATA

@@ -39,10 +39,12 @@ public:
     void setSeparatorAlgorythm();
     void setWordAlgorythm(QString categoryOfWords);
     void setAlgorythm(QString queryWord = NULL, QString queryTranslation = NULL, int index = 0, int indexTranslation = -1);
+    void setGender(QString queryGender);
 
     void setQuerySQL(QString columnWord, QString columnTranslation);
     void incrementNumberOfExtraWords();
     QList<QString> getQuerySQLList(bool returnQuerySQLList);
+    QList<QString> getQuerySQLGenderList();
     void setIndex(int indexWord, int indexTranslation = -1);
     QList<int> getIndexList(bool returnIndexList);
     void increaseCount();
@@ -53,6 +55,7 @@ signals:
 private:
     QList<QString> querySQLList;
     QList<QString> querySQLTranslationList;
+    QList<QString> querySQLGenderList;
     QList<int> indexTranslationList;
     QList<int> indexList;
     int numberOfSubsentenceses = 0;
@@ -63,10 +66,13 @@ private:
     QString typeOfSentence;
     int correspondingSubjectPerson=8;
 
+    bool pickForFCSection;
+
     AlgorythmPerson *algorythmPerson;
     AlgorythmVerb *algorythmVerb;
     AlgorythmNoun *algorythmNoun;
     AlgorythmSeparator *algorythmSeparator;
+    AlgorythmWord *algorythmWord;
 };
 
 #endif // SENTENCESCHEME

@@ -83,6 +83,9 @@ void Apperiance::defineFont(){
 
     fontComicSans_15.setFamily("comic sans");
     fontComicSans_15.setPointSizeF(15);
+
+    fontComicSans_13.setFamily("comic sans");
+    fontComicSans_13.setPointSizeF(13);
 }
 
 void Apperiance::definePalette()
