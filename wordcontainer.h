@@ -33,13 +33,23 @@ public:
     void setPos(const QPointF & pos);
     void setNextContainerPositionInSentenceArea(QPointF *point);
     void setIndexOnSentenceArea(int index);
+    void setIsChecked(bool isItemChecked);
+    void setSectionItBelongsTo(QString section);
+
+    void sendContainerFromOrToSentenceArea();
+    void switchTimers();
 
     double getWidthOfRect();
     double getHeightOfRect();
     QPointF getStartPosition();
     QString getTextFromWord();
     bool getIsOnSentenceArea();
+    bool getIfIsChecked();
     int getIndexOnSentenceArea();
+    Word *getWordPointerOfWordContainer();
+
+    QString sectionItBelongsTo;
+
 public slots:
     void sendToSentenceArea();
     void move();
@@ -62,6 +72,7 @@ private:
     QPointF startPosition, *nextContainerPositionInSentenceArea;
     bool isOnSentenceArea = false;
     bool isItDisplayingTranslation = false;
+    bool isChecked = false;
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };

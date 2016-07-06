@@ -14,19 +14,22 @@ public:
     FlashCardSectionLogic();
 
     void setSceneFromParent(CustomScene *myScene);
+    void setConnections(WordContainer *wcToConnect);
 
     void setContainersOnScene();
-    void setFlashCards(int rowNumber, int columnNumber, Sentence *sentence, int count);
-    void setRow(int rowNumber, Sentence *sentence);
-    void setColumn(int rowIndex, Sentence *sentence);
+    void setWordsDefinition(Sentence *sentence);
     void setRandomListOrder(QList<Word *> list);
-    void setALoop(QList<Word *> list);
-    void setConnections(Word *myWord);
-
+    void setRow(int rowNumber, Sentence *sentence);
+    void setColumn(int rowIndex);
+    void setFlashCards(int rowNumber, int columnNumber);
+    void setVisibilityOfWordContainers(WordContainer *wcGerman, WordContainer *wcTranslation);
+    void setUncheckWordContainers(WordContainer *wcGerman, WordContainer *wcTranslation);
+    void setCompareClickedWordContainers();
 
 public slots:
     void setNewSession();
-    void setColorOfWordContainer(WordContainer *wordContainer);
+    void setVisibilityAfterClick(WordContainer *wordContainerClicked);
+
 signals:
 
 private:
@@ -35,6 +38,7 @@ private:
     QList<Word*> listOfWordsTranslation;
     QList<Word*> listOfWordsGerman;
     QList<Word*> listOfWordsRandomOrder;
+    QList<WordContainer*> listOfContainersToCompare;
     int count = 0;
     int countWordIndex = 0;
     int indexToPick;

@@ -61,7 +61,7 @@ private:
     int numberOfSubsentenceses = 0;
     int numberOfExtraWords = 0;
     int count = 0;
-    int numberFCWordsToPick = 48;
+    int numberFCWordsToPick = 40;
     bool addingExtraWords = false;
     QString typeOfSentence;
     int correspondingSubjectPerson=8;

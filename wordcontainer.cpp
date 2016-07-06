@@ -31,22 +31,16 @@ WordContainer::WordContainer(int width, int height, Word *myWord, bool isItTrans
 
 void WordContainer::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (isOnSentenceArea == false){
-        setDistanceAndDirectionToMoveToArea();
-        emit clicked(this);
+    if (sectionItBelongsTo == "GSSection")
+    {
+        sendContainerFromOrToSentenceArea();
+        switchTimers();
     }
-    else {
-        setDistanceAndDirectionToMoveFromArea();
+    else if (sectionItBelongsTo == "FCSection")
+    {
         emit clicked(this);
-        //emit removeGapInSpace(this);
     }
 
-    if (timer->isActive() == false){
-        timer->start(10);
-    }
-    else {
-        timer->stop();
-    }
 }
 
 void WordContainer::setTimersAndConnections()
@@ -142,9 +136,19 @@ bool WordContainer::getIsOnSentenceArea(){
     return isOnSentenceArea;
 }
 
+bool WordContainer::getIfIsChecked()
+{
+    return isChecked;
+}
+
 int WordContainer::getIndexOnSentenceArea()
 {
     return indexOnSentenceArea;
+}
+
+Word *WordContainer::getWordPointerOfWordContainer()
+{
+    return text;
 }
 
 void WordContainer::sendToStartArea()
@@ -190,6 +194,38 @@ void WordContainer::setNextContainerPositionInSentenceArea(QPointF *point)
 void WordContainer::setIndexOnSentenceArea(int index)
 {
     indexOnSentenceArea = index;
+}
+
+void WordContainer::setIsChecked(bool isItemChecked)
+{
+    isChecked = isItemChecked;
+}
+
+void WordContainer::setSectionItBelongsTo(QString section)
+{
+    sectionItBelongsTo = section;
+}
+
+void WordContainer::sendContainerFromOrToSentenceArea()
+{
+    if (isOnSentenceArea == false){
+        setDistanceAndDirectionToMoveToArea();
+        emit clicked(this);
+    }
+    else {
+        setDistanceAndDirectionToMoveFromArea();
+        emit clicked(this);
+    }
+}
+
+void WordContainer::switchTimers()
+{
+    if (timer->isActive() == false){
+        timer->start(10);
+    }
+    else {
+        timer->stop();
+    }
 }
 
 void WordContainer::sendToSentenceArea()

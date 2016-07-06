@@ -129,6 +129,7 @@ void GuessSentenceSectionLogic::setColumn(int y, Sentence *sentence)
 void GuessSentenceSectionLogic::defineWordContainers(int x, int y, Sentence *sentence)
 {
     WordContainer *wordContainer = new WordContainer(sentence->sentenceDataPointer->getListOfWordsInRandomOrder()[x]);
+    wordContainer->setSectionItBelongsTo("GSSection");
     putWordContainerOnBoard(wordContainer, y);
     endOfWordContainer += wordContainer->boundingRect().width() +20;
     wordContainersList.append(wordContainer);
