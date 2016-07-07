@@ -1,19 +1,16 @@
 #include "algorythmverb.h"
 #include <stdlib.h>
 
-AlgorythmVerb::AlgorythmVerb()
-{
-    setData();
-}
-
 AlgorythmVerb::AlgorythmVerb(int subjectIndex)
 {
+    //sets verb depending on subject ( noun)
     setIndexBySubjectIndex(subjectIndex);
     setData();
 }
 
 void AlgorythmVerb::setData()
 {
+    //steps to define verb and translation
     setVariables();
     defineVerb();
     defineTranslation();
@@ -26,6 +23,7 @@ void AlgorythmVerb::setVariables()
 
 void AlgorythmVerb::defineVerb()
 {
+    //steps to define verb
     setVerbSQLTable();
     setVerbSQLColumn();
     setVerbRowIndex(28);
@@ -34,11 +32,14 @@ void AlgorythmVerb::defineVerb()
 
 void AlgorythmVerb::setVerbSQLTable()
 {
+    //sets SQL table to pick from
     verbTable = "VERB_ANIMALS";
 }
 
 void AlgorythmVerb::setVerbSQLColumn()
 {
+    //sets SQL column to pick from depending on subject ( I, you, he, they etc.)
+    //sets isVerbThirdPerson true when we need english translation with "s" at the end ( for third person)
     switch (correspondingSubjectIndex) {
     case 0: verbColumn = "ich";
         break;
@@ -66,22 +67,26 @@ void AlgorythmVerb::setVerbSQLColumn()
 
 void AlgorythmVerb::setVerbRowIndex(int indexMax)
 {
+    //sets SQL row index to pick from
     verbIndex = rand()%indexMax;
 }
 
 void AlgorythmVerb::setVerbQuery()
 {
+    //sets final verb query
     querySQLVerb = "SELECT " + verbColumn + " FROM " + verbTable;
 }
 
 void AlgorythmVerb::defineTranslation()
 {
+    //steps to define translation
     setVerbTranslationSQLColumn();
     setVerbTranslationQuery();
 }
 
 void AlgorythmVerb::setVerbTranslationSQLColumn()
 {
+    //sets SQL column of translation to pick from, depends on if it's third person or not
     if (isVerbThirdPerson == true){
         verbTranslationColumn = "translation3pr";
     }
@@ -92,8 +97,11 @@ void AlgorythmVerb::setVerbTranslationSQLColumn()
 
 void AlgorythmVerb::setVerbTranslationQuery()
 {
+    //sets finall translation query
     querySQLVerbTranslation = "SELECT " + verbTranslationColumn + " FROM " + verbTable;
 }
+
+//GETTERS
 
 QString AlgorythmVerb::getQuery()
 {

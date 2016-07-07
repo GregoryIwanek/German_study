@@ -25,11 +25,13 @@ public:
     void setVisibilityOfWordContainers(WordContainer *wcGerman, WordContainer *wcTranslation);
     void setUncheckWordContainers(WordContainer *wcGerman, WordContainer *wcTranslation);
     void setCompareClickedWordContainers();
+    void setWordsGermanWordsTranslation();
+    void setClearWordsGermanWordsTranslation();
 
 public slots:
     void setNewSession();
     void setVisibilityAfterClick(WordContainer *wordContainerClicked);
-
+    void resetSession();
 signals:
 
 private:
@@ -39,9 +41,12 @@ private:
     QList<Word*> listOfWordsGerman;
     QList<Word*> listOfWordsRandomOrder;
     QList<WordContainer*> listOfContainersToCompare;
+    QList<WordContainer*> listOfContainersOnScene;
+    QString wordOneGerman, wordOneTranslation, wordTwoGerman, wordTwoTranslation;
+    bool isSessionInProgress = false;
     int count = 0;
     int countWordIndex = 0;
-    int indexToPick;
+    int indexToPick = 0;
     int numberOfPickedWordsToRandomList = 0;
 };
 

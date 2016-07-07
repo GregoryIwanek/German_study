@@ -6,10 +6,7 @@
 #include <QSqlQuery>
 class AlgorythmNoun{
 public:
-    AlgorythmNoun();
-    AlgorythmNoun(bool isSubject);
-
-    void setInputFromSentenceScheme();
+    AlgorythmNoun(bool isNounASubject);
 
     void setData();
     void defineVariables();

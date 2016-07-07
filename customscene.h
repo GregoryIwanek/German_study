@@ -8,8 +8,8 @@ class CustomScene:public QGraphicsScene{
     Q_OBJECT
 public:
     CustomScene(QObject *parent=0);
-    int getGridSize();
     QPointF getGridPoint(QPointF point);
+    int getGridSize();
 private:
     int gridSize;
 protected:

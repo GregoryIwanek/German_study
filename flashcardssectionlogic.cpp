@@ -27,19 +27,25 @@ void FlashCardSectionLogic::setContainersOnScene()
 
 void FlashCardSectionLogic::setNewSession()
 {
-    Sentence *sentence = new Sentence(QString("FCSection"), QString("FC_ANIMALS"));
+    /*Sets new session of the flash card game-> only if there are no flash cards on scene*/
+    if (isSessionInProgress == false)
+    {
+        isSessionInProgress = true;
 
-    setWordsDefinition(sentence);
-    setRandomListOrder(listOfWords);
+        Sentence *sentence = new Sentence(QString("FCSection"), QString("FC_ANIMALS"));
 
-    setRow(5,sentence);
+        setWordsDefinition(sentence);
+        setRandomListOrder(listOfWords);
+
+        setRow(4,sentence);
+    }
 }
 
 void FlashCardSectionLogic::setWordsDefinition(Sentence *sentence)
 {   /*Sets definition of words and their translations to display in WordContainers*/
 
-    //24 times assign word and word translation to list ( for 48 WordContainers which will store these words)
-    for (auto i=0; i<20; i++)
+    //16 times assign word and word translation to list ( for 32 WordContainers which will store these words)
+    for (auto i=0; i<16; i++)
     {
         //define word as a word from given Sentence ( which already has 24 words and their translations)
         Word *wordGerman = new Word();
@@ -60,13 +66,14 @@ void FlashCardSectionLogic::setWordsDefinition(Sentence *sentence)
         listOfWords.append(wordTranslation);
 
         //is this necessary??????????????????
-        ++count;
+        //++count;
+        //let's leave it for now, but to remove probably
     }
 }
 
 void FlashCardSectionLogic::setRandomListOrder(QList<Word *> list)
 {
-    /*Sets words defined in listOfWords in random order */
+    /*Put words defined in listOfWords in random order */
     do{
         indexToPick = rand()%list.size();
         if (list[indexToPick]->getIfPickedToRandomListOfWords() == false)
@@ -98,9 +105,9 @@ void FlashCardSectionLogic::setColumn(int rowIndex)
 void FlashCardSectionLogic::setFlashCards(int rowNumber, int columnNumber)
 {
     //Defines WordContainers and Words in them
-    WordContainer *wcGermanWord = new WordContainer(140,80,listOfWordsRandomOrder[2*countWordIndex],
+    WordContainer *wcGermanWord = new WordContainer(140,100,listOfWordsRandomOrder[2*countWordIndex],
             listOfWordsRandomOrder[2*countWordIndex]->getIfIsTranslation());
-    WordContainer *wcGermanTranslation = new WordContainer(140,80,listOfWordsRandomOrder[2*countWordIndex+1],
+    WordContainer *wcGermanTranslation = new WordContainer(140,100,listOfWordsRandomOrder[2*countWordIndex+1],
             listOfWordsRandomOrder[2*countWordIndex+1]->getIfIsTranslation());
 
     //define sections which this containers belongs to
@@ -110,12 +117,16 @@ void FlashCardSectionLogic::setFlashCards(int rowNumber, int columnNumber)
     //position them on scene
     scene->addItem(wcGermanWord);
     scene->addItem(wcGermanTranslation);
-    wcGermanWord->setPos(QPointF(40+(2*rowNumber+1)*140, 40+columnNumber*80));
-    wcGermanTranslation->setPos(QPointF(40+rowNumber*280, 40+columnNumber*80));
+    wcGermanWord->setPos(QPointF(40+(2*rowNumber+1)*140, 40+columnNumber*100));
+    wcGermanTranslation->setPos(QPointF(40+rowNumber*280, 40+columnNumber*100));
 
     //set connections of WordContainers
     setConnections(wcGermanWord);
     setConnections(wcGermanTranslation);
+
+    //add them to list
+    listOfContainersOnScene.append(wcGermanWord);
+    listOfContainersOnScene.append(wcGermanTranslation);
 
     //make text invisible at start
     setVisibilityOfWordContainers(wcGermanWord, wcGermanTranslation);
@@ -152,30 +163,53 @@ void FlashCardSectionLogic::setVisibilityAfterClick(WordContainer *wordContainer
     else if (listOfContainersToCompare.size() == 2)
     {
         /*set text invisible and uncheck ( when WordContainers are different)
-        -> this condition is triggered after we show 2x text, on third click*/
+        -> this condition is triggered after we show 2x text, on third double click*/
         setVisibilityOfWordContainers(listOfContainersToCompare[0], listOfContainersToCompare[1]);
         setUncheckWordContainers(listOfContainersToCompare[0], listOfContainersToCompare[1]);
         listOfContainersToCompare[0]->setColor(apperiance->brushDarkGray);
         listOfContainersToCompare[1]->setColor(apperiance->brushDarkGray);
 
-        //clear list from objects after job is done
+        //clear list from objects after job is done and clear QStrings
         listOfContainersToCompare.clear();
+        setClearWordsGermanWordsTranslation();
     }
 
     //triggered after we shown texts of two WordContainers
     if (listOfContainersToCompare.size() == 2)
     {
+        setWordsGermanWordsTranslation();
         setCompareClickedWordContainers();
     }
+}
+
+void FlashCardSectionLogic::resetSession()
+{
+    //resets all variables and removes WordContainers from scene
+    for (auto i=0; i<listOfContainersOnScene.size(); ++i)
+    {
+        this->scene->removeItem(listOfContainersOnScene[i]);
+    }
+    listOfWords.clear();
+    listOfWordsTranslation.clear();
+    listOfWordsGerman.clear();
+    listOfWordsRandomOrder.clear();
+    listOfContainersToCompare.clear();
+    listOfContainersOnScene.clear();
+
+    setClearWordsGermanWordsTranslation();
+
+    count = 0;
+    countWordIndex = 0;
+    indexToPick = 0;
+    numberOfPickedWordsToRandomList = 0;
+
+    isSessionInProgress = false;
 }
 
 void FlashCardSectionLogic::setCompareClickedWordContainers()
 {
     /*compare if word and translation of clicked 2 WordContainers are same*/
-    if (listOfContainersToCompare[0]->getWordPointerOfWordContainer()->getText(false) ==
-            listOfContainersToCompare[1]->getWordPointerOfWordContainer()->getText(false) &&
-            (listOfContainersToCompare[0]->getWordPointerOfWordContainer()->getText(true) ==
-             listOfContainersToCompare[1]->getWordPointerOfWordContainer()->getText(true)))
+    if (wordOneGerman == wordTwoGerman && wordOneTranslation == wordTwoTranslation)
     {
         //set green color if true
         listOfContainersToCompare[0]->setColor(apperiance->brushGreen);
@@ -190,4 +224,21 @@ void FlashCardSectionLogic::setCompareClickedWordContainers()
         listOfContainersToCompare[0]->setColor(apperiance->brushRed);
         listOfContainersToCompare[1]->setColor(apperiance->brushRed);
     }
+}
+
+void FlashCardSectionLogic::setWordsGermanWordsTranslation()
+{
+    //just to make condition "wordOneGerman == wordTwoGerman && wordOneTranslation == wordTwoTranslation" shorter
+    wordOneGerman = listOfContainersToCompare[0]->getWordPointerOfWordContainer()->getText(false);
+    wordTwoGerman = listOfContainersToCompare[1]->getWordPointerOfWordContainer()->getText(false);
+    wordOneTranslation = listOfContainersToCompare[0]->getWordPointerOfWordContainer()->getText(true);
+    wordTwoTranslation = listOfContainersToCompare[1]->getWordPointerOfWordContainer()->getText(true);
+}
+
+void FlashCardSectionLogic::setClearWordsGermanWordsTranslation()
+{
+    wordOneGerman.clear();
+    wordOneTranslation.clear();
+    wordTwoGerman.clear();
+    wordTwoTranslation.clear();
 }

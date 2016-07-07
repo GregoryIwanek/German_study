@@ -1,8 +1,9 @@
 #include "apperiance.h"
 #include "wordcontainer.h"
 
-Apperiance::Apperiance(){
-
+Apperiance::Apperiance()
+{
+    //steps to define apperiance components which can be used in this application
     defineBrush();
     definePen();
     defineFont();
@@ -10,7 +11,9 @@ Apperiance::Apperiance(){
     definePixmap();
 }
 
-void Apperiance::defineBrush(){
+void Apperiance::defineBrush()
+{
+    //definition of different brushesh
     brushWhite.setStyle(Qt::SolidPattern);
     brushWhite.setColor(Qt::white);
 
@@ -68,16 +71,21 @@ void Apperiance::defineBrush(){
     brushNULL.setColor(Qt::transparent);
     brushNULL.setStyle(Qt::SolidPattern);
 
+    //definition of background texture ( german flag picture)
     brushMainMenuTexture.setTexture(QPixmap(":/graphics/graphics/mainMenu.jpg"));
     brushMainMenuTexture.texture().scaled(QSize(1200,600),Qt::IgnoreAspectRatio);
 }
 
-void Apperiance::definePen(){
+void Apperiance::definePen()
+{
+    //definition of pen to write
     blackPen.setColor(Qt::black);
     blackPen.setStyle(Qt::SolidLine);
 }
 
-void Apperiance::defineFont(){
+void Apperiance::defineFont()
+{
+    //definition of used fonts of texts
     fontComicSans.setFamily("comic sans");
     fontComicSans.setPointSizeF(20);
 
@@ -90,13 +98,17 @@ void Apperiance::defineFont(){
 
 void Apperiance::definePalette()
 {
+    //definition of palette
     paletteTransparent.setColor(QPalette::Base, Qt::transparent);
 }
 
 void Apperiance::definePixmap()
 {
+    //definition of pixmap with german flag picture
     pixmapHintImage.load(":/graphics/graphics/articles.jpg");
 }
+
+//GETTERS
 
 QBrush Apperiance::getBrush(QBrush brushToGet){
 

@@ -5,7 +5,6 @@
 class AlgorythmVerb:public QObject{
     Q_OBJECT
 public:
-    AlgorythmVerb();
     AlgorythmVerb(int subjectIndex);
 
     void setData();

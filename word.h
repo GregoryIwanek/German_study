@@ -15,7 +15,6 @@ public:
 
     void defineInstance(QGraphicsItem *parent, QFont font, QString myQuery, int wordIndex,
                         QString translationQuery, int translationIndex);
-    void defineInstance(QGraphicsItem *parent, QFont font, QString myQuery);
     void setText(QString text, bool isItTranslation);
     void setWordFont(QFont font);
     void setVariablesSizeOfText();

@@ -12,6 +12,8 @@ Word::Word()
 
 Word::Word(const Word &copyWord)
 {
+    /*copy constructor for use in FCSection ( we need copy of pointer with same values
+     * to put as a word inside WordContainer (one WC with germanWord and one with englishWord, both Words store same data)*/
     word = copyWord.word;
     translation = copyWord.translation;
     roleInSentence = copyWord.roleInSentence;
@@ -25,6 +27,7 @@ Word::Word(const Word &copyWord)
 void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery, int wordIndex,
                           QString translationQuery, int translationIndex)
 {
+    //definition of Word instance with all data ( query, index, font etc)
     setParentItem(parent);
     setRoleInSentence(myQuery);
     pickWordFromSQL(myQuery, wordIndex, false);
@@ -32,16 +35,9 @@ void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery, in
     setWordFont(font);
 }
 
-void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery)
+void Word::setText(QString text, bool isItTranslation)
 {
-    setParentItem(parent);
-    setRoleInSentence(myQuery);
-    pickWordFromSQL(myQuery);
-    setWordFont(font);
-}
-
-void Word::setText(QString text, bool isItTranslation){
-
+    //sets text to display depending on if Word is about to show translation or german word
     if (isItTranslation == false){
         word = text;
         setPlainText(text);
@@ -52,21 +48,27 @@ void Word::setText(QString text, bool isItTranslation){
         setPlainText(translation);
     }
 
+    //update size od text ( height, width), so later we can positon that text inside WordContainer
     setVariablesSizeOfText();
 }
 
-void Word::setWordFont(QFont font){
+void Word::setWordFont(QFont font)
+{
+    //sets new font and update size of text
     setFont(font);
     setVariablesSizeOfText();
 }
 
-void Word::setVariablesSizeOfText(){
+void Word::setVariablesSizeOfText()
+{
+    //updates size of text for later use
     setWidthOfText();
     setHeightOfText();
 }
 
 void Word::setWidthOfText()
 {
+    //updates width of text
     if (this->boundingRect().width() > 0){
         widthOfText = this->boundingRect().width();
     }
@@ -75,6 +77,7 @@ void Word::setWidthOfText()
 
 void Word::setHeightOfText()
 {
+    //updates height of text
     if (this->boundingRect().height() > 0){
         heightOfText = this->boundingRect().height();
     }
@@ -83,11 +86,14 @@ void Word::setHeightOfText()
 
 void Word::setRoleInSentence(QString role)
 {
+    //is that necessery???????????????????
     roleInSentence = role;
+    //to investigation
 }
 
 void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)
 {
+    //connects to datebase SQL and picks word from there by using given query and if word will be translation or german word
     if (isItTranslation == false){
         query.exec(myQuery);
         while (query.seek(index)) {
@@ -120,8 +126,10 @@ void Word::pickExtraInfoFromSQL(QString extraQuery, int index)
 
 void Word::saveWordToSQL()
 {
-
+//to do later
 }
+
+//GETTERS
 
 double Word::getWidthOfText()
 {

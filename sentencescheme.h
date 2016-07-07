@@ -21,7 +21,6 @@ public:
     void setDefineExtraWords();
     void setExtraWords();
     void setVariables();
-    int getNumberOfExtraWords();
     void setConnections();
 
     void setTypeOfSentence(bool complexSentenceAllowed = true);
@@ -31,6 +30,7 @@ public:
     void setExpression();
     void setComplexSentence();
     void setFlashCardList(QString categoryOfWords);
+    void setRemoveFromListsIfSameIndex();
 
     void setPersonAlgorythm();
     void setVerbAlgorythm();
@@ -49,6 +49,8 @@ public:
     QList<int> getIndexList(bool returnIndexList);
     void increaseCount();
     int getNumberOfWords();
+    int getNumberOfExtraWords();
+    bool checkIfIndexAlreadyPicked();
 public slots:
     void setCorrespondingSubjectSlot(int personIndex);
 signals:
@@ -61,12 +63,13 @@ private:
     int numberOfSubsentenceses = 0;
     int numberOfExtraWords = 0;
     int count = 0;
-    int numberFCWordsToPick = 40;
+    int numberFCWordsToPick = 16;
     bool addingExtraWords = false;
     QString typeOfSentence;
     int correspondingSubjectPerson=8;
 
     bool pickForFCSection;
+    bool isIndexSQLAlreadyChosen = false;
 
     AlgorythmPerson *algorythmPerson;
     AlgorythmVerb *algorythmVerb;

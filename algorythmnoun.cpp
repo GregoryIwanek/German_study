@@ -2,25 +2,15 @@
 #include <stdlib.h>
 #include <QDebug>
 
-AlgorythmNoun::AlgorythmNoun()
+AlgorythmNoun::AlgorythmNoun(bool isNounASubject)
 {
-    setIfIsSubject();
+    setIfIsSubject(isNounASubject);
     setData();
-}
-
-AlgorythmNoun::AlgorythmNoun(bool isSubject)
-{
-    setIfIsSubject(isSubject);
-    setData();
-}
-
-void AlgorythmNoun::setInputFromSentenceScheme()
-{
-
 }
 
 void AlgorythmNoun::setData()
 {
+    //series of steps to define every aspect of noun to pick from SQL
     defineVariables();
     defineNounArticle();
     defineNoun();
@@ -29,6 +19,7 @@ void AlgorythmNoun::setData()
 
 void AlgorythmNoun::defineVariables()
 {
+    //series of steps to set all possible variables of noun
     setGrammarCase();
     setIfIsSingular();
     setIfIsDefined();
@@ -37,11 +28,13 @@ void AlgorythmNoun::defineVariables()
 
 void AlgorythmNoun::setIfIsSubject(bool isNounASubject)
 {
+    //sets if noun is a subject of the sentence ex. the CAT drinks milk
         isSentenceSubject = isNounASubject;
 }
 
 void AlgorythmNoun::setGrammarCase()
 {
+    //sets grammar case of the noun ( in german-> 4 cases, like in Polish)
     if (isSentenceSubject == true){
         nounCase = "nominativ";
     }
@@ -50,6 +43,7 @@ void AlgorythmNoun::setGrammarCase()
 
 void AlgorythmNoun::setIfIsSingular()
 {
+    //define if noun is singular or plurar
     if (rand()%2 == 1){
         isSingular = true;
     }
@@ -58,6 +52,7 @@ void AlgorythmNoun::setIfIsSingular()
 
 void AlgorythmNoun::setIfIsDefined()
 {
+    //define if is defined or not ( difference between a/an/the and ein/eine/einen/der/die/das)
     if (rand()%2 == 1){
         isDefined = true;
     }
@@ -66,7 +61,7 @@ void AlgorythmNoun::setIfIsDefined()
 
 void AlgorythmNoun::setSubjectIndex()
 {
-    //only is noun is a subject in a sentence
+    //only if noun is a subject in the sentence!!!
     //sets index of row in SQL base, so we can pick correct version of a verb
     if (isSentenceSubject == true){
         if (isSingular == true){
@@ -78,6 +73,7 @@ void AlgorythmNoun::setSubjectIndex()
 
 void AlgorythmNoun::defineNounArticle()
 {
+    //series of steps to define article (a/an/the ein/eine...) of the noun
     setArticleSQLTable();
     setArticleIfSingular();
     setArticleIfDefined();
@@ -87,11 +83,13 @@ void AlgorythmNoun::defineNounArticle()
 
 void AlgorythmNoun::setArticleSQLTable()
 {
+    //sets SQL table to pick from
     articleTable = "ARTICLE";
 }
 
 void AlgorythmNoun::setArticleIfSingular()
 {
+    //sets first part of article SQL column depending on if it's for singular word or plurar
     int article;
     article = rand()%3;
 
@@ -116,6 +114,7 @@ void AlgorythmNoun::setArticleIfSingular()
 
 void AlgorythmNoun::setArticleIfDefined()
 {
+    //sets second part of SQL column to pick from, depending on if it's DEFINED word or UNDEFINED
     if (isDefined == true){
         nounArticleColumn.append("defined");
         setArticleAndNounGender(NULL);
@@ -165,7 +164,7 @@ void AlgorythmNoun::setArticleSQLIndex()
 
 void AlgorythmNoun::setArticleQuery()
 {
-    //create query only when case is not true, becouse for PLURAR UNDEFINED nouns in german have NO ARTICLE, so we don't pick it
+    //create query only when case is not true, becouse for PLURAR UNDEFINED nouns in german there are have NO ARTICLE, so we don't pick it
     if (nounArticleColumn != "plurar_undefined"){
         querySQLArticle = "SELECT " + nounArticleColumn +" FROM " + articleTable;
     }
@@ -174,6 +173,7 @@ void AlgorythmNoun::setArticleQuery()
 
 void AlgorythmNoun::defineNoun()
 {
+    //series of steps to define noun
     setNounSQLTable();
     setNounColumn();
     setQueryForPickingIndex();
@@ -184,11 +184,13 @@ void AlgorythmNoun::defineNoun()
 
 void AlgorythmNoun::setNounSQLTable()
 {
+    //sets noun SQL table to pick from
     nounTable = "NOUNS";
 }
 
 void AlgorythmNoun::setNounColumn()
 {
+    //sets column in SQL to pick from depending on if word is plurar/singular
     if (nounArticleColumn.contains("plurar")) {
         nounColumn = "plurarGerman";
     }
@@ -199,11 +201,13 @@ void AlgorythmNoun::setNounColumn()
 
 void AlgorythmNoun::setQueryForPickingIndex()
 {
+    //sets query for picking index which holds corresponding correct nouns to our case/gender/number etc.
     querySQLNoun = "SELECT rowid FROM " + nounTable + " WHERE genderSingular = '" + nounGender + "'";
 }
 
 void AlgorythmNoun::setCorrespondingIndexResultsFromDataBase()
 {
+    //picks correct indexs and save them in a list for later use
     QString result;
     query.exec(querySQLNoun);
     while (query.next()) {
@@ -214,7 +218,7 @@ void AlgorythmNoun::setCorrespondingIndexResultsFromDataBase()
 
 void AlgorythmNoun::setNounSQLIndex()
 {
-    //picking random word with correct grammar gender ( article and noun gender)
+    //picking random word wich has correct grammar, gender and number ( article and noun gender)
     int random = rand()%indexListOfNouns.size();
     nounIndex = indexListOfNouns[random];
 }
@@ -222,17 +226,20 @@ void AlgorythmNoun::setNounSQLIndex()
 void AlgorythmNoun::setNounQuery()
 {
     //we don't add condition "WHERE gender", beacouse we already have index with correct result from Table
+    //we overide querySQLNoun QString here and define final query to use outside that class
     querySQLNoun = "SELECT " + nounColumn + " FROM " + nounTable;
 }
 
 void AlgorythmNoun::defineTranslations()
 {
+    //steps to define translation
     setArticleTranslationQuery();
     setNounTranslationQuery();
 }
 
 void AlgorythmNoun::setArticleTranslationQuery()
 {
+    //define query for translation depending on if noun is defined/singular
     if (isDefined == true){
         querySQLArticleTranslation = "SELECT articleDefined FROM " + nounTable;
     }
@@ -244,8 +251,9 @@ void AlgorythmNoun::setArticleTranslationQuery()
 
 void AlgorythmNoun::setNounTranslationQuery()
 {
-    //first case ( combine english article and english word to get one expression from two,
-    //beacouse in german there is no article ( just word)
+    //sets final query for translation
+    /*first case ( combine english article and english word to get one expression from two words,
+    beacouse in german there is no article for plurar undefined( just a single word)*/
     if (isSingular != true && isDefined != true){
         querySQLNounTranslation = "SELECT articleUndefined || ' ' || plurarEnglish FROM " + nounTable;
         isQueryArticleNounCombined = true;
@@ -257,6 +265,8 @@ void AlgorythmNoun::setNounTranslationQuery()
         querySQLNounTranslation = "SELECT singularEnglish FROM " + nounTable;
     }
 }
+
+//GETTERS
 
 QString AlgorythmNoun::getQueryArticle()
 {

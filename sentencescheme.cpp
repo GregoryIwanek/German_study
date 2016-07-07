@@ -149,7 +149,7 @@ void SentenceScheme::setVerbAlgorythm()
 
 void SentenceScheme::setNounAlgorythm()
 {
-    algorythmNoun = new AlgorythmNoun();
+    algorythmNoun = new AlgorythmNoun(false);
     if (algorythmNoun->getQueryArticle() != NULL){
         setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),
                      algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());
@@ -163,7 +163,7 @@ void SentenceScheme::setNounAlgorythmAsSubject()
 {
     algorythmNoun = new AlgorythmNoun(true);
 
-    setCorrespondingSubjectSlot(3);
+    setCorrespondingSubjectSlot(algorythmNoun->getSubjectIndex());
 
     if (algorythmNoun->getQueryArticle() != NULL){
         setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),
@@ -276,14 +276,47 @@ void SentenceScheme::setExtraWords()
 void SentenceScheme::setFlashCardList(QString categoryOfWords)
 {
     //JUST FOR NOW!!! ToDo later-> create tables in SQLite speciefed for FCSection
-    for (auto i=0; i<numberFCWordsToPick; ++i){
+    for (auto i=0; i<numberFCWordsToPick; ++i)
+    {
         setWordAlgorythm(categoryOfWords);
+
+        checkIfIndexAlreadyPicked();
+
+        if (isIndexSQLAlreadyChosen == true) --i;
+
+        setRemoveFromListsIfSameIndex();
+    }
+}
+
+void SentenceScheme::setRemoveFromListsIfSameIndex()
+{
+    if (isIndexSQLAlreadyChosen == true)
+    {
+        querySQLList.removeLast();
+        querySQLTranslationList.removeLast();
+        querySQLGenderList.removeLast();
+        indexList.removeLast();
+        indexTranslationList.removeLast();
+
+        isIndexSQLAlreadyChosen = false;
+        --count;
     }
 }
 
 int SentenceScheme::getNumberOfExtraWords()
 {
     return numberOfExtraWords;
+}
+
+bool SentenceScheme::checkIfIndexAlreadyPicked()
+{
+    for (auto i=0, n=indexList.size(); i<n-1; ++i)
+    {
+        if (indexList.last() == indexList[i] && indexList.size() != 1)
+        {
+            isIndexSQLAlreadyChosen = true;
+        }
+    }
 }
 
 QList<int> SentenceScheme::getIndexList(bool returnIndexList)
