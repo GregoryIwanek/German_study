@@ -5,7 +5,7 @@
 
 SentenceScheme::SentenceScheme()
 {
-
+    
 }
 
 SentenceScheme::SentenceScheme(QString sectionToPickFor, QString categoryOfWords)
@@ -15,6 +15,7 @@ SentenceScheme::SentenceScheme(QString sectionToPickFor, QString categoryOfWords
 
 void SentenceScheme::setBasicData(QString sectionToPickFor, QString categoryOfWords)
 {
+    //sets section to pick for
     if (sectionToPickFor == "GSSection")
     {
         pickForFCSection = false;
@@ -29,6 +30,7 @@ void SentenceScheme::setBasicData(QString sectionToPickFor, QString categoryOfWo
 
 void SentenceScheme::setDataForGuessSentence()
 {
+    //steps to set data for GSSection
     setConnections();
     setVariables();
     setTypeOfSentence(true);
@@ -37,6 +39,7 @@ void SentenceScheme::setDataForGuessSentence()
 
 void SentenceScheme::setDataForFlashCard(QString categoryOfWords)
 {
+    //steps to set data for FCSection
     setConnections();
     setVariables();
     setFlashCardList(categoryOfWords);
@@ -44,11 +47,13 @@ void SentenceScheme::setDataForFlashCard(QString categoryOfWords)
 
 void SentenceScheme::setConnections()
 {
+    //to do later
     //connect(algorythmPerson,SIGNAL(subjectType(int)),this,SLOT(setCorrespondingSubjectSlot(int)));
 }
 
 void SentenceScheme::setVariables()
 {
+    //sets default values of variables
     numberOfSubsentenceses = 1;
     numberOfExtraWords = 0;
     count=0;
@@ -56,6 +61,7 @@ void SentenceScheme::setVariables()
 
 void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 {
+    //sets type of sentence, random-> right now only complex and declarative sentence-> rest to do later
     int type;
     if (complexSentenceAllowed == true){
         type = qrand()%2;
@@ -90,8 +96,10 @@ void SentenceScheme::setTypeOfSentence(bool complexSentenceAllowed)
 
 void SentenceScheme::setDeclarativeSentence()
 {
+    //sets declarative sentence, when noun (cat, dog etc.) is subject or person (I, you etc.) is a subject
     int sequence = qrand()%2;
-    switch (sequence) {
+
+    switch (sequence){
     case 0:
         setPersonAlgorythm();
         setVerbAlgorythm();
@@ -106,27 +114,32 @@ void SentenceScheme::setDeclarativeSentence()
 
 void SentenceScheme::setNegativeSentence()
 {
+    //sets algorythm for person ( I, you, he etc.)-> creates data and SQL query to pick it form database
     setPersonAlgorythm();
 }
 
 void SentenceScheme::setInterrogativeSentence()
 {
-
+    //TODO later-> scheme of interrogative sentence (question)
 }
 
 void SentenceScheme::setExpression()
 {
-
+    //TODO later-> scheme of expression ( not sentence, ready expression like "Hi, how are you?"
 }
 
 void SentenceScheme::setComplexSentence()
 {
+    //steps to create scheme for sentence which is build from two or more subsentences
     numberOfSubsentenceses = rand()%2+1;
-
-    for (auto i=0, n=numberOfSubsentenceses; i<n; ++i){
+    
+    for (auto i=0, n=numberOfSubsentenceses; i<n; ++i)
+    {
         setTypeOfSentence(false);
-
-        if (i < numberOfSubsentenceses-1){
+        
+        //if there is a subsentence, create SQL query for separator ( like "and, or, although etc.)
+        if (i < numberOfSubsentenceses-1)
+        {
             setSeparatorAlgorythm();
         }
     }
@@ -134,48 +147,72 @@ void SentenceScheme::setComplexSentence()
 
 void SentenceScheme::setPersonAlgorythm()
 {
+    //sets final algorythm for person (I, you, he etc)
     algorythmPerson = new AlgorythmPerson();
+
+    //picks column in SQL table depending on grammar case of subject
     setCorrespondingSubjectSlot(algorythmPerson->getPersonIndex());
+
+    //sets queries to proper list ( german word query and translation query) for use in SentenceData
     setAlgorythm(algorythmPerson->getQuery(),algorythmPerson->getQueryTranslation(),algorythmPerson->getPersonIndex());
+
+    //increase count of words
     increaseCount();
 }
 
 void SentenceScheme::setVerbAlgorythm()
 {
+    //sets final verb algorythm
     algorythmVerb = new AlgorythmVerb(correspondingSubjectPerson);
+
+    //adds queries to lists and corresponding index lists
     setAlgorythm(algorythmVerb->getQuery(),algorythmVerb->getQueryTranslation(),algorythmVerb->getVerbIndex());
     increaseCount();
 }
 
 void SentenceScheme::setNounAlgorythm()
 {
+    //sets final noun algorythm when noun is not a subject of sentence
     algorythmNoun = new AlgorythmNoun(false);
+
+    //sets algorythm depending on if there is article in a word or not ( a, an, the, der die das etc.)->
+    //some words in translation have article while german words don't
     if (algorythmNoun->getQueryArticle() != NULL){
         setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),
                      algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());
         increaseCount();
     }
+
+    //sets algorythm while there is no article and assign queries to lists
     setAlgorythm(algorythmNoun->getQueryNoun(),algorythmNoun->getQueryNounTranslation(),algorythmNoun->getQueryNounRowIndex());
+
+    //incerase count of words
     increaseCount();
 }
 
 void SentenceScheme::setNounAlgorythmAsSubject()
 {
+    //sets final noun algorythm when it is subject of the sentence
     algorythmNoun = new AlgorythmNoun(true);
-
+    
+    //gets index which holds correct result
     setCorrespondingSubjectSlot(algorythmNoun->getSubjectIndex());
-
+    
+    //sets if there is an article in word
     if (algorythmNoun->getQueryArticle() != NULL){
         setAlgorythm(algorythmNoun->getQueryArticle(),algorythmNoun->getQueryArticleTranslation(),
                      algorythmNoun->getQueryArticleRowIndex(),algorythmNoun->getQueryNounRowIndex());
         increaseCount();
     }
+
+    //sets if there is no article in word
     setAlgorythm(algorythmNoun->getQueryNoun(),algorythmNoun->getQueryNounTranslation(),algorythmNoun->getQueryNounRowIndex());
     increaseCount();
 }
 
 void SentenceScheme::setSeparatorAlgorythm()
 {
+    //sets separator algorythm ( and, also, or etc)
     algorythmSeparator = new AlgorythmSeparator();
     setAlgorythm(algorythmSeparator->getQuery(),algorythmSeparator->getQueryTranslation(),algorythmSeparator->getSeparatorIndex());
     increaseCount();
@@ -183,6 +220,7 @@ void SentenceScheme::setSeparatorAlgorythm()
 
 void SentenceScheme::setWordAlgorythm(QString categoryOfWords)
 {
+    //sets algorythm for picking word for FCSection only, with translation
     algorythmWord = new AlgorythmWord(categoryOfWords);
     setAlgorythm(algorythmWord->getQuery(), algorythmWord->getQueryTranslation(),algorythmWord->getWordIndex());
     increaseCount();
@@ -190,16 +228,20 @@ void SentenceScheme::setWordAlgorythm(QString categoryOfWords)
 
 void SentenceScheme::setAlgorythm(QString queryWord, QString queryTranslation, int index, int indexTranslation)
 {
+    //assigns SQL queries and indexs to correct lists
     setQuerySQL(queryWord, NULL);
     setQuerySQL(NULL, queryTranslation);
     setIndex(index, indexTranslation);
-
-    //FCSection Extras
+    
+    //ONLY for FCSection-> picks extra information from SQL
     if (pickForFCSection == true)
     {
+        //gets gender of a word
         setGender(algorythmWord->getQueryGender());
     }
 }
+
+//APPENDS to list of queries
 
 void SentenceScheme::setGender(QString queryGender)
 {
@@ -217,13 +259,6 @@ void SentenceScheme::setQuerySQL(QString columnWord, QString columnTranslation)
     }
 }
 
-void SentenceScheme::incrementNumberOfExtraWords()
-{
-    if (addingExtraWords == true){
-        ++numberOfExtraWords;
-    }
-}
-
 void SentenceScheme::setIndex(int indexWord, int indexTranslation)
 {
     if (indexTranslation < 0){
@@ -236,6 +271,15 @@ void SentenceScheme::setIndex(int indexWord, int indexTranslation)
     }
 }
 
+void SentenceScheme::incrementNumberOfExtraWords()
+{
+    //increase number of extra words after we call for new extra word
+    if (addingExtraWords == true)
+    {
+        ++numberOfExtraWords;
+    }
+}
+
 void SentenceScheme::increaseCount()
 {
     ++count;
@@ -243,15 +287,18 @@ void SentenceScheme::increaseCount()
 
 void SentenceScheme::setDefineExtraWords()
 {
+    //steps to define algorythm for extra words in sentences for GSSection ( extra WordContainers with words)
     addingExtraWords = true;
-
-    for (auto i=0, n=numberOfSubsentenceses; i<n; ++i){
+    
+    for (auto i=0, n=numberOfSubsentenceses; i<n; ++i)
+    {
         setExtraWords();
     }
 }
 
 void SentenceScheme::setExtraWords()
 {
+    //sets extra word randomly
     int number = rand()%4;
     
     for (auto i=0, n=number; i<n; ++i){
@@ -279,17 +326,18 @@ void SentenceScheme::setFlashCardList(QString categoryOfWords)
     for (auto i=0; i<numberFCWordsToPick; ++i)
     {
         setWordAlgorythm(categoryOfWords);
-
+        
         checkIfIndexAlreadyPicked();
-
+        
         if (isIndexSQLAlreadyChosen == true) --i;
-
+        
         setRemoveFromListsIfSameIndex();
     }
 }
 
 void SentenceScheme::setRemoveFromListsIfSameIndex()
 {
+    //ONLY for FCSection-> if word was picked twice, remove it form lists and decrease count
     if (isIndexSQLAlreadyChosen == true)
     {
         querySQLList.removeLast();
@@ -297,19 +345,22 @@ void SentenceScheme::setRemoveFromListsIfSameIndex()
         querySQLGenderList.removeLast();
         indexList.removeLast();
         indexTranslationList.removeLast();
-
+        
         isIndexSQLAlreadyChosen = false;
         --count;
     }
 }
+
+//GETTERS
 
 int SentenceScheme::getNumberOfExtraWords()
 {
     return numberOfExtraWords;
 }
 
-bool SentenceScheme::checkIfIndexAlreadyPicked()
+void SentenceScheme::checkIfIndexAlreadyPicked()
 {
+    //checks if index was picked ( if there is same word two times on list)
     for (auto i=0, n=indexList.size(); i<n-1; ++i)
     {
         if (indexList.last() == indexList[i] && indexList.size() != 1)

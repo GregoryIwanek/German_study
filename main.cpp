@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     //connection to database
     QSqlDatabase myDB = QSqlDatabase::addDatabase("QSQLITE");
-    myDB.setDatabaseName("C:/Users/Grzegorz Iwanek/Desktop/Qt/German_Study/German.db");
+    myDB.setDatabaseName("German.db");
     myDB.open();
 
     //setting new instance of apperiance (holds items like brush, pen, texture etc.)

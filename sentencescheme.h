@@ -40,6 +40,7 @@ public:
     void setWordAlgorythm(QString categoryOfWords);
     void setAlgorythm(QString queryWord = NULL, QString queryTranslation = NULL, int index = 0, int indexTranslation = -1);
     void setGender(QString queryGender);
+    void checkIfIndexAlreadyPicked();
 
     void setQuerySQL(QString columnWord, QString columnTranslation);
     void incrementNumberOfExtraWords();
@@ -50,7 +51,6 @@ public:
     void increaseCount();
     int getNumberOfWords();
     int getNumberOfExtraWords();
-    bool checkIfIndexAlreadyPicked();
 public slots:
     void setCorrespondingSubjectSlot(int personIndex);
 signals:
