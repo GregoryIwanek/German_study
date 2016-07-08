@@ -16,7 +16,6 @@ public:
     void setSceneFromParent(CustomScene *myScene);
     void setConnections(WordContainer *wcToConnect);
 
-    void setContainersOnScene();
     void setWordsDefinition(Sentence *sentence);
     void setRandomListOrder(QList<Word *> list);
     void setRow(int rowNumber, Sentence *sentence);

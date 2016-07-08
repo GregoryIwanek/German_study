@@ -5,7 +5,6 @@
 class Sentence{
 
 public:
-    Sentence();
     Sentence(QString sectionToPickFor, QString categoryOfWords);
 
     SentenceData sentenceData;

@@ -12,17 +12,14 @@ FlashCardSectionLogic::FlashCardSectionLogic()
 
 void FlashCardSectionLogic::setSceneFromParent(CustomScene *myScene)
 {
+    //sets main windows scene as a scene to draw on
     scene = myScene;
 }
 
 void FlashCardSectionLogic::setConnections(WordContainer *wcToConnect)
 {
+    //sets connections for FCSection Logic
     connect(wcToConnect,SIGNAL(clicked(WordContainer*)),this,SLOT(setVisibilityAfterClick(WordContainer*)));
-}
-
-void FlashCardSectionLogic::setContainersOnScene()
-{
-
 }
 
 void FlashCardSectionLogic::setNewSession()
@@ -237,6 +234,7 @@ void FlashCardSectionLogic::setWordsGermanWordsTranslation()
 
 void FlashCardSectionLogic::setClearWordsGermanWordsTranslation()
 {
+    //clears QStrings with words to check after we check them
     wordOneGerman.clear();
     wordOneTranslation.clear();
     wordTwoGerman.clear();

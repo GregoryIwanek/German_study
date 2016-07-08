@@ -10,35 +10,44 @@ GuessSentenceSectionLogic::GuessSentenceSectionLogic()
 
 void GuessSentenceSectionLogic::setSceneFromParent(CustomScene *myScene)
 {
+    //sets main window scene as a scene to draw on
     scene = myScene;
 }
 
 void GuessSentenceSectionLogic::setSentenceAreaList(QList<SentenceArea *> mySentenceAreaList)
 {
+    //assign Sentence Areas from FCSection UI to lists
     sentenceAreaList = mySentenceAreaList;
 }
 
 void GuessSentenceSectionLogic::setWordContainerPositionOnSentenceArea()
 {
+    //sets starting position of first word container send to sentence area
     wordContainerPositionOnSentenceArea = QPointF(sentenceAreaList.first()->getWordContainerStartPosition().x() +20,
                                                   sentenceAreaList.first()->getWordContainerStartPosition().y());
+
+    //sets pointer to that variable, for use in some methods
     wordContainerPositionOnSentenceAreaPointer = &wordContainerPositionOnSentenceArea;
 }
 
 void GuessSentenceSectionLogic::setWordContainerNextPositionToContainers()
 {
-    for (auto i=0, n=wordContainersList.size(); i<n; i++){
+    //sets position of next word container send to sentence area ( for use in MOVE slot of WordContainer)
+    for (auto i=0, n=wordContainersList.size(); i<n; i++)
+    {
         wordContainersList[i]->setNextContainerPositionInSentenceArea(wordContainerPositionOnSentenceAreaPointer);
     }
 }
 
 void GuessSentenceSectionLogic::updateWordContainerNextPositionOnSentenceArea(WordContainer *wordContainer, bool isOnSentenceArea)
 {
+    //updates position of next word container which will be send to sentence area after we send WC to sentence area
     if (isOnSentenceArea == true){
         wordContainerPositionOnSentenceArea.setX(wordContainerPositionOnSentenceArea.x() + wordContainer->boundingRect().width()+19);
         wordContainerPositionOnSentenceArea.setY(sentenceAreaList.first()->getWordContainerStartPosition().y());
         wordContainerPositionOnSentenceAreaPointer = &wordContainerPositionOnSentenceArea;
     }
+    //updates position of next word container which will be send to sentence area after we send back one WC
     else {
         wordContainerPositionOnSentenceArea.setX(wordContainerPositionOnSentenceArea.x() - wordContainer->getWidthOfRect()-19);
         wordContainerPositionOnSentenceArea.setY(sentenceAreaList.first()->getWordContainerStartPosition().y());
@@ -48,12 +57,17 @@ void GuessSentenceSectionLogic::updateWordContainerNextPositionOnSentenceArea(Wo
 
 void GuessSentenceSectionLogic::sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer)
 {
-    if (wordContainer->getIsOnSentenceArea()==false) {
+
+    if (wordContainer->getIsOnSentenceArea()==false)
+    {
+        //update correct indexs on list of Word Containers on sentence area after we send them to
         setIndexOfWordContainerOnSentenceArea(wordContainer);
         wordContainer->setIsOnSentenceArea(true);
         updateSentence(wordContainer);
     }
-    else {
+    else
+    {
+        //update correct indexs on list of Word Containers on sentence area after we send them back
         setIndexOfWordContainerOnSentenceArea(wordContainer);
         wordContainer->setIsOnSentenceArea(false);
         updateSentence(wordContainer);
@@ -62,63 +76,87 @@ void GuessSentenceSectionLogic::sendWordContainerToSentenceAreaAndBack(WordConta
 
 void GuessSentenceSectionLogic::removeGapFromSentenceArea(WordContainer *wordContainer)
 {
-    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
-
-        if (wordContainersList[i]->getIndexOnSentenceArea() > -1 &&
-                wordContainersList[i]->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea()){
-
-            wordContainersList[i]->setPos(QPointF(wordContainersList[i]->pos().x()-(wordContainer->getWidthOfRect()+20),
-                                                  wordContainersList[i]->pos().y()));
+    //remove extra gap (20px) between WC send to sentence area ( sometimes happened beacouse of round() method)
+    for (auto i=0, n=wordContainersList.size(); i<n; ++i)
+    {
+        if (wordContainersList[i]->getIndexOnSentenceArea() > -1 && wordContainersList[i]->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea())
+        {
+            wordContainersList[i]->setPos(QPointF(wordContainersList[i]->pos().x()-(wordContainer->getWidthOfRect()+20), wordContainersList[i]->pos().y()));
         }
     }
 }
 
 void GuessSentenceSectionLogic::updateColorOfCorrectWordContainers(bool isAnswerCorrect)
 {
-    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
-        if (isAnswerCorrect == true){
+    //sets color of WC after we click CHECK
+    for (auto i=0, n=wordContainersList.size(); i<n; ++i)
+    {
+        if (isAnswerCorrect == true)
+        {
+            //sets red/green to word containers
             updateColorOfWordContainersIfAnswerCorrect(i);
         }
-        else wordContainersList[i]->setBrush(apperiance->brushRed);
+        else
+        {
+            //sets red to all word containers when answer incorrect
+            wordContainersList[i]->setBrush(apperiance->brushRed);
+        }
     }
 }
 
 void GuessSentenceSectionLogic::updateColorOfWordContainersIfAnswerCorrect(int index)
 {
-    if (wordContainersList[index]->getIsOnSentenceArea() == true){
+    //update color of WC after we click CHECK button and answer is correct
+    if (wordContainersList[index]->getIsOnSentenceArea() == true)
+    {
+        //sets green for correct one
         wordContainersList[index]->setBrush(apperiance->brushGreen);
     }
-    else wordContainersList[index]->setBrush(apperiance->brushRed);
+    else
+    {
+        //sets color red for rest of the Word Containers
+        wordContainersList[index]->setBrush(apperiance->brushRed);
+    }
 }
 
 void GuessSentenceSectionLogic::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Space && sentence == NULL){
+    //possible keyboard keys to play with
+    if (event->key() == Qt::Key_Space && sentence == NULL)
+    {
+        //sets new sentence to solve
         setNewSentence();
     }
-    else if (event->key() == Qt::Key_Space
-             && sentenceInputByUserList.isEmpty() == false && sentence->getIfSentenceChecked() == false){
+    else if (event->key() == Qt::Key_Space && sentenceInputByUserList.isEmpty() == false && sentence->getIfSentenceChecked() == false)
+    {
+        //checks result
         checkIfSentenceIsCorrect();
     }
-    else if (event->key() == Qt::Key_Space && sentence->getIfSentenceChecked() == true){
+    else if (event->key() == Qt::Key_Space && sentence->getIfSentenceChecked() == true)
+    {
+        //clears scene from sentence
         clearSentence();
     }
 }
 
 void GuessSentenceSectionLogic::setWordContainers(Sentence *sentence)
 {
+    //sets row of word containers after we click START
     setRow(sentence);
 }
 
 void GuessSentenceSectionLogic::setRow(Sentence *sentence)
 {
-    for (int y=0, n=1; y<n; ++y){
+    //sets column of word containers after START clicked
+    for (int y=0, n=1; y<n; ++y)
+    {
         setColumn(y, sentence);
     }
 }
 
 void GuessSentenceSectionLogic::setColumn(int y, Sentence *sentence)
 {
+    //sets word containers in row and columns and sets connections
     for (int x=0, n=sentence->sentenceDataPointer->getListOfWordsInRandomOrder().size(); x<n; ++x)
     {
         defineWordContainers(x,y,sentence);
@@ -128,6 +166,7 @@ void GuessSentenceSectionLogic::setColumn(int y, Sentence *sentence)
 
 void GuessSentenceSectionLogic::defineWordContainers(int x, int y, Sentence *sentence)
 {
+    //steps to define word containers on a scene, defines position, information, adds to list and scene and if it's out of window
     WordContainer *wordContainer = new WordContainer(sentence->sentenceDataPointer->getListOfWordsInRandomOrder()[x]);
     wordContainer->setSectionItBelongsTo("GSSection");
     putWordContainerOnBoard(wordContainer, y);
@@ -139,20 +178,21 @@ void GuessSentenceSectionLogic::defineWordContainers(int x, int y, Sentence *sen
 
 void GuessSentenceSectionLogic::putWordContainerOnBoard(WordContainer *wordContainer, int y)
 {
+    //sets starting position of created word containers after we click START
     wordContainer->setPos(QPointF(80+endOfWordContainer, 240 + (y+rowIndex)*(wordContainer->boundingRect().height()+20)));
     wordContainer->setStartPosition(wordContainer->pos());
 }
 
 void GuessSentenceSectionLogic::setWordContainerConnections(WordContainer *wordContainer)
 {
+    //sets connections beetwen word containers and Logic
     connect(wordContainer,SIGNAL(stopped(WordContainer*,bool)),this,SLOT(updateWordContainerNextPositionOnSentenceArea(WordContainer*,bool)));
     connect(wordContainer,SIGNAL(clicked(WordContainer*)),this,SLOT(sendWordContainerToSentenceAreaAndBack(WordContainer*)));
-    //connect(wordContainer,SIGNAL(removeGapInSpace(WordContainer*)),this,SLOT(removeGapFromSentenceArea(WordContainer*)));
-    //connect(wordContainer,SIGNAL(clicked(WordContainer*)),this,SLOT(updateSentence(WordContainer*)));
 }
 
 bool GuessSentenceSectionLogic::checkIfWordContainerInCollision(WordContainer *wordContainer, int y, bool checkBoard, bool checkSentenceArea)
 {
+    //checks if word container collide with invisible Collision Lines of Sentence Area ( if it's out of sentence area)
     QList<QGraphicsItem *> collidingItems = wordContainer->collidingItems();
 
     for (int i=0, n=collidingItems.size(); i<n; ++i)
@@ -172,6 +212,7 @@ bool GuessSentenceSectionLogic::checkIfWordContainerInCollision(WordContainer *w
 
 void GuessSentenceSectionLogic::wordContainerOutOfBoard(WordContainer *wordContainer, int y)
 {
+    //make word containers in second row upon building, when they are out of window
     ++rowIndex;
     endOfWordContainer = 0;
     putWordContainerOnBoard(wordContainer, y);
@@ -180,12 +221,15 @@ void GuessSentenceSectionLogic::wordContainerOutOfBoard(WordContainer *wordConta
 
 void GuessSentenceSectionLogic::setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer)
 {
+    //update index list of Word Containers on Sentence Area after we send back
     if (wordContainer->getIsOnSentenceArea() == true){
         --indexOfWordContainerOnSentenceArea;
         removeGapFromSentenceArea(wordContainer);
         updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());
     }
-    else {
+    else
+    {
+        //update index list of WC on sentence area after we send to
         wordContainer->setIndexOnSentenceArea(indexOfWordContainerOnSentenceArea);
         ++indexOfWordContainerOnSentenceArea;
     }
@@ -287,7 +331,6 @@ void GuessSentenceSectionLogic::updateSentence(WordContainer *wordContainer)
     }
     else {
         sentenceInputByUserList.removeAt(wordContainer->getIndexOnSentenceArea());
-        //updateIndexOfWordContainersOnSentenceArea(wordContainer->getIndexOnSentenceArea());
         wordContainer->setIndexOnSentenceArea(-1);
     }
 }

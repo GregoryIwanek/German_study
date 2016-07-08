@@ -19,12 +19,10 @@ public:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     void setTimersAndConnections();
 
-    void setMyFlags();
     void setSize(int width, int height);
     void setColor(QBrush brush);
     void setIfIsTranslation(bool isItTranslation);
     void setText(Word *myWord);
-    void setWordFCSection(Word *myWord);
     void setTextPosition();
     void setSizeOfRect();
     void setFixedSizeOfRect(int width, int height);
@@ -51,12 +49,10 @@ public:
     QString sectionItBelongsTo;
 
 public slots:
-    void sendToSentenceArea();
     void move();
     void checkIfStopMovement();
     void setDistanceAndDirectionToMoveToArea();
     void setDistanceAndDirectionToMoveFromArea();
-    void sendToStartArea();
 signals:
     void clicked(WordContainer *wordContainer);
     void stopped(WordContainer *wordContainer, bool isWordContainerMoved);

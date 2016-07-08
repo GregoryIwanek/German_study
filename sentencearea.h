@@ -13,12 +13,10 @@ public:
     void setSizeOfLines();
     void setLinesPosition();
     void setBrushes();
-    void setSpaceLeft();
     void setWordContainerStartPosition(QPointF position);
-    void getPositionFromSceneToVariable(QPointF position);
+    void setPositionFromSceneToVariable(QPointF position);
     void setCornersToMap();
 
-    int getSpaceLeft();
     QPointF getWordContainerStartPosition();
     double getWidth();
     double getHeight();
@@ -27,7 +25,6 @@ public:
 private:
     double lineWidth, lineHeight;
     double width, height;
-    int spaceLeft;
     int numberOfWordsIn;
     bool isFull;
     QPointF wordContainerStartPosition, positionOnScene;

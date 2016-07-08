@@ -7,5 +7,6 @@ MyApplication::MyApplication()
 
 void MyApplication::setMainWindowVisible()
 {
+    //shows main window
     mainWindow.show();
 }

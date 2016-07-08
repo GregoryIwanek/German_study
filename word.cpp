@@ -12,11 +12,10 @@ Word::Word()
 
 Word::Word(const Word &copyWord)
 {
-    /*copy constructor for use in FCSection ( we need copy of pointer with same values
+    /*copy constructor for use in FCSection ( we need copy of a pointer with same values
      * to put as a word inside WordContainer (one WC with germanWord and one with englishWord, both Words store same data)*/
     word = copyWord.word;
     translation = copyWord.translation;
-    roleInSentence = copyWord.roleInSentence;
     extraInformation = copyWord.extraInformation;
     query = copyWord.query;
     pickedToRandomListOfWords = copyWord.pickedToRandomListOfWords;
@@ -29,7 +28,6 @@ void Word::defineInstance(QGraphicsItem *parent, QFont font, QString myQuery, in
 {
     //definition of Word instance with all data ( query, index, font etc)
     setParentItem(parent);
-    setRoleInSentence(myQuery);
     pickWordFromSQL(myQuery, wordIndex, false);
     pickWordFromSQL(translationQuery, translationIndex, true);
     setWordFont(font);
@@ -82,13 +80,6 @@ void Word::setHeightOfText()
         heightOfText = this->boundingRect().height();
     }
     else heightOfText = 40;
-}
-
-void Word::setRoleInSentence(QString role)
-{
-    //is that necessery???????????????????
-    roleInSentence = role;
-    //to investigation
 }
 
 void Word::pickWordFromSQL(QString myQuery, int index, bool isItTranslation)

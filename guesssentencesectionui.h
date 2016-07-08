@@ -41,7 +41,6 @@ public:
     QList<SentenceArea *> getSentenceAreaList();
     MyButton *getMyButton(QString nameOfButton);
     QLineEdit *getMyLineEdit();
-    QList<QGraphicsItem *> getGraphicsItemList();
 
 public slots:
     void back();
@@ -68,9 +67,6 @@ private:
     QGraphicsPixmapItem *hintImage;
     QLineEdit *lineEdit;
     QList<SentenceArea*> sentenceAreaList;
-
-    QList<QGraphicsItem*> listOfItems;
-
     QMap<QString, MyButton*> myButtonsMap;
 };
 

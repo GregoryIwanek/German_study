@@ -38,9 +38,9 @@ void FlashCardSection::setConnectionsForSection()
 {
     //sets all kind connections in FCSection, between FCSectionUI/FCSectionLogic
 
+    //UI to Logic
     connect(flashCardSectionUI->getMyButton("buttonStart"),SIGNAL(clicked()),flashCardSectionLogic,SLOT(setNewSession()));
     connect(flashCardSectionUI->getMyButton("buttonClear"),SIGNAL(clicked()),flashCardSectionLogic,SLOT(resetSession()));
-
     connect(flashCardSectionUI->getMyButton("buttonBack"),SIGNAL(clicked()),flashCardSectionUI,SLOT(back()));
 }
 

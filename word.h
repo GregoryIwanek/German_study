@@ -20,7 +20,6 @@ public:
     void setVariablesSizeOfText();
     void setWidthOfText();
     void setHeightOfText();
-    void setRoleInSentence(QString role);
     void pickWordFromSQL(QString myQuery, int index =0, bool isItTranslation =false);
     void pickExtraInfoFromSQL(QString extraQuery, int index = 0);
     void saveWordToSQL();
@@ -35,7 +34,6 @@ public:
 private:
     QString word;
     QString translation;
-    QString roleInSentence;
     QString extraInformation;
     QSqlQuery query;
     bool pickedToRandomListOfWords = false;
