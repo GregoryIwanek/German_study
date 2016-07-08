@@ -6,6 +6,7 @@
 
 class SentenceArea:public QObject, public QGraphicsRectItem{
     Q_OBJECT
+
 public:
     SentenceArea();
 

@@ -10,6 +10,7 @@ extern Apperiance *apperiance;
 
 class MyButton:public QObject, public QGraphicsRectItem{
     Q_OBJECT
+
 public:
     MyButton();
 
@@ -25,11 +26,14 @@ public:
     void defineTextOfButton(QString text, QBrush myBrush, QFont font);
     void setTextOfButton(QString text);
     void setTextOfButtonPosition();
+
 public slots:
     void quit();
+
 signals:
     void clicked();
     void hoverEvent();
+
 private:
     QBrush onHoverEventEnter, onHoverEventLeave;
     QGraphicsTextItem textToDisplay;

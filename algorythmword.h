@@ -4,6 +4,7 @@
 
 class AlgorythmWord:public QObject{
     Q_OBJECT
+
 public:
     AlgorythmWord(QString categoryOfWords);
 

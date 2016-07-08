@@ -4,6 +4,7 @@
 
 class AlgorythmVerb:public QObject{
     Q_OBJECT
+
 public:
     AlgorythmVerb(int subjectIndex);
 
@@ -21,9 +22,12 @@ public:
     QString getQuery();
     QString getQueryTranslation();
     int getVerbIndex();
+
 public slots:
     void setIndexBySubjectIndex(int index);
+
 signals:
+
 private:
     QString querySQLVerb, querySQLVerbTranslation;
     QString verbTable;

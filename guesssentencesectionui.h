@@ -14,6 +14,7 @@
 
 class GuessSentenceSectionUI:public QObject {
     Q_OBJECT
+
 public:
     GuessSentenceSectionUI();
     friend class GuessSentenceSection;
@@ -53,6 +54,7 @@ public slots:
     void clearUIText(bool isCompleteClear);
     void sendLineEditData();
     void showHideHint();
+
 signals:
     void signalBack(QObject *section);
     void signalClearSentence();
@@ -60,6 +62,7 @@ signals:
     void signalSetNewSentence();
     void signalSendLineEditData(QString text);
     void signalShowHint();
+
 private:
     CustomScene *scene;
     MyButton *buttonBack, *buttonClear, *buttonCheck, *buttonStart, *buttonHint;

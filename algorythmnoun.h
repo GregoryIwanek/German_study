@@ -4,7 +4,9 @@
 #include <QList>
 #include <QtSql/QSql>
 #include <QSqlQuery>
+
 class AlgorythmNoun{
+
 public:
     AlgorythmNoun(bool isNounASubject);
 

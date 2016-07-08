@@ -3,6 +3,7 @@
 #include <QTime>
 #include <stdlib.h>
 class MyApplicationData{
+
 public:
     MyApplicationData();
 

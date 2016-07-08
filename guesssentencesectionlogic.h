@@ -26,12 +26,12 @@ public:
     void setWordContainerConnections(WordContainer *wordContainer);
     void setIndexOfWordContainerOnSentenceArea(WordContainer *wordContainer);
     void updateIndexOfWordContainersOnSentenceArea(int index);
-
     void updateSentenceTextToDisplay();
 
     bool checkIfWordContainerInCollision(WordContainer *wordContainer, int y, bool checkBoard, bool checkSentenceArea);
     void wordContainerOutOfBoard(WordContainer *wordContainer, int y);
     bool checkIfWordContainerOutOfSentenceArea(WordContainer *wordContainer);
+
 public slots:
     void setNewSentence();
     void checkIfSentenceIsCorrect();
@@ -43,8 +43,9 @@ public slots:
     void sendWordContainerToSentenceAreaAndBack(WordContainer *wordContainer);
     void removeGapFromSentenceArea(WordContainer *wordContainer);
     void updateColorOfCorrectWordContainers(bool isAnswerCorrect);
-    void updateColorOfWordContainersIfAnswerCorrect(int index);
+    void updateColorOfWordContainersIfAnswerCorrect(WordContainer *wordContainerToColor);
     void keyPressEvent(QKeyEvent *event);
+
 signals:
     void sentenceCreated(QString sentenceText);
     void sentenceChanged();
@@ -52,6 +53,7 @@ signals:
     void resultChanged(bool isResultCorrect);
     void clearUITexts(bool isCompleteClear);
     void keyStartPressed();
+
 private:
     CustomScene *scene;
     QList<SentenceArea *> sentenceAreaList;

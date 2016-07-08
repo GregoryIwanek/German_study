@@ -52,8 +52,6 @@ public:
     QPixmap pixmapHintImage;
 
     QPalette paletteTransparent;
-private:
-
 };
 
 #endif // APPERIANCE

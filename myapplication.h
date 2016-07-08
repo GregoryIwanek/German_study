@@ -5,6 +5,7 @@
 #include "myapplicationdata.h"
 
 class MyApplication{
+
 public:
     MyApplication();
 

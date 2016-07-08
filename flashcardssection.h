@@ -7,6 +7,7 @@
 
 class FlashCardSection:public QObject{
     Q_OBJECT
+
 public:
     FlashCardSection();
     friend class MainWindow;
@@ -17,11 +18,14 @@ public:
 
     void setConnectionsSwitch(bool isConnected);
     void setConnectionsForSection();
+
 public slots:
     void keyPressEvent(QKeyEvent *event);
     void switchConnections();
+
 signals:
     void keyPressed(QKeyEvent *event);
+
 private:
     CustomScene *scene;
     FlashCardSectionUI *flashCardSectionUI;

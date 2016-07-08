@@ -13,6 +13,7 @@
 #include "flashcardssection.h"
 class MainWindow: public QMainWindow {
     Q_OBJECT
+
 public:
     MainWindow();
 
@@ -21,16 +22,17 @@ public:
     void setGuessSentenceSectionMenu();
     void setConnections();
     void keyPressEvent(QKeyEvent *event);
-
     void setButtonsVisible();
 
 public slots:
     void setGuessSentenceSectionVisible();
     void setFlashCardSectionVisible();
     void setMainWindowVisible(QObject *section);
+
 signals:
     void startButtonClicked();
     void keyPressed(QKeyEvent*);
+
 private:
     QGraphicsView *view;
     CustomScene *scene;

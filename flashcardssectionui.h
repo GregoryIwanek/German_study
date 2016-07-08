@@ -26,10 +26,12 @@ public:
 
 public slots:
     void back();
+
 signals:
     void signalStart();
     void signalBack(QObject *section);
     void signalResetSession();
+
 private:
     CustomScene *scene;
     MyButton *buttonBack, *buttonClear, *buttonStart;

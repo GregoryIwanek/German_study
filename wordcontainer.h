@@ -12,6 +12,7 @@ extern Apperiance *apperiance;
 
 class WordContainer:public QObject, public QGraphicsRectItem {
     Q_OBJECT
+
 public:
     WordContainer(Word *myWord = NULL);
     WordContainer(int width = 0, int height = 0, Word *myWord = NULL, bool isItTranslation = false);
@@ -53,10 +54,12 @@ public slots:
     void checkIfStopMovement();
     void setDistanceAndDirectionToMoveToArea();
     void setDistanceAndDirectionToMoveFromArea();
+
 signals:
     void clicked(WordContainer *wordContainer);
     void stopped(WordContainer *wordContainer, bool isWordContainerMoved);
     void removeGapInSpace(WordContainer *wordContainer);
+
 private:
     Word *text,word;
     QTimer *timer;
@@ -69,6 +72,7 @@ private:
     bool isOnSentenceArea = false;
     bool isItDisplayingTranslation = false;
     bool isChecked = false;
+
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };

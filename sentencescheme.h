@@ -11,6 +11,7 @@
 
 class SentenceScheme:public QObject {
     Q_OBJECT
+
 public:
     SentenceScheme();
     SentenceScheme(QString sectionToPickFor, QString categoryOfWords);
@@ -51,9 +52,12 @@ public:
     void increaseCount();
     int getNumberOfWords();
     int getNumberOfExtraWords();
+
 public slots:
     void setCorrespondingSubjectSlot(int personIndex);
+
 signals:
+
 private:
     QList<QString> querySQLList;
     QList<QString> querySQLTranslationList;

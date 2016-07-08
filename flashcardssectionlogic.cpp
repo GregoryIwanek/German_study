@@ -182,10 +182,13 @@ void FlashCardSectionLogic::setVisibilityAfterClick(WordContainer *wordContainer
 void FlashCardSectionLogic::resetSession()
 {
     //resets all variables and removes WordContainers from scene
-    for (auto i=0; i<listOfContainersOnScene.size(); ++i)
+    for (auto wordContainerRemove : listOfContainersOnScene)
     {
-        this->scene->removeItem(listOfContainersOnScene[i]);
+        //removes word containers from scene
+        this->scene->removeItem(wordContainerRemove);
     }
+
+    //resets variables
     listOfWords.clear();
     listOfWordsTranslation.clear();
     listOfWordsGerman.clear();

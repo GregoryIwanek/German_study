@@ -33,9 +33,9 @@ void GuessSentenceSectionLogic::setWordContainerPositionOnSentenceArea()
 void GuessSentenceSectionLogic::setWordContainerNextPositionToContainers()
 {
     //sets position of next word container send to sentence area ( for use in MOVE slot of WordContainer)
-    for (auto i=0, n=wordContainersList.size(); i<n; i++)
+    for (auto wordContainerToUpdate : wordContainersList)
     {
-        wordContainersList[i]->setNextContainerPositionInSentenceArea(wordContainerPositionOnSentenceAreaPointer);
+        wordContainerToUpdate->setNextContainerPositionInSentenceArea(wordContainerPositionOnSentenceAreaPointer);
     }
 }
 
@@ -77,11 +77,11 @@ void GuessSentenceSectionLogic::sendWordContainerToSentenceAreaAndBack(WordConta
 void GuessSentenceSectionLogic::removeGapFromSentenceArea(WordContainer *wordContainer)
 {
     //remove extra gap (20px) between WC send to sentence area ( sometimes happened beacouse of round() method)
-    for (auto i=0, n=wordContainersList.size(); i<n; ++i)
+    for (auto wordContainerUpdate : wordContainersList)
     {
-        if (wordContainersList[i]->getIndexOnSentenceArea() > -1 && wordContainersList[i]->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea())
+        if (wordContainerUpdate->getIndexOnSentenceArea() > -1 && wordContainerUpdate->getIndexOnSentenceArea() > wordContainer->getIndexOnSentenceArea())
         {
-            wordContainersList[i]->setPos(QPointF(wordContainersList[i]->pos().x()-(wordContainer->getWidthOfRect()+20), wordContainersList[i]->pos().y()));
+            wordContainerUpdate->setPos(QPointF(wordContainerUpdate->pos().x()-(wordContainer->getWidthOfRect()+20), wordContainerUpdate->pos().y()));
         }
     }
 }
@@ -89,33 +89,33 @@ void GuessSentenceSectionLogic::removeGapFromSentenceArea(WordContainer *wordCon
 void GuessSentenceSectionLogic::updateColorOfCorrectWordContainers(bool isAnswerCorrect)
 {
     //sets color of WC after we click CHECK
-    for (auto i=0, n=wordContainersList.size(); i<n; ++i)
+    for (auto wordContainerColor : wordContainersList)
     {
         if (isAnswerCorrect == true)
         {
             //sets red/green to word containers
-            updateColorOfWordContainersIfAnswerCorrect(i);
+            updateColorOfWordContainersIfAnswerCorrect(wordContainerColor);
         }
         else
         {
             //sets red to all word containers when answer incorrect
-            wordContainersList[i]->setBrush(apperiance->brushRed);
+            wordContainerColor->setBrush(apperiance->brushRed);
         }
     }
 }
 
-void GuessSentenceSectionLogic::updateColorOfWordContainersIfAnswerCorrect(int index)
+void GuessSentenceSectionLogic::updateColorOfWordContainersIfAnswerCorrect(WordContainer *wordContainerToColor)
 {
     //update color of WC after we click CHECK button and answer is correct
-    if (wordContainersList[index]->getIsOnSentenceArea() == true)
+    if (wordContainerToColor->getIsOnSentenceArea() == true)
     {
         //sets green for correct one
-        wordContainersList[index]->setBrush(apperiance->brushGreen);
+        wordContainerToColor->setBrush(apperiance->brushGreen);
     }
     else
     {
         //sets color red for rest of the Word Containers
-        wordContainersList[index]->setBrush(apperiance->brushRed);
+        wordContainerToColor->setBrush(apperiance->brushRed);
     }
 }
 
@@ -237,9 +237,11 @@ void GuessSentenceSectionLogic::setIndexOfWordContainerOnSentenceArea(WordContai
 
 void GuessSentenceSectionLogic::updateIndexOfWordContainersOnSentenceArea(int index)
 {
-    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
-        if (wordContainersList[i]->getIsOnSentenceArea() == true && wordContainersList[i]->getIndexOnSentenceArea() > index){
-            wordContainersList[i]->setIndexOnSentenceArea(wordContainersList[i]->getIndexOnSentenceArea()-1);
+    //sets new index of word containers on sentence area ( if we sent back container from the middle of sentence area)
+    for (auto wordContainerUpdate : wordContainersList)
+    {
+        if (wordContainerUpdate->getIsOnSentenceArea() == true && wordContainerUpdate->getIndexOnSentenceArea() > index){
+            wordContainerUpdate->setIndexOnSentenceArea(wordContainerUpdate->getIndexOnSentenceArea()-1);
         }
     }
 }
@@ -294,10 +296,15 @@ void GuessSentenceSectionLogic::checkIfSentenceIsCorrectInLineEdit(QString text)
 
 void GuessSentenceSectionLogic::clearSentence()
 {
-    for (auto i=0, n=wordContainersList.size(); i<n; ++i){
-        scene->removeItem(wordContainersList[i]);
-        delete wordContainersList[i];
+    //resets sentence, so we can create new one
+    for (auto wordContainerRemoved : wordContainersList)
+    {
+        //remove word containers from scene
+        scene->removeItem(wordContainerRemoved);
+        delete wordContainerRemoved;
     }
+
+    //resets variables
     wordContainersList.clear();
     sentence = NULL;
     sentenceString = " ";

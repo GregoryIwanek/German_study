@@ -17,10 +17,13 @@ public:
     void setGuessSentenceSectionLogic();
 
     void setConnectionsForSection();
+
 public slots:
     void keyPressEvent(QKeyEvent *event);
+
 signals:
     void keyPressed(QKeyEvent *event);
+
 private:
     CustomScene *scene;
     GuessSentenceSectionUI *guessSentenceSectionUI;

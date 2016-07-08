@@ -31,6 +31,7 @@ public slots:
     void setNewSession();
     void setVisibilityAfterClick(WordContainer *wordContainerClicked);
     void resetSession();
+
 signals:
 
 private:
