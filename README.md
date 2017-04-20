@@ -27,15 +27,14 @@ Program is divided into two seperated sections and main menu.
 
 **GuessSentenceSection**
 
-(SENTENCE button in main menu) is a game where user have to put WordContainers on Sentence Area in correct order, to get sentence in german language same as given translation in English.
-User can use Hint, which will show picture with some grammar rules. Goal can be achieved by sending correct WordContainers to Sentence Area in correct order, or, typing down into LineEdit correct german sentence.
+(SENTENCE button in main menu) is a game where user has to put WordContainers on SentenceArea in correct order. When it happens, translation into English language is provided.
+User can use Hint, which will show picture with some grammar rules. Goal can be achieved by sending correct WordContainers to SentenceArea in correct order, or, typing down into LineEdit correct german sentence.
 
 <img src="https://rawgit.com/GregoryIwanek/German_study/master/pictures/grammar_game.png" title="guess sentence" height="250" />
 
 **FlashCardSection**
 
-(FLASH CARD button in main menu) is a game where user have to pair corresponding words in WordContainers on screen. For each pair of words there is translation and origin word.
-Navigation between activities and fragments is done through Navigarion Drawer | Main view section, consists lists of saved recording sessions
+(FLASH CARD button in main menu) is a game where user has to pair corresponding words in WordContainers on screen. For each pair of words there is a translated and original word.
 
 <img src="https://rawgit.com/GregoryIwanek/German_study/master/pictures/guess_game.png" title="flashcard game" height="250" />
 
